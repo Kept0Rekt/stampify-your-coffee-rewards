@@ -1,115 +1,115 @@
-@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Stampify Liquid Glass Design System
-   Light, premium, Apple-inspired UI
+   Light, calm, eye-friendly, Apple-inspired UI
    
    Primary Palette:
-   - Ivory: #FEFCF8 (warm off-white)
-   - Stone: #F5F3EF (soft neutral)
-   - Mist: #EBE8E3 (glass tint)
+   - Ivory: #FEFBF6 (warm off-white)
+   - Stone: #F7F5F2 (soft neutral)
+   - Mist: #EFECE8 (glass tint)
    - Gold: #C9A962 (warm accent)
    - Caramel: #B8956B (secondary accent)
-   - Charcoal: #2C2A27 (text)
+   - Charcoal: #3D3A36 (soft text, not black)
 */
 
 @layer base {
   :root {
-    /* Light Mode - Liquid Glass Theme */
-    --background: 40 30% 98%;
-    --foreground: 35 10% 16%;
+    /* Light Mode - Calm, Eye-Friendly Theme */
+    --background: 38 35% 97%;
+    --foreground: 32 12% 24%;
 
-    --card: 40 25% 97%;
-    --card-foreground: 35 10% 16%;
+    --card: 38 28% 96%;
+    --card-foreground: 32 12% 24%;
 
-    --popover: 40 30% 99%;
-    --popover-foreground: 35 10% 16%;
+    --popover: 38 35% 98%;
+    --popover-foreground: 32 12% 24%;
 
-    --primary: 43 45% 60%;
-    --primary-foreground: 40 30% 98%;
+    --primary: 43 45% 58%;
+    --primary-foreground: 38 35% 98%;
 
-    --secondary: 32 35% 57%;
-    --secondary-foreground: 40 30% 98%;
+    --secondary: 32 30% 55%;
+    --secondary-foreground: 38 35% 98%;
 
-    --muted: 35 15% 92%;
-    --muted-foreground: 35 10% 45%;
+    --muted: 35 18% 90%;
+    --muted-foreground: 32 10% 48%;
 
-    --accent: 43 45% 60%;
-    --accent-foreground: 40 30% 98%;
+    --accent: 43 45% 58%;
+    --accent-foreground: 38 35% 98%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 15% 88%;
-    --input: 35 15% 90%;
+    --border: 35 15% 86%;
+    --input: 35 18% 88%;
     --ring: 43 45% 55%;
 
     --radius: 1.25rem;
 
-    /* Liquid Glass Variables */
-    --glass-bg: hsla(40, 25%, 97%, 0.7);
-    --glass-border: hsla(35, 15%, 85%, 0.5);
+    /* Liquid Glass Variables - Light, Soft */
+    --glass-bg: hsla(38, 28%, 97%, 0.75);
+    --glass-border: hsla(35, 15%, 82%, 0.5);
     --glass-blur: 20px;
-    --glass-shadow: 0 4px 24px -4px hsla(35, 20%, 30%, 0.08);
+    --glass-shadow: 0 4px 24px -4px hsla(32, 15%, 40%, 0.08);
     
     /* Gold Accent */
-    --gold: 43 45% 60%;
-    --gold-light: 43 50% 75%;
-    --gold-glow: 0 4px 20px hsla(43, 45%, 60%, 0.25);
+    --gold: 43 45% 58%;
+    --gold-light: 43 50% 72%;
+    --gold-glow: 0 4px 20px hsla(43, 45%, 58%, 0.2);
 
-    --sidebar-background: 40 25% 96%;
-    --sidebar-foreground: 35 10% 16%;
-    --sidebar-primary: 43 45% 60%;
-    --sidebar-primary-foreground: 40 30% 98%;
-    --sidebar-accent: 35 15% 92%;
-    --sidebar-accent-foreground: 35 10% 16%;
-    --sidebar-border: 35 15% 88%;
+    --sidebar-background: 38 28% 96%;
+    --sidebar-foreground: 32 12% 24%;
+    --sidebar-primary: 43 45% 58%;
+    --sidebar-primary-foreground: 38 35% 98%;
+    --sidebar-accent: 35 18% 90%;
+    --sidebar-accent-foreground: 32 12% 24%;
+    --sidebar-border: 35 15% 86%;
     --sidebar-ring: 43 45% 55%;
   }
 
   .dark {
-    /* Dark Mode - Keeping for potential future use */
-    --background: 30 8% 8%;
-    --foreground: 40 20% 92%;
+    /* Dark Mode - For reference */
+    --background: 30 8% 9%;
+    --foreground: 40 18% 90%;
 
-    --card: 30 8% 11%;
-    --card-foreground: 40 20% 92%;
+    --card: 30 8% 12%;
+    --card-foreground: 40 18% 90%;
 
-    --popover: 30 8% 11%;
-    --popover-foreground: 40 20% 92%;
+    --popover: 30 8% 12%;
+    --popover-foreground: 40 18% 90%;
 
-    --primary: 43 50% 65%;
-    --primary-foreground: 30 8% 8%;
+    --primary: 43 50% 62%;
+    --primary-foreground: 30 8% 9%;
 
-    --secondary: 32 40% 60%;
-    --secondary-foreground: 30 8% 8%;
+    --secondary: 32 40% 58%;
+    --secondary-foreground: 30 8% 9%;
 
     --muted: 30 8% 18%;
-    --muted-foreground: 40 15% 60%;
+    --muted-foreground: 40 12% 55%;
 
-    --accent: 43 50% 65%;
-    --accent-foreground: 30 8% 8%;
+    --accent: 43 50% 62%;
+    --accent-foreground: 30 8% 9%;
 
-    --destructive: 0 62% 45%;
+    --destructive: 0 60% 45%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 30 8% 20%;
     --input: 30 8% 18%;
     --ring: 43 50% 60%;
 
-    --glass-bg: hsla(30, 8%, 12%, 0.8);
+    --glass-bg: hsla(30, 8%, 12%, 0.85);
     --glass-border: hsla(30, 8%, 25%, 0.4);
     --glass-shadow: 0 4px 24px -4px hsla(0, 0%, 0%, 0.3);
 
     --sidebar-background: 30 8% 10%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 43 50% 65%;
-    --sidebar-primary-foreground: 30 8% 8%;
+    --sidebar-foreground: 40 18% 90%;
+    --sidebar-primary: 43 50% 62%;
+    --sidebar-primary-foreground: 30 8% 9%;
     --sidebar-accent: 30 8% 15%;
-    --sidebar-accent-foreground: 40 20% 92%;
+    --sidebar-accent-foreground: 40 18% 90%;
     --sidebar-border: 30 8% 18%;
     --sidebar-ring: 43 50% 60%;
   }
@@ -122,7 +122,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -131,11 +131,11 @@
 @layer utilities {
   /* Gold Accent Utilities */
   .gold-gradient {
-    background: linear-gradient(135deg, hsl(43 50% 70%), hsl(32 40% 55%));
+    background: linear-gradient(135deg, hsl(43 48% 65%), hsl(32 38% 52%));
   }
   
   .gold-text {
-    background: linear-gradient(135deg, hsl(43 50% 65%), hsl(32 40% 50%));
+    background: linear-gradient(135deg, hsl(43 48% 60%), hsl(32 38% 48%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -145,7 +145,7 @@
     box-shadow: var(--gold-glow);
   }
 
-  /* Liquid Glass Utilities */
+  /* Liquid Glass Utilities - Light & Soft */
   .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
@@ -155,10 +155,10 @@
   }
 
   .glass-subtle {
-    background: hsla(40, 25%, 97%, 0.5);
+    background: hsla(38, 28%, 97%, 0.55);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsla(35, 15%, 90%, 0.4);
+    border: 1px solid hsla(35, 15%, 88%, 0.4);
   }
 
   .glass-card {
@@ -166,16 +166,16 @@
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow), inset 0 1px 0 hsla(0, 0%, 100%, 0.1);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 hsla(0, 0%, 100%, 0.15);
     border-radius: var(--radius);
   }
 
   .glass-panel {
-    background: hsla(40, 30%, 99%, 0.85);
+    background: hsla(38, 35%, 98%, 0.88);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid hsla(35, 15%, 92%, 0.6);
-    box-shadow: 0 8px 32px -8px hsla(35, 20%, 30%, 0.1);
+    border: 1px solid hsla(35, 15%, 90%, 0.6);
+    box-shadow: 0 8px 32px -8px hsla(32, 15%, 40%, 0.08);
   }
   
   /* Premium Card Styles */
@@ -184,7 +184,7 @@
   }
 
   .card-premium:hover {
-    box-shadow: var(--glass-shadow), 0 8px 32px -8px hsla(43, 45%, 60%, 0.15);
+    box-shadow: var(--glass-shadow), 0 8px 32px -8px hsla(43, 45%, 58%, 0.12);
     transform: translateY(-1px);
   }
   
@@ -205,38 +205,6 @@
   .text-glass-secondary {
     @apply text-muted-foreground;
   }
-
-  /* ========================================
-     DARK WALLET THEME UTILITIES
-     Premium dark mode for Wallet screen
-     ======================================== */
-  
-  /* Wallet Background */
-  .bg-wallet-bg {
-    background-color: hsl(30 6% 9%);
-  }
-
-  /* Wallet Colors */
-  .text-wallet-text {
-    color: hsl(40 15% 88%);
-  }
-
-  .text-wallet-muted {
-    color: hsl(35 8% 50%);
-  }
-
-  .text-gold {
-    color: hsl(43 50% 62%);
-  }
-
-  .bg-gold {
-    background-color: hsl(43 50% 62%);
-  }
-
-  /* Gold gradient for dark mode */
-  .gold-gradient-dark {
-    background: linear-gradient(135deg, hsl(43 55% 65%), hsl(32 45% 50%));
-  }
 }
 
 @layer components {
@@ -248,23 +216,11 @@
 
   .btn-gold:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 24px hsla(43, 45%, 60%, 0.35);
+    box-shadow: 0 6px 24px hsla(43, 45%, 58%, 0.28);
   }
 
   .btn-gold:active {
     transform: translateY(0);
-  }
-
-  /* Premium Gold Button - Dark */
-  .btn-gold-dark {
-    @apply gold-gradient-dark font-semibold px-6 py-3 rounded-2xl transition-all duration-300;
-    color: hsl(30 6% 9%);
-    box-shadow: 0 4px 16px hsla(43, 50%, 50%, 0.2);
-  }
-
-  .btn-gold-dark:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px hsla(43, 50%, 50%, 0.3);
   }
   
   /* Glass Button */
@@ -273,7 +229,7 @@
   }
 
   .btn-glass:hover {
-    background: hsla(40, 25%, 95%, 0.9);
+    background: hsla(38, 28%, 95%, 0.92);
     transform: translateY(-1px);
   }
   
@@ -289,87 +245,32 @@
 
   /* Navigation glass effect - Light */
   .nav-glass {
-    background: hsla(40, 30%, 99%, 0.9);
+    background: hsla(38, 35%, 98%, 0.92);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border-top: 1px solid hsla(35, 15%, 90%, 0.5);
+    border-top: 1px solid hsla(35, 15%, 88%, 0.5);
   }
 
   /* Header glass effect - Light */
   .header-glass {
-    background: hsla(40, 30%, 98%, 0.85);
+    background: hsla(38, 35%, 97%, 0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid hsla(35, 15%, 90%, 0.4);
+    border-bottom: 1px solid hsla(35, 15%, 88%, 0.4);
   }
 
-  /* ========================================
-     DARK WALLET COMPONENTS
-     ======================================== */
-
-  /* Wallet Card - Dark Glass */
-  .wallet-card {
-    background: hsla(30, 8%, 14%, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsla(35, 10%, 25%, 0.4);
-    border-radius: 1.25rem;
-    box-shadow: 
-      0 8px 32px -8px hsla(0, 0%, 0%, 0.4),
-      inset 0 1px 0 hsla(40, 20%, 40%, 0.08);
-  }
-
-  .wallet-card:hover {
-    box-shadow: 
-      0 12px 40px -8px hsla(0, 0%, 0%, 0.5),
-      inset 0 1px 0 hsla(40, 20%, 40%, 0.1);
-    transform: translateY(-1px);
-  }
-
-  /* Wallet Header - Dark Glass */
-  .wallet-header-glass {
-    background: hsla(30, 6%, 11%, 0.9);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid hsla(35, 8%, 20%, 0.5);
-  }
-
-  /* Wallet Navigation - Dark Glass */
-  .wallet-nav-glass {
-    background: hsla(30, 6%, 10%, 0.95);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-top: 1px solid hsla(35, 8%, 22%, 0.5);
-  }
-
-  /* Wallet FAB */
-  .wallet-fab {
-    background: hsla(30, 8%, 18%, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsla(43, 40%, 50%, 0.3);
-    color: hsl(43 50% 62%);
-    box-shadow: 0 4px 20px hsla(0, 0%, 0%, 0.3);
-  }
-
-  .wallet-fab:hover {
-    background: hsla(30, 8%, 22%, 0.95);
-    box-shadow: 0 6px 24px hsla(0, 0%, 0%, 0.4);
-  }
-
-  /* Wallet Claim Button */
-  .wallet-claim-btn {
-    background: hsla(30, 8%, 18%, 0.9);
+  /* Claim Button - Light Glass */
+  .claim-btn {
+    background: hsla(38, 28%, 96%, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid hsla(43, 40%, 50%, 0.35);
-    color: hsl(43 50% 65%);
-    box-shadow: 0 0 12px hsla(43, 50%, 50%, 0.15);
+    border: 1px solid hsla(43, 45%, 58%, 0.35);
+    color: hsl(43 45% 48%);
+    box-shadow: 0 2px 12px hsla(43, 45%, 58%, 0.12);
   }
 
-  /* Wallet Border Color */
-  .border-wallet-border {
-    border-color: hsla(35, 8%, 25%, 0.5);
+  .claim-btn:hover {
+    background: hsla(38, 28%, 94%, 0.95);
   }
 }
 
@@ -384,10 +285,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsla(35, 15%, 70%, 0.5);
+  background: hsla(35, 15%, 72%, 0.5);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsla(35, 15%, 60%, 0.7);
+  background: hsla(35, 15%, 62%, 0.7);
 }

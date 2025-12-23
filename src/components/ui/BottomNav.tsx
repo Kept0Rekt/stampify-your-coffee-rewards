@@ -9,20 +9,12 @@ const navItems = [
   { path: "/profile", label: "Profile", icon: User },
 ];
 
-interface BottomNavProps {
-  variant?: "light" | "dark";
-}
-
-export function BottomNav({ variant = "light" }: BottomNavProps) {
+export function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
-  const isDark = variant === "dark";
 
   return (
-    <nav className={cn(
-      "fixed bottom-0 left-0 right-0 z-50",
-      isDark ? "wallet-nav-glass" : "nav-glass"
-    )}>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 nav-glass">
       <div className="flex items-center justify-around py-3.5 px-6 max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
@@ -34,10 +26,8 @@ export function BottomNav({ variant = "light" }: BottomNavProps) {
               onClick={() => navigate(item.path)}
               className={cn(
                 "flex flex-col items-center gap-1.5 px-5 py-2 rounded-2xl transition-all duration-300",
-                isActive && isDark && "text-gold",
-                isActive && !isDark && "text-primary",
-                !isActive && isDark && "text-wallet-muted hover:text-wallet-text/80",
-                !isActive && !isDark && "text-muted-foreground hover:text-foreground"
+                isActive && "text-primary",
+                !isActive && "text-muted-foreground hover:text-foreground"
               )}
             >
               <motion.div
@@ -51,12 +41,7 @@ export function BottomNav({ variant = "light" }: BottomNavProps) {
                 {isActive && (
                   <motion.div
                     layoutId="activeNavTab"
-                    className={cn(
-                      "absolute -inset-3 rounded-2xl -z-10",
-                      isDark 
-                        ? "bg-gold/10 shadow-[0_0_16px_rgba(201,169,98,0.15)]" 
-                        : "glass-subtle"
-                    )}
+                    className="absolute -inset-3 rounded-2xl -z-10 glass-subtle"
                     initial={false}
                     transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   />
@@ -64,8 +49,7 @@ export function BottomNav({ variant = "light" }: BottomNavProps) {
               </motion.div>
               <span className={cn(
                 "text-xs font-medium transition-all duration-300",
-                isActive && isDark && "text-gold",
-                isActive && !isDark && "text-primary"
+                isActive && "text-primary"
               )}>
                 {item.label}
               </span>

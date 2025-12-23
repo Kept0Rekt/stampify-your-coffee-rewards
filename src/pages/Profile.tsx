@@ -115,7 +115,7 @@ export default function Profile() {
                 transition={{ delay: index * 0.04, duration: 0.3 }}
                 onClick={item.action}
                 className={`w-full glass-card p-4 flex items-center gap-4 text-left transition-all duration-300 hover:shadow-glass-lg ${
-                  item.highlight ? "ring-1 ring-primary/30" : ""
+                  item.highlight ? "ring-1 ring-primary/25" : ""
                 }`}
               >
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
@@ -153,7 +153,7 @@ export default function Profile() {
 
         {/* Subtle branding */}
         <div className="flex justify-center pt-4">
-          <StampifyLogoMark size="xs" opacity={0.2} />
+          <StampifyLogoMark size="xs" opacity={0.15} />
         </div>
       </main>
 
