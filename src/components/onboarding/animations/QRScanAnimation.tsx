@@ -313,11 +313,11 @@ export function QRScanAnimation() {
   const currentRotation = phoneRotation[phase] || phoneRotation.idle;
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+    <div className="absolute inset-0 flex items-center justify-center">
       {/* Clean background */}
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal to-espresso/10" />
 
-      {/* 3D perspective container */}
+      {/* 3D perspective container - no overflow hidden */}
       <div 
         className="relative flex flex-col items-center gap-6"
         style={{ perspective: '1200px' }}
@@ -337,21 +337,21 @@ export function QRScanAnimation() {
 
         {/* Confirmation badge - slides out from behind phone on the right */}
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2 z-0"
-          initial={{ opacity: 0, x: 60, scale: 0.9 }}
+          className="absolute top-1/2 left-1/2 z-0"
+          initial={{ opacity: 0, x: 20, y: "-50%", scale: 0.8 }}
           animate={showCard 
-            ? { opacity: 1, x: 140, scale: 1 } 
-            : { opacity: 0, x: 60, scale: 0.9 }
+            ? { opacity: 1, x: 120, y: "-50%", scale: 1 } 
+            : { opacity: 0, x: 20, y: "-50%", scale: 0.8 }
           }
-          transition={{ duration: 0.5, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-green-500/20 border border-green-500/40 backdrop-blur-md shadow-lg">
-            <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-3 h-3 text-white">
+          <div className="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-green-500/20 border border-green-500/40 backdrop-blur-md shadow-xl">
+            <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center shadow-md">
+              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-white">
                 <path d="M5 12l5 5L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </div>
-            <span className="text-green-400 font-semibold text-sm whitespace-nowrap">Café added</span>
+            <span className="text-green-400 font-semibold text-base whitespace-nowrap">Café added</span>
           </div>
         </motion.div>
 
