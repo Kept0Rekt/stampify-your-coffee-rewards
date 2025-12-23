@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { StampifyLogo } from "@/components/ui/StampifyLogo";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, ChevronRight, Crown, Bell, HelpCircle, Shield, History } from "lucide-react";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import { Loader2, LogOut, ChevronRight, Crown, Bell, HelpCircle, Shield, History, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Profile() {
   const { user, isLoading, signOut } = useAuth();
   const navigate = useNavigate();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -40,7 +42,13 @@ export default function Profile() {
     { icon: Bell, label: "Notifications", description: "Manage your alerts", action: () => {} },
     { icon: Shield, label: "Privacy & Security", description: "Manage your data", action: () => {} },
     { icon: HelpCircle, label: "Help & Support", description: "Get assistance", action: () => {} },
+    { icon: Play, label: "Preview Onboarding", description: "View the welcome animations", action: () => setShowOnboarding(true), highlight: false },
   ];
+
+  // Show onboarding preview
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={() => setShowOnboarding(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
