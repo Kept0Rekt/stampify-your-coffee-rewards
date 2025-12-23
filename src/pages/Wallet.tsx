@@ -42,8 +42,8 @@ export default function Wallet() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-wallet-bg flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gold" />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -53,14 +53,11 @@ export default function Wallet() {
   }
 
   return (
-    <div className="min-h-screen bg-wallet-bg">
-      {/* Subtle gradient overlay */}
-      <div className="fixed inset-0 bg-gradient-to-b from-wallet-card/30 via-transparent to-transparent pointer-events-none" />
-
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 wallet-header-glass">
+      <header className="sticky top-0 z-10 header-glass">
         <div className="flex items-center justify-center py-5 px-4">
-          <StampifyLogo size="sm" variant="dark" />
+          <StampifyLogo size="sm" />
         </div>
       </header>
 
@@ -72,8 +69,8 @@ export default function Wallet() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-1.5"
         >
-          <h1 className="text-2xl font-medium text-wallet-text">Your Wallet</h1>
-          <p className="text-wallet-muted text-sm">
+          <h1 className="text-2xl font-medium text-foreground">Your Wallet</h1>
+          <p className="text-muted-foreground text-sm">
             {mockCards.length} loyalty {mockCards.length === 1 ? "card" : "cards"}
           </p>
         </motion.div>
@@ -84,20 +81,20 @@ export default function Wallet() {
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="wallet-card p-10 text-center space-y-6"
+              className="glass-card p-10 text-center space-y-6"
             >
-              <div className="w-16 h-16 mx-auto rounded-2xl gold-gradient-dark flex items-center justify-center">
-                <QrCode className="w-7 h-7 text-wallet-bg" />
+              <div className="w-16 h-16 mx-auto rounded-2xl gold-gradient flex items-center justify-center shadow-gold">
+                <QrCode className="w-7 h-7 text-primary-foreground" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-medium text-wallet-text">
+                <h3 className="text-lg font-medium text-foreground">
                   No loyalty cards yet
                 </h3>
-                <p className="text-wallet-muted text-sm leading-relaxed max-w-xs mx-auto">
+                <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto">
                   Scan a café's QR code to add your first loyalty card and get a free welcome coffee!
                 </p>
               </div>
-              <Button className="btn-gold-dark">
+              <Button className="btn-gold">
                 <QrCode className="w-4 h-4 mr-2" />
                 Scan QR Code
               </Button>
@@ -115,7 +112,6 @@ export default function Wallet() {
                   stampsCollected={card.stampsCollected}
                   stampsRequired={card.stampsRequired}
                   onClick={() => navigate(`/card/${card.id}`)}
-                  variant="dark"
                 />
               </motion.div>
             ))
@@ -131,7 +127,7 @@ export default function Wallet() {
         >
           <Button
             size="lg"
-            className="wallet-fab rounded-full w-12 h-12"
+            className="btn-gold rounded-full w-12 h-12 p-0"
             onClick={() => navigate("/scan")}
           >
             <Plus className="w-5 h-5" />
@@ -139,7 +135,7 @@ export default function Wallet() {
         </motion.div>
       </div>
 
-      <BottomNav variant="dark" />
+      <BottomNav />
     </div>
   );
 }
