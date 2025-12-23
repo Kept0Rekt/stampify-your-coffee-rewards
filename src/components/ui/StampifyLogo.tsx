@@ -1,66 +1,79 @@
 import { cn } from "@/lib/utils";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 interface StampifyLogoProps {
   className?: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   showText?: boolean;
+  variant?: "default" | "light" | "subtle";
 }
 
 const sizeClasses = {
+  xs: "w-6 h-6",
   sm: "w-8 h-8",
-  md: "w-12 h-12",
-  lg: "w-16 h-16",
-  xl: "w-24 h-24",
+  md: "w-10 h-10",
+  lg: "w-14 h-14",
+  xl: "w-20 h-20",
 };
 
 const textSizeClasses = {
-  sm: "text-lg",
-  md: "text-2xl",
-  lg: "text-3xl",
-  xl: "text-4xl",
+  xs: "text-sm",
+  sm: "text-base",
+  md: "text-xl",
+  lg: "text-2xl",
+  xl: "text-3xl",
 };
 
-export function StampifyLogo({ className, size = "md", showText = true }: StampifyLogoProps) {
+export function StampifyLogo({ 
+  className, 
+  size = "md", 
+  showText = true,
+  variant = "default" 
+}: StampifyLogoProps) {
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      {/* Logo Icon - Coffee cup with stamp */}
-      <div className={cn(
-        "relative rounded-2xl gold-gradient flex items-center justify-center gold-glow",
-        sizeClasses[size]
-      )}>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          className="w-2/3 h-2/3"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          {/* Coffee cup */}
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" className="text-charcoal" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" className="text-charcoal" />
-          {/* Steam */}
-          <path d="M6 1v3" className="text-charcoal opacity-60" />
-          <path d="M10 1v3" className="text-charcoal opacity-60" />
-          <path d="M14 1v3" className="text-charcoal opacity-60" />
-        </svg>
-        {/* Stamp badge */}
-        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
-          <svg viewBox="0 0 24 24" fill="none" className="w-3 h-3 text-accent-foreground">
-            <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-      </div>
+    <div className={cn("flex items-center gap-2.5", className)}>
+      {/* Logo Image */}
+      <img
+        src={stampifyLogo}
+        alt="Stampify"
+        className={cn(
+          sizeClasses[size],
+          "object-contain",
+          variant === "subtle" && "opacity-60"
+        )}
+      />
       
       {showText && (
         <span className={cn(
-          "font-bold tracking-tight gold-text",
-          textSizeClasses[size]
+          "font-semibold tracking-tight",
+          textSizeClasses[size],
+          variant === "default" && "gold-text",
+          variant === "light" && "text-foreground",
+          variant === "subtle" && "text-muted-foreground"
         )}>
           Stampify
         </span>
       )}
     </div>
+  );
+}
+
+// Compact logo for tight spaces
+export function StampifyLogoMark({ 
+  className, 
+  size = "md",
+  opacity = 1 
+}: { 
+  className?: string; 
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  opacity?: number;
+}) {
+  return (
+    <img
+      src={stampifyLogo}
+      alt="Stampify"
+      className={cn(sizeClasses[size], "object-contain", className)}
+      style={{ opacity }}
+    />
   );
 }
