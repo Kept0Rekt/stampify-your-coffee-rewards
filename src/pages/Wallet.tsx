@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { LoyaltyCard } from "@/components/ui/LoyaltyCard";
 import { StampifyLogo } from "@/components/ui/StampifyLogo";
+import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, QrCode, User } from "lucide-react";
+import { Plus, QrCode } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -61,16 +62,8 @@ export default function Wallet() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border">
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-center p-4">
           <StampifyLogo size="sm" />
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/profile")}>
-              <User className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={handleSignOut}>
-              <LogOut className="w-5 h-5" />
-            </Button>
-          </div>
         </div>
       </header>
 
@@ -131,7 +124,7 @@ export default function Wallet() {
       </main>
 
       {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6">
+      <div className="fixed bottom-24 right-6">
         <Button
           size="lg"
           className="btn-gold rounded-full w-14 h-14 shadow-lg"
@@ -140,6 +133,8 @@ export default function Wallet() {
           <Plus className="w-6 h-6" />
         </Button>
       </div>
+
+      <BottomNav />
     </div>
   );
 }
