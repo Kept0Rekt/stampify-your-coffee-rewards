@@ -335,20 +335,23 @@ export function QRScanAnimation() {
           <QRMachine />
         </motion.div>
 
-        {/* Confirmation badge - appears after pivot */}
+        {/* Confirmation badge - slides out from behind phone on the right */}
         <motion.div
-          className="absolute top-0 left-1/2 -translate-x-1/2 z-20"
-          initial={{ opacity: 0, y: 10 }}
-          animate={showCard ? { opacity: 1, y: -60 } : { opacity: 0, y: 10 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
+          className="absolute top-1/2 -translate-y-1/2 z-0"
+          initial={{ opacity: 0, x: 60, scale: 0.9 }}
+          animate={showCard 
+            ? { opacity: 1, x: 140, scale: 1 } 
+            : { opacity: 0, x: 60, scale: 0.9 }
+          }
+          transition={{ duration: 0.5, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
         >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/15 border border-green-500/30 backdrop-blur-sm">
-            <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 text-white">
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-green-500/20 border border-green-500/40 backdrop-blur-md shadow-lg">
+            <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-3 h-3 text-white">
                 <path d="M5 12l5 5L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </div>
-            <span className="text-green-400 font-medium text-[13px]">Café added</span>
+            <span className="text-green-400 font-semibold text-sm whitespace-nowrap">Café added</span>
           </div>
         </motion.div>
 
