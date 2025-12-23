@@ -310,7 +310,7 @@ export function QRScanAnimation() {
     morph: { rotateX: 0, rotateY: 0, rotateZ: 0 },
   };
 
-  const currentRotation = phoneRotation[phase];
+  const currentRotation = phoneRotation[phase] || phoneRotation.idle;
 
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
