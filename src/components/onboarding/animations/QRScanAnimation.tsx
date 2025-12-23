@@ -319,14 +319,27 @@ export function QRScanAnimation() {
 
       {/* 3D perspective container */}
       <div 
-        className="relative flex flex-col items-center gap-8"
+        className="relative flex flex-col items-center gap-6"
         style={{ perspective: '1200px' }}
       >
+        {/* QR Machine - above phone, fades out during pivot */}
+        <motion.div
+          initial={{ opacity: 1 }}
+          animate={{ 
+            opacity: isPivoting ? 0 : 1,
+            y: isPivoting ? -20 : 0,
+            scale: isPivoting ? 0.9 : 1
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          <QRMachine />
+        </motion.div>
+
         {/* Confirmation badge - appears after pivot */}
         <motion.div
-          className="absolute -top-16 left-1/2 -translate-x-1/2 z-20"
+          className="absolute top-0 left-1/2 -translate-x-1/2 z-20"
           initial={{ opacity: 0, y: 10 }}
-          animate={showCard ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          animate={showCard ? { opacity: 1, y: -60 } : { opacity: 0, y: 10 }}
           transition={{ duration: 0.3, delay: 0.2 }}
         >
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/15 border border-green-500/30 backdrop-blur-sm">
@@ -343,16 +356,16 @@ export function QRScanAnimation() {
         <motion.div
           style={{ transformStyle: 'preserve-3d' }}
           initial={{ 
-            rotateX: 12, 
+            rotateX: -12, 
             rotateY: -20, 
-            rotateZ: 3,
+            rotateZ: -3,
             y: 0 
           }}
           animate={{ 
-            rotateX: currentRotation.rotateX,
-            rotateY: currentRotation.rotateY,
-            rotateZ: currentRotation.rotateZ,
-            y: isPivoting ? -20 : 0
+            rotateX: isPivoting ? 0 : -12,
+            rotateY: isPivoting ? 0 : -20,
+            rotateZ: isPivoting ? 0 : -3,
+            y: isPivoting ? 20 : 0
           }}
           transition={{ 
             duration: 0.8, 
@@ -365,19 +378,6 @@ export function QRScanAnimation() {
             isScanning={isScanning}
             showQRInside={showQRInside}
           />
-        </motion.div>
-
-        {/* QR Machine - fades out during pivot */}
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ 
-            opacity: isPivoting ? 0 : 1,
-            y: isPivoting ? 20 : 0,
-            scale: isPivoting ? 0.9 : 1
-          }}
-          transition={{ duration: 0.5 }}
-        >
-          <QRMachine />
         </motion.div>
       </div>
     </div>
