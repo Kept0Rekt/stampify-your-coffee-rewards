@@ -1,55 +1,32 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-// Minimal QR Machine
-function QRMachine({ scanning = false }: { scanning?: boolean }) {
+// QR Code that appears in the viewfinder
+function ViewfinderQR({ scanning = false }: { scanning?: boolean }) {
   return (
-    <div className="relative w-16 h-24">
-      {/* Stand */}
-      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-10 h-2.5 bg-gradient-to-b from-zinc-700 to-zinc-800 rounded-b-md" />
-      
-      {/* Body */}
-      <div className="relative w-full h-full rounded-lg bg-gradient-to-b from-zinc-800 to-zinc-900 border border-zinc-600/50 shadow-lg overflow-hidden">
-        <div className="absolute inset-1 rounded-md bg-charcoal flex flex-col items-center justify-center gap-1.5">
-          
-          {/* NFC Ring */}
-          <motion.div 
-            className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center"
-            animate={scanning ? {
-              boxShadow: [
-                "0 0 0 0 rgba(212, 175, 55, 0)",
-                "0 0 8px 2px rgba(212, 175, 55, 0.25)",
-                "0 0 0 0 rgba(212, 175, 55, 0)",
-              ],
-            } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="w-3 h-3 rounded-full bg-gold/15 flex items-center justify-center">
-              <span className="text-[6px] text-gold font-medium">S</span>
-            </div>
-          </motion.div>
-
-          {/* QR Code */}
-          <div className="relative w-8 h-8 bg-white rounded-sm p-0.5">
-            <div className="w-full h-full grid grid-cols-4 gap-px">
-              {[1,1,0,1, 1,0,1,1, 0,1,1,0, 1,1,0,1].map((f, i) => (
-                <div key={i} className={f ? "bg-charcoal" : "bg-transparent"} />
-              ))}
-            </div>
-            
-            {/* Scan line */}
-            {scanning && (
-              <motion.div
-                className="absolute left-0.5 right-0.5 h-px bg-gold"
-                style={{ boxShadow: "0 0 6px rgba(212, 175, 55, 0.7)" }}
-                initial={{ top: 2 }}
-                animate={{ top: [2, 26, 2] }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-            )}
-          </div>
-        </div>
+    <div className="relative w-20 h-20 bg-white rounded-lg p-1.5 shadow-lg">
+      <div className="w-full h-full grid grid-cols-5 gap-0.5">
+        {[
+          1,1,1,0,1,
+          1,0,1,1,1,
+          1,1,0,1,0,
+          0,1,1,0,1,
+          1,1,1,1,1
+        ].map((f, i) => (
+          <div key={i} className={`rounded-[1px] ${f ? "bg-charcoal" : "bg-transparent"}`} />
+        ))}
       </div>
+      
+      {/* Scanning line */}
+      {scanning && (
+        <motion.div
+          className="absolute left-1.5 right-1.5 h-0.5 bg-gold rounded-full"
+          style={{ boxShadow: "0 0 10px rgba(212, 175, 55, 0.8)" }}
+          initial={{ top: 6 }}
+          animate={{ top: [6, 68, 6] }}
+          transition={{ duration: 1.2, ease: "easeInOut", repeat: 1 }}
+        />
+      )}
     </div>
   );
 }
@@ -57,13 +34,15 @@ function QRMachine({ scanning = false }: { scanning?: boolean }) {
 // iPhone-inspired phone illustration
 function IPhoneDevice({ 
   showCard = false, 
-  showScanner = true 
+  showScanner = true,
+  isScanning = false,
 }: { 
   showCard?: boolean;
   showScanner?: boolean;
+  isScanning?: boolean;
 }) {
   return (
-    <div className="relative w-48 h-[340px]">
+    <div className="relative w-52 h-[380px]">
       {/* Outer frame with metallic edge */}
       <div 
         className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-zinc-600 via-zinc-700 to-zinc-800"
@@ -89,7 +68,6 @@ function IPhoneDevice({
       >
         {/* Dynamic Island */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[90px] h-[28px] bg-black rounded-full z-20 flex items-center justify-center gap-2">
-          {/* Camera */}
           <div className="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-700">
             <div className="w-1 h-1 rounded-full bg-zinc-600 mt-[2px] ml-[2px]" />
           </div>
@@ -98,13 +76,13 @@ function IPhoneDevice({
         {/* Screen content */}
         <div className="absolute inset-0 pt-14 pb-2 px-3">
           
-          {/* Scanner view */}
+          {/* Camera/Scanner view */}
           <motion.div 
-            className="absolute inset-0 pt-14 flex flex-col items-center justify-center"
+            className="absolute inset-0 pt-16 flex flex-col items-center justify-center"
             animate={{ opacity: showScanner && !showCard ? 1 : 0 }}
             transition={{ duration: 0.35 }}
           >
-            {/* Status bar hint */}
+            {/* Status bar */}
             <div className="absolute top-16 left-0 right-0 flex justify-between px-6">
               <span className="text-[10px] text-white/40 font-light tracking-wide">9:41</span>
               <div className="flex items-center gap-1">
@@ -120,33 +98,64 @@ function IPhoneDevice({
               </div>
             </div>
 
-            {/* Viewfinder */}
-            <div className="relative w-32 h-32 mb-4">
-              {/* Corner brackets - thin and precise */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 128 128">
-                {/* Top-left */}
-                <path d="M4 32 L4 8 Q4 4 8 4 L32 4" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                {/* Top-right */}
-                <path d="M96 4 L120 4 Q124 4 124 8 L124 32" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                {/* Bottom-left */}
-                <path d="M4 96 L4 120 Q4 124 8 124 L32 124" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                {/* Bottom-right */}
-                <path d="M96 124 L120 124 Q124 124 124 120 L124 96" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            {/* Viewfinder with QR inside */}
+            <div className="relative w-36 h-36 flex items-center justify-center">
+              {/* Corner brackets */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 144 144">
+                <path d="M4 36 L4 8 Q4 4 8 4 L36 4" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M108 4 L136 4 Q140 4 140 8 L140 36" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M4 108 L4 136 Q4 140 8 140 L36 140" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M108 140 L136 140 Q140 140 140 136 L140 108" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
               </svg>
               
-              {/* Center reticle */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 border border-white/20 rounded-lg" />
-              </div>
+              {/* Focus effect when scanning */}
+              <motion.div
+                className="absolute inset-2 rounded-xl border-2 border-gold/0"
+                animate={isScanning ? {
+                  borderColor: ["rgba(212,175,55,0)", "rgba(212,175,55,0.4)", "rgba(212,175,55,0)"],
+                } : {}}
+                transition={{ duration: 1, repeat: 2 }}
+              />
+
+              {/* QR Code inside viewfinder */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ 
+                  opacity: showScanner ? 1 : 0, 
+                  scale: showScanner ? 1 : 0.9 
+                }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+              >
+                <ViewfinderQR scanning={isScanning} />
+              </motion.div>
             </div>
 
-            {/* Instruction text - SF-style */}
-            <span className="text-white/50 text-[13px] font-light tracking-tight">Scan café QR code</span>
+            {/* Instruction text */}
+            <motion.span 
+              className="text-white/50 text-[13px] font-light tracking-tight mt-5"
+              animate={{ opacity: isScanning ? 0.3 : 0.5 }}
+            >
+              {isScanning ? "Scanning..." : "Point at QR code"}
+            </motion.span>
+
+            {/* Scanning indicator dots */}
+            {isScanning && (
+              <div className="flex gap-1 mt-3">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full bg-gold"
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 0.8, delay: i * 0.15, repeat: Infinity }}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {/* Loyalty card appearing */}
           <motion.div 
-            className="absolute inset-0 pt-14 pb-6 px-4 flex flex-col items-center justify-center"
+            className="absolute inset-0 pt-16 pb-8 px-4 flex flex-col items-center justify-center"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ 
               opacity: showCard ? 1 : 0, 
@@ -154,7 +163,6 @@ function IPhoneDevice({
             }}
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           >
-            {/* Card container */}
             <motion.div 
               className="w-full"
               initial={{ y: 15 }}
@@ -163,7 +171,7 @@ function IPhoneDevice({
             >
               {/* Loyalty Card */}
               <div 
-                className="w-full h-[140px] rounded-2xl overflow-hidden relative"
+                className="w-full h-[150px] rounded-2xl overflow-hidden relative"
                 style={{
                   background: 'linear-gradient(135deg, #D4AF37 0%, #B8860B 50%, #8B6914 100%)',
                   boxShadow: '0 10px 30px -10px rgba(212,175,55,0.3)'
@@ -172,16 +180,16 @@ function IPhoneDevice({
                 {/* Shine */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12"
-                  initial={{ x: -180 }}
-                  animate={showCard ? { x: 220 } : { x: -180 }}
+                  initial={{ x: -200 }}
+                  animate={showCard ? { x: 250 } : { x: -200 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
                 />
                 
                 <div className="relative p-4 h-full flex flex-col justify-between">
                   {/* Header */}
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-xl">☕</span>
+                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <span className="text-2xl">☕</span>
                     </div>
                     <div>
                       <div className="text-white font-semibold text-[15px] tracking-tight">The Daily Grind</div>
@@ -194,14 +202,14 @@ function IPhoneDevice({
                     {[...Array(8)].map((_, i) => (
                       <motion.div
                         key={i}
-                        className="w-[22px] h-[22px] rounded-full bg-white/10 border border-white/30 flex items-center justify-center"
+                        className="w-[24px] h-[24px] rounded-full bg-white/10 border border-white/30 flex items-center justify-center"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={showCard ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
                         transition={{ delay: 0.5 + i * 0.03, duration: 0.2 }}
                       >
                         {i === 0 && (
                           <motion.div 
-                            className="w-3 h-3 rounded-full bg-white/70"
+                            className="w-3.5 h-3.5 rounded-full bg-white/70"
                             initial={{ scale: 0 }}
                             animate={showCard ? { scale: 1 } : { scale: 0 }}
                             transition={{ delay: 0.75, duration: 0.15 }}
@@ -241,9 +249,9 @@ export function QRScanAnimation() {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase("scan"), 500),
-      setTimeout(() => setPhase("confirm"), 1600),
-      setTimeout(() => setPhase("card"), 2400),
+      setTimeout(() => setPhase("scan"), 400),
+      setTimeout(() => setPhase("confirm"), 2000),
+      setTimeout(() => setPhase("card"), 2800),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -262,7 +270,7 @@ export function QRScanAnimation() {
         
         {/* Confirmation message */}
         <motion.div
-          className="absolute -top-16 z-20"
+          className="absolute -top-12 z-20"
           initial={{ opacity: 0, y: 8 }}
           animate={showConfirm ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
           transition={{ duration: 0.25 }}
@@ -277,28 +285,12 @@ export function QRScanAnimation() {
           </div>
         </motion.div>
 
-        {/* iPhone device */}
-        <motion.div
-          animate={{
-            y: isScanning ? 20 : 0,
-          }}
-          transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <IPhoneDevice showCard={showCard} showScanner={!showCard} />
-        </motion.div>
-
-        {/* QR Machine - smaller, below */}
-        <motion.div
-          className="mt-6"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ 
-            opacity: showCard ? 0 : 0.9,
-            y: showCard ? 15 : 0,
-          }}
-          transition={{ duration: 0.35 }}
-        >
-          <QRMachine scanning={isScanning} />
-        </motion.div>
+        {/* iPhone device - stationary */}
+        <IPhoneDevice 
+          showCard={showCard} 
+          showScanner={!showCard} 
+          isScanning={isScanning}
+        />
 
       </div>
     </div>
