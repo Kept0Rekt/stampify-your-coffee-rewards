@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Coffee } from "lucide-react";
+import { Coffee, Gift } from "lucide-react";
+import { StampifyLogoMark } from "./StampifyLogo";
 
 interface LoyaltyCardProps {
   cafeName: string;
@@ -25,8 +26,8 @@ export function LoyaltyCard({
     <div
       onClick={onClick}
       className={cn(
-        "loyalty-card cursor-pointer group",
-        isRewardReady && "ring-2 ring-primary animate-pulse-gold",
+        "glass-card p-5 space-y-4 cursor-pointer group transition-all duration-300",
+        isRewardReady && "ring-1 ring-primary/40",
         className
       )}
     >
@@ -40,44 +41,47 @@ export function LoyaltyCard({
               className="w-12 h-12 rounded-xl object-cover"
             />
           ) : (
-            <div className="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center shadow-gold">
               <Coffee className="w-6 h-6 text-primary-foreground" />
             </div>
           )}
           <div>
-            <h3 className="font-semibold text-card-foreground">{cafeName}</h3>
+            <h3 className="font-semibold text-foreground">{cafeName}</h3>
             <p className="text-sm text-muted-foreground">
               {isRewardReady
-                ? "🎉 Free coffee ready!"
+                ? "Free coffee ready!"
                 : `${stampsRequired - stampsCollected} more to go`}
             </p>
           </div>
         </div>
         
-        {isRewardReady && (
-          <div className="gold-gradient text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+        {isRewardReady ? (
+          <div className="flex items-center gap-1.5 gold-gradient text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-gold">
+            <Gift className="w-3.5 h-3.5" />
             CLAIM
           </div>
+        ) : (
+          <StampifyLogoMark size="xs" opacity={0.3} />
         )}
       </div>
 
       {/* Stamps Grid */}
-      <div className="flex justify-center gap-2 py-4">
+      <div className="flex justify-center gap-2.5 py-3">
         {Array.from({ length: stampsRequired }).map((_, index) => (
           <div
             key={index}
             className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
+              "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300",
               index < stampsCollected
-                ? "stamp-collected animate-stamp-pop"
-                : "stamp-empty"
+                ? "gold-gradient shadow-sm"
+                : "bg-muted/40 border border-border/40"
             )}
             style={{
-              animationDelay: `${index * 0.1}s`,
+              animationDelay: `${index * 0.08}s`,
             }}
           >
             {index < stampsCollected && (
-              <Coffee className="w-4 h-4" />
+              <Coffee className="w-4 h-4 text-primary-foreground" />
             )}
           </div>
         ))}
@@ -85,13 +89,13 @@ export function LoyaltyCard({
 
       {/* Progress Bar */}
       <div className="space-y-2">
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-1.5 bg-muted/60 rounded-full overflow-hidden">
           <div
             className="h-full gold-gradient rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-center text-xs text-muted-foreground">
+        <p className="text-center text-xs text-muted-foreground font-medium">
           {stampsCollected} / {stampsRequired} stamps
         </p>
       </div>

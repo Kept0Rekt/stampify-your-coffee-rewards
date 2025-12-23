@@ -14,8 +14,8 @@ export function BottomNav() {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border">
-      <div className="flex items-center justify-around py-2 px-4 max-w-md mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 nav-glass">
+      <div className="flex items-center justify-around py-3 px-4 max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
@@ -25,35 +25,35 @@ export function BottomNav() {
               key={item.path}
               onClick={() => navigate(item.path)}
               className={cn(
-                "flex flex-col items-center gap-1 px-6 py-2 rounded-xl transition-all duration-200",
+                "flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all duration-300",
                 isActive
-                  ? "text-gold"
+                  ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
               <motion.div
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.92 }}
                 className="relative"
               >
                 <Icon
                   className={cn(
-                    "w-6 h-6 transition-all",
-                    isActive && "fill-gold/20"
+                    "w-6 h-6 transition-all duration-300",
+                    isActive && "text-primary"
                   )}
-                  strokeWidth={isActive ? 2.5 : 2}
+                  strokeWidth={isActive ? 2.5 : 1.75}
                 />
                 {isActive && (
                   <motion.div
-                    layoutId="activeTab"
-                    className="absolute -inset-2 bg-gold/10 rounded-xl -z-10"
+                    layoutId="activeNavTab"
+                    className="absolute -inset-3 glass-subtle rounded-2xl -z-10"
                     initial={false}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   />
                 )}
               </motion.div>
               <span className={cn(
-                "text-xs font-medium transition-all",
-                isActive ? "text-gold" : "text-muted-foreground"
+                "text-xs font-medium transition-all duration-300",
+                isActive ? "text-primary" : "text-muted-foreground"
               )}>
                 {item.label}
               </span>
@@ -62,7 +62,7 @@ export function BottomNav() {
         })}
       </div>
       {/* Safe area padding for iOS */}
-      <div className="h-safe-area-inset-bottom bg-card" />
+      <div className="h-safe-area-inset-bottom" />
     </nav>
   );
 }
