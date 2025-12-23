@@ -59,13 +59,21 @@ export default {
         },
         // Stampify brand colors
         gold: {
-          DEFAULT: "hsl(var(--gold))",
+          DEFAULT: "hsl(43 50% 62%)",
           light: "hsl(var(--gold-light))",
         },
         ivory: "hsl(40 30% 98%)",
         stone: "hsl(35 15% 92%)",
         charcoal: "hsl(35 10% 16%)",
         caramel: "hsl(32 35% 57%)",
+        // Wallet dark theme colors
+        wallet: {
+          bg: "hsl(30 6% 9%)",
+          card: "hsl(30 8% 14%)",
+          text: "hsl(40 15% 88%)",
+          muted: "hsl(35 8% 50%)",
+          border: "hsl(35 8% 20%)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

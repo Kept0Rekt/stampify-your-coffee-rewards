@@ -31,7 +31,7 @@ const mockCards = [
 ];
 
 export default function Wallet() {
-  const { user, isLoading, signOut } = useAuth();
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,8 +42,8 @@ export default function Wallet() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-wallet-bg flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gold" />
       </div>
     );
   }
@@ -53,48 +53,51 @@ export default function Wallet() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-wallet-bg">
+      {/* Subtle gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-to-b from-wallet-card/30 via-transparent to-transparent pointer-events-none" />
+
       {/* Header */}
-      <header className="sticky top-0 z-10 header-glass">
-        <div className="flex items-center justify-center p-4">
-          <StampifyLogo size="sm" />
+      <header className="sticky top-0 z-10 wallet-header-glass">
+        <div className="flex items-center justify-center py-5 px-4">
+          <StampifyLogo size="sm" variant="dark" />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="p-5 pb-28 space-y-6">
+      <main className="relative z-[1] px-5 pt-6 pb-32 space-y-8">
         {/* Welcome Section */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-1"
+          className="space-y-1.5"
         >
-          <h1 className="text-2xl font-semibold text-foreground">Your Wallet</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl font-medium text-wallet-text">Your Wallet</h1>
+          <p className="text-wallet-muted text-sm">
             {mockCards.length} loyalty {mockCards.length === 1 ? "card" : "cards"}
           </p>
         </motion.div>
 
         {/* Loyalty Cards */}
-        <div className="space-y-4">
+        <div className="space-y-5">
           {mockCards.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="glass-card p-8 text-center space-y-5"
+              className="wallet-card p-10 text-center space-y-6"
             >
-              <div className="w-16 h-16 mx-auto rounded-2xl gold-gradient flex items-center justify-center shadow-gold">
-                <QrCode className="w-8 h-8 text-primary-foreground" />
+              <div className="w-16 h-16 mx-auto rounded-2xl gold-gradient-dark flex items-center justify-center">
+                <QrCode className="w-7 h-7 text-wallet-bg" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-lg font-medium text-wallet-text">
                   No loyalty cards yet
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <p className="text-wallet-muted text-sm leading-relaxed max-w-xs mx-auto">
                   Scan a café's QR code to add your first loyalty card and get a free welcome coffee!
                 </p>
               </div>
-              <Button className="btn-gold">
+              <Button className="btn-gold-dark">
                 <QrCode className="w-4 h-4 mr-2" />
                 Scan QR Code
               </Button>
@@ -105,13 +108,14 @@ export default function Wallet() {
                 key={card.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.08, duration: 0.4 }}
+                transition={{ delay: index * 0.08, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
               >
                 <LoyaltyCard
                   cafeName={card.cafeName}
                   stampsCollected={card.stampsCollected}
                   stampsRequired={card.stampsRequired}
                   onClick={() => navigate(`/card/${card.id}`)}
+                  variant="dark"
                 />
               </motion.div>
             ))
@@ -120,17 +124,22 @@ export default function Wallet() {
       </main>
 
       {/* Floating Action Button */}
-      <div className="fixed bottom-28 right-5">
-        <Button
-          size="lg"
-          className="btn-gold rounded-full w-14 h-14"
-          onClick={() => navigate("/scan")}
+      <div className="fixed bottom-28 right-5 z-20">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <Plus className="w-6 h-6" />
-        </Button>
+          <Button
+            size="lg"
+            className="wallet-fab rounded-full w-12 h-12"
+            onClick={() => navigate("/scan")}
+          >
+            <Plus className="w-5 h-5" />
+          </Button>
+        </motion.div>
       </div>
 
-      <BottomNav />
+      <BottomNav variant="dark" />
     </div>
   );
 }

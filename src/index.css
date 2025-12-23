@@ -205,10 +205,42 @@
   .text-glass-secondary {
     @apply text-muted-foreground;
   }
+
+  /* ========================================
+     DARK WALLET THEME UTILITIES
+     Premium dark mode for Wallet screen
+     ======================================== */
+  
+  /* Wallet Background */
+  .bg-wallet-bg {
+    background-color: hsl(30 6% 9%);
+  }
+
+  /* Wallet Colors */
+  .text-wallet-text {
+    color: hsl(40 15% 88%);
+  }
+
+  .text-wallet-muted {
+    color: hsl(35 8% 50%);
+  }
+
+  .text-gold {
+    color: hsl(43 50% 62%);
+  }
+
+  .bg-gold {
+    background-color: hsl(43 50% 62%);
+  }
+
+  /* Gold gradient for dark mode */
+  .gold-gradient-dark {
+    background: linear-gradient(135deg, hsl(43 55% 65%), hsl(32 45% 50%));
+  }
 }
 
 @layer components {
-  /* Premium Gold Button */
+  /* Premium Gold Button - Light */
   .btn-gold {
     @apply gold-gradient text-primary-foreground font-semibold px-6 py-3 rounded-2xl transition-all duration-300;
     box-shadow: var(--gold-glow);
@@ -221,6 +253,18 @@
 
   .btn-gold:active {
     transform: translateY(0);
+  }
+
+  /* Premium Gold Button - Dark */
+  .btn-gold-dark {
+    @apply gold-gradient-dark font-semibold px-6 py-3 rounded-2xl transition-all duration-300;
+    color: hsl(30 6% 9%);
+    box-shadow: 0 4px 16px hsla(43, 50%, 50%, 0.2);
+  }
+
+  .btn-gold-dark:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px hsla(43, 50%, 50%, 0.3);
   }
   
   /* Glass Button */
@@ -243,7 +287,7 @@
     @apply glass-panel rounded-2xl px-5 py-4;
   }
 
-  /* Navigation glass effect */
+  /* Navigation glass effect - Light */
   .nav-glass {
     background: hsla(40, 30%, 99%, 0.9);
     backdrop-filter: blur(24px);
@@ -251,12 +295,81 @@
     border-top: 1px solid hsla(35, 15%, 90%, 0.5);
   }
 
-  /* Header glass effect */
+  /* Header glass effect - Light */
   .header-glass {
     background: hsla(40, 30%, 98%, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid hsla(35, 15%, 90%, 0.4);
+  }
+
+  /* ========================================
+     DARK WALLET COMPONENTS
+     ======================================== */
+
+  /* Wallet Card - Dark Glass */
+  .wallet-card {
+    background: hsla(30, 8%, 14%, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsla(35, 10%, 25%, 0.4);
+    border-radius: 1.25rem;
+    box-shadow: 
+      0 8px 32px -8px hsla(0, 0%, 0%, 0.4),
+      inset 0 1px 0 hsla(40, 20%, 40%, 0.08);
+  }
+
+  .wallet-card:hover {
+    box-shadow: 
+      0 12px 40px -8px hsla(0, 0%, 0%, 0.5),
+      inset 0 1px 0 hsla(40, 20%, 40%, 0.1);
+    transform: translateY(-1px);
+  }
+
+  /* Wallet Header - Dark Glass */
+  .wallet-header-glass {
+    background: hsla(30, 6%, 11%, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid hsla(35, 8%, 20%, 0.5);
+  }
+
+  /* Wallet Navigation - Dark Glass */
+  .wallet-nav-glass {
+    background: hsla(30, 6%, 10%, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid hsla(35, 8%, 22%, 0.5);
+  }
+
+  /* Wallet FAB */
+  .wallet-fab {
+    background: hsla(30, 8%, 18%, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsla(43, 40%, 50%, 0.3);
+    color: hsl(43 50% 62%);
+    box-shadow: 0 4px 20px hsla(0, 0%, 0%, 0.3);
+  }
+
+  .wallet-fab:hover {
+    background: hsla(30, 8%, 22%, 0.95);
+    box-shadow: 0 6px 24px hsla(0, 0%, 0%, 0.4);
+  }
+
+  /* Wallet Claim Button */
+  .wallet-claim-btn {
+    background: hsla(30, 8%, 18%, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid hsla(43, 40%, 50%, 0.35);
+    color: hsl(43 50% 65%);
+    box-shadow: 0 0 12px hsla(43, 50%, 50%, 0.15);
+  }
+
+  /* Wallet Border Color */
+  .border-wallet-border {
+    border-color: hsla(35, 8%, 25%, 0.5);
   }
 }
 

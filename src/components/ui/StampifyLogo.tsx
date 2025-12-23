@@ -5,7 +5,7 @@ interface StampifyLogoProps {
   className?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   showText?: boolean;
-  variant?: "default" | "light" | "subtle";
+  variant?: "default" | "light" | "subtle" | "dark";
 }
 
 const sizeClasses = {
@@ -48,6 +48,7 @@ export function StampifyLogo({
           "font-semibold tracking-tight",
           textSizeClasses[size],
           variant === "default" && "gold-text",
+          variant === "dark" && "text-gold",
           variant === "light" && "text-foreground",
           variant === "subtle" && "text-muted-foreground"
         )}>
