@@ -2,168 +2,245 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function FreeCoffeeAnimation() {
-  const [phase, setPhase] = useState<"filling" | "complete" | "steam">("filling");
+  const [phase, setPhase] = useState<"free" | "premium" | "reward">("free");
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setPhase("complete"), 1600);
-    const timer2 = setTimeout(() => setPhase("steam"), 2000);
+    const timer1 = setTimeout(() => setPhase("premium"), 2200);
+    const timer2 = setTimeout(() => setPhase("reward"), 3800);
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
   }, []);
 
-  const stamps = [0, 1, 2, 3, 4];
+  const freeStamps = 8;
+  const premiumStamps = 5;
 
   return (
-    <div className="relative w-32 h-32 flex items-center justify-center">
-      {/* Loyalty card with stamps */}
-      <motion.div
-        className="absolute w-24 h-16 rounded-xl bg-gradient-to-br from-charcoal to-espresso border border-gold/30 shadow-lg"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.4 }}
-      >
-        {/* Card header */}
-        <div className="absolute top-1.5 left-2 flex items-center gap-1">
-          <div className="w-2.5 h-2.5 rounded-full bg-gold/60" />
-          <div className="w-6 h-1 rounded bg-gold/40" />
-        </div>
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-espresso/10 to-charcoal" />
 
-        {/* Stamp circles */}
-        <div className="absolute bottom-2 left-2 right-2 flex justify-between">
-          {stamps.map((i) => (
+      {/* Free Plan Section */}
+      <motion.div
+        className="absolute w-full px-8"
+        initial={{ opacity: 1, y: 0 }}
+        animate={phase !== "free" ? { opacity: 0, y: -50 } : {}}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <span className="text-muted-foreground text-sm font-medium">FREE PLAN</span>
+        </motion.div>
+
+        {/* 8 Stamps Row */}
+        <div className="flex justify-center gap-3 mb-4">
+          {[...Array(freeStamps)].map((_, i) => (
             <motion.div
               key={i}
-              className="relative w-3.5 h-3.5"
+              className="relative"
             >
-              {/* Outline */}
-              <div className="absolute inset-0 rounded-full border border-gold/40" />
-              
-              {/* Fill */}
               <motion.div
-                className="absolute inset-0 rounded-full bg-gradient-to-br from-gold to-caramel"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{
-                  duration: 0.25,
-                  delay: 0.3 + i * 0.2,
-                  ease: [0.34, 1.56, 0.64, 1],
-                }}
-              />
-
-              {/* Checkmark */}
-              <motion.span
-                className="absolute inset-0 flex items-center justify-center text-[6px] text-white font-bold"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  duration: 0.2,
-                  delay: 0.4 + i * 0.2,
-                }}
+                className="w-10 h-10 rounded-full border-2 border-gold/40 flex items-center justify-center"
+                initial={{ scale: 0.8, opacity: 0.5 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3 + i * 0.05 }}
               >
-                ✓
-              </motion.span>
-
-              {/* Last stamp glow */}
-              {i === 4 && (
                 <motion.div
-                  className="absolute -inset-1 rounded-full bg-gold/30"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={phase === "complete" || phase === "steam" ? {
-                    opacity: [0, 0.8, 0],
-                    scale: [0.5, 1.5, 1.8],
-                  } : {}}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="w-6 h-6 rounded-full bg-gradient-to-br from-gold to-caramel"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: 0.8 + i * 0.15,
+                    ease: [0.34, 1.56, 0.64, 1],
+                  }}
+                />
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.p
+          className="text-center text-muted-foreground text-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          8 stamps for free coffee
+        </motion.p>
+      </motion.div>
+
+      {/* Premium Plan Section */}
+      <motion.div
+        className="absolute w-full px-8"
+        initial={{ opacity: 0, y: 50 }}
+        animate={phase === "premium" || phase === "reward" ? { 
+          opacity: phase === "premium" ? 1 : 0.3, 
+          y: phase === "reward" ? -80 : 0,
+          scale: phase === "reward" ? 0.9 : 1,
+        } : {}}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div
+          className="text-center mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={phase === "premium" || phase === "reward" ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2 }}
+        >
+          <span className="text-gold text-sm font-bold flex items-center justify-center gap-2">
+            <span className="text-lg">👑</span> PREMIUM PLAN
+          </span>
+        </motion.div>
+
+        {/* 5 Stamps Row - Larger */}
+        <div className="flex justify-center gap-5 mb-4">
+          {[...Array(premiumStamps)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="relative"
+            >
+              <motion.div
+                className="w-14 h-14 rounded-full border-3 border-gold flex items-center justify-center shadow-lg"
+                style={{ 
+                  background: "linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05))",
+                  borderWidth: 3,
+                }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={phase === "premium" || phase === "reward" ? { scale: 1, opacity: 1 } : {}}
+                transition={{ delay: 0.3 + i * 0.08 }}
+              >
+                <motion.div
+                  className="w-9 h-9 rounded-full bg-gradient-to-br from-gold via-caramel to-copper shadow-md"
+                  initial={{ scale: 0 }}
+                  animate={phase === "premium" || phase === "reward" ? { scale: 1 } : {}}
+                  transition={{
+                    duration: 0.25,
+                    delay: 0.5 + i * 0.1,
+                    ease: [0.34, 1.56, 0.64, 1],
+                  }}
+                />
+              </motion.div>
+
+              {/* Glow on last stamp */}
+              {i === premiumStamps - 1 && (phase === "premium" || phase === "reward") && (
+                <motion.div
+                  className="absolute -inset-2 rounded-full bg-gold/30 -z-10"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: [0, 0.8, 0], scale: [0.8, 1.3, 1.5] }}
+                  transition={{ duration: 0.8, delay: 1.2 }}
                 />
               )}
             </motion.div>
           ))}
         </div>
+
+        <motion.p
+          className="text-center text-gold text-sm font-semibold"
+          initial={{ opacity: 0 }}
+          animate={phase === "premium" || phase === "reward" ? { opacity: 1 } : {}}
+          transition={{ delay: 1.2 }}
+        >
+          Only 5 stamps needed! 🎉
+        </motion.p>
       </motion.div>
 
-      {/* Coffee cup */}
+      {/* Coffee Cup with Steam & Reward */}
       <motion.div
-        className="absolute -bottom-2 right-0"
+        className="absolute bottom-[25%]"
         initial={{ scale: 0, opacity: 0 }}
-        animate={phase === "complete" || phase === "steam" ? {
-          scale: 1,
-          opacity: 1,
-        } : {}}
+        animate={phase === "reward" ? { scale: 1, opacity: 1 } : {}}
         transition={{
-          duration: 0.4,
-          delay: 0.3,
+          duration: 0.6,
           ease: [0.34, 1.56, 0.64, 1],
         }}
       >
-        {/* Cup body */}
-        <div className="relative w-8 h-9 bg-gradient-to-b from-latte to-caramel/80 rounded-b-lg rounded-t-sm shadow-md">
-          {/* Coffee liquid */}
-          <div className="absolute inset-x-0.5 top-1 bottom-1 bg-gradient-to-b from-amber-900 to-amber-950 rounded-b-md rounded-t-sm" />
-          
-          {/* Cup handle */}
-          <div className="absolute top-1 -right-1.5 w-2 h-4 border-2 border-latte rounded-r-full" />
-
-          {/* Steam */}
-          {phase === "steam" && (
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex gap-0.5">
+        <div className="flex flex-col items-center">
+          {/* Coffee cup */}
+          <div className="relative">
+            {/* Steam */}
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex gap-2">
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-0.5 bg-gradient-to-t from-muted-foreground/40 to-transparent rounded-full"
+                  className="w-1.5 bg-gradient-to-t from-white/40 to-transparent rounded-full"
                   initial={{ height: 0, opacity: 0 }}
-                  animate={{
-                    height: [0, 8, 12, 8],
+                  animate={phase === "reward" ? {
+                    height: [0, 20, 30, 20],
                     opacity: [0, 0.6, 0.4, 0],
-                    y: [0, -2, -6, -10],
-                  }}
+                    y: [0, -5, -15, -25],
+                  } : {}}
                   transition={{
-                    duration: 1.5,
-                    delay: i * 0.2,
-                    repeat: 1,
+                    duration: 2,
+                    delay: 0.4 + i * 0.2,
+                    repeat: Infinity,
                     ease: "easeOut",
                   }}
                 />
               ))}
             </div>
-          )}
+
+            {/* Cup */}
+            <motion.div
+              className="relative w-20 h-24 bg-gradient-to-b from-latte to-caramel/80 rounded-b-3xl rounded-t-lg shadow-xl"
+              animate={phase === "reward" ? {
+                boxShadow: [
+                  "0 10px 40px rgba(212, 175, 55, 0.3)",
+                  "0 15px 60px rgba(212, 175, 55, 0.5)",
+                  "0 10px 40px rgba(212, 175, 55, 0.3)",
+                ],
+              } : {}}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              {/* Coffee */}
+              <div className="absolute inset-x-2 top-3 bottom-3 bg-gradient-to-b from-amber-800 to-amber-950 rounded-b-2xl rounded-t-sm" />
+              
+              {/* Handle */}
+              <div className="absolute top-3 -right-4 w-5 h-12 border-4 border-latte rounded-r-full" />
+            </motion.div>
+          </div>
+
+          {/* Free Coffee Badge */}
+          <motion.div
+            className="mt-6"
+            initial={{ scale: 0, opacity: 0, y: 20 }}
+            animate={phase === "reward" ? { scale: 1, opacity: 1, y: 0 } : {}}
+            transition={{
+              duration: 0.5,
+              delay: 0.8,
+              ease: [0.34, 1.56, 0.64, 1],
+            }}
+          >
+            <motion.div
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-gold via-caramel to-copper shadow-xl"
+              animate={phase === "reward" ? {
+                boxShadow: [
+                  "0 4px 20px rgba(212, 175, 55, 0.4)",
+                  "0 8px 40px rgba(212, 175, 55, 0.6)",
+                  "0 4px 20px rgba(212, 175, 55, 0.4)",
+                ],
+              } : {}}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <span className="text-white font-bold text-lg">🎉 FREE COFFEE!</span>
+            </motion.div>
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* Free Coffee Badge */}
+      {/* Comparison indicator */}
       <motion.div
-        className="absolute -top-3 left-0"
-        initial={{ scale: 0, opacity: 0, y: 10 }}
-        animate={phase === "steam" ? {
-          scale: 1,
-          opacity: 1,
-          y: 0,
-        } : {}}
-        transition={{
-          duration: 0.5,
-          delay: 0.5,
-          ease: [0.34, 1.56, 0.64, 1],
-        }}
+        className="absolute top-[15%] right-8 flex items-center gap-2"
+        initial={{ opacity: 0, x: 20 }}
+        animate={phase === "premium" ? { opacity: 1, x: 0 } : { opacity: 0 }}
+        transition={{ delay: 0.8 }}
       >
-        <motion.div
-          className="px-2 py-1 rounded-full bg-gradient-to-r from-gold to-caramel shadow-lg"
-          animate={phase === "steam" ? {
-            boxShadow: [
-              "0 2px 8px rgba(212, 175, 55, 0.3)",
-              "0 4px 16px rgba(212, 175, 55, 0.5)",
-              "0 2px 8px rgba(212, 175, 55, 0.3)",
-            ],
-          } : {}}
-          transition={{
-            duration: 1,
-            repeat: 1,
-            ease: "easeInOut",
-          }}
-        >
-          <span className="text-[8px] font-bold text-white whitespace-nowrap">
-            FREE ☕
-          </span>
-        </motion.div>
+        <span className="text-green-400 text-2xl font-bold">3×</span>
+        <span className="text-green-400 text-sm">faster</span>
       </motion.div>
     </div>
   );

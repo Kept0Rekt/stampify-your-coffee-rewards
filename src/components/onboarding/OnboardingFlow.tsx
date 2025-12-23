@@ -50,31 +50,28 @@ const screens: OnboardingScreen[] = [
   },
 ];
 
-// Slide variants with parallax depth effect
+// Full-screen slide variants with parallax
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 300 : -300,
+    x: direction > 0 ? "100%" : "-100%",
     opacity: 0,
-    scale: 0.95,
   }),
   center: {
     zIndex: 1,
     x: 0,
     opacity: 1,
-    scale: 1,
   },
   exit: (direction: number) => ({
     zIndex: 0,
-    x: direction < 0 ? 300 : -300,
+    x: direction < 0 ? "100%" : "-100%",
     opacity: 0,
-    scale: 0.95,
   }),
 };
 
-// Animation content slides with slight delay for parallax
-const contentVariants = {
+// Text content with slight delay for depth
+const textVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 100 : -100,
+    x: direction > 0 ? 80 : -80,
     opacity: 0,
   }),
   center: {
@@ -82,7 +79,7 @@ const contentVariants = {
     opacity: 1,
   },
   exit: (direction: number) => ({
-    x: direction < 0 ? 100 : -100,
+    x: direction < 0 ? 80 : -80,
     opacity: 0,
   }),
 };
@@ -128,10 +125,10 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col overflow-hidden">
-      {/* Header */}
+    <div className="min-h-screen bg-charcoal flex flex-col overflow-hidden relative">
+      {/* Header - Fixed at top with transparency */}
       <motion.div
-        className="flex items-center justify-between p-6"
+        className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
@@ -148,8 +145,8 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         )}
       </motion.div>
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-8 relative">
+      {/* Full-screen Animation Area */}
+      <div className="flex-1 relative">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={currentIndex}
@@ -159,149 +156,126 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             animate="center"
             exit="exit"
             transition={{
-              x: { type: "spring", stiffness: 300, damping: 30, duration: 0.45 },
-              opacity: { duration: 0.3 },
-              scale: { duration: 0.3 },
+              x: { type: "spring", stiffness: 350, damping: 35, duration: 0.45 },
+              opacity: { duration: 0.25 },
             }}
-            className="flex flex-col items-center text-center max-w-sm w-full"
+            className="absolute inset-0"
           >
-            {/* Animation Container */}
-            <motion.div
-              className="w-32 h-32 rounded-3xl bg-gradient-to-br from-muted/50 to-muted flex items-center justify-center mb-8 relative overflow-hidden"
-              variants={contentVariants}
-              custom={direction}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                duration: 0.4,
-                delay: 0.05,
-              }}
-            >
-              {/* Subtle background glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent" />
-              {screens[currentIndex].animation}
-            </motion.div>
+            {screens[currentIndex].animation}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
+      {/* Bottom Content Area - Text anchored at bottom */}
+      <div className="relative z-20 bg-gradient-to-t from-charcoal via-charcoal to-transparent pt-16 pb-6">
+        <AnimatePresence initial={false} custom={direction} mode="wait">
+          <motion.div
+            key={`text-${currentIndex}`}
+            custom={direction}
+            variants={textVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              duration: 0.35,
+              delay: 0.1,
+            }}
+            className="px-6 text-center"
+          >
             {/* Title */}
-            <motion.h1
-              className="text-2xl font-bold text-foreground mb-4"
-              variants={contentVariants}
-              custom={direction}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                duration: 0.4,
-                delay: 0.1,
-              }}
-            >
+            <h1 className="text-2xl font-bold text-foreground mb-3">
               {screens[currentIndex].title}
-            </motion.h1>
+            </h1>
 
             {/* Description */}
-            <motion.p
-              className="text-muted-foreground mb-4 leading-relaxed"
-              variants={contentVariants}
-              custom={direction}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                duration: 0.4,
-                delay: 0.15,
-              }}
-            >
+            <p className="text-muted-foreground mb-4 leading-relaxed max-w-sm mx-auto">
               {screens[currentIndex].description}
-            </motion.p>
+            </p>
 
             {/* Highlight Badge */}
             {screens[currentIndex].highlight && (
               <motion.div
-                className="gold-gradient text-primary-foreground text-sm font-semibold px-4 py-2 rounded-full shadow-md"
-                variants={contentVariants}
-                custom={direction}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  duration: 0.4,
-                  delay: 0.2,
-                }}
+                className="inline-block gold-gradient text-primary-foreground text-sm font-semibold px-5 py-2 rounded-full shadow-lg"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2 }}
               >
                 {screens[currentIndex].highlight}
               </motion.div>
             )}
           </motion.div>
         </AnimatePresence>
-      </div>
 
-      {/* Pagination Dots */}
-      <div className="flex justify-center gap-2 mb-6">
-        {screens.map((_, index) => (
-          <motion.button
-            key={index}
-            onClick={() => goToScreen(index)}
-            className={cn(
-              "h-2 rounded-full transition-all duration-300",
-              index === currentIndex
-                ? "gold-gradient"
-                : "bg-muted hover:bg-muted-foreground/30"
-            )}
-            animate={{
-              width: index === currentIndex ? 32 : 8,
-              opacity: index === currentIndex ? 1 : 0.5,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 25,
-            }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          />
-        ))}
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="flex items-center justify-between p-6 gap-4">
-        <motion.div
-          className="flex-1"
-          initial={false}
-          animate={{ opacity: isFirstScreen ? 0 : 1 }}
-        >
-          <Button
-            variant="outline"
-            onClick={handleBack}
-            disabled={isFirstScreen}
-            className={cn(
-              "w-full transition-all duration-200",
-              isFirstScreen && "invisible"
-            )}
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
-        </motion.div>
-
-        <motion.div className="flex-1" whileTap={{ scale: 0.98 }}>
-          <Button
-            onClick={handleNext}
-            className="w-full btn-gold relative overflow-hidden group"
-          >
-            {/* Button glow effect on tap */}
-            <motion.span
-              className="absolute inset-0 bg-white/20 rounded-md"
-              initial={{ scale: 0, opacity: 0 }}
-              whileTap={{ scale: 1.5, opacity: 0 }}
-              transition={{ duration: 0.4 }}
+        {/* Pagination Dots */}
+        <div className="flex justify-center gap-2 mt-6 mb-4">
+          {screens.map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => goToScreen(index)}
+              className={cn(
+                "h-2 rounded-full transition-all duration-300",
+                index === currentIndex
+                  ? "gold-gradient"
+                  : "bg-muted hover:bg-muted-foreground/30"
+              )}
+              animate={{
+                width: index === currentIndex ? 28 : 8,
+                opacity: index === currentIndex ? 1 : 0.4,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 25,
+              }}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.9 }}
             />
-            <span className="relative z-10 flex items-center justify-center">
-              {isLastScreen ? "Get Started" : "Next"}
-              {!isLastScreen && <ChevronRight className="w-4 h-4 ml-2" />}
-            </span>
-          </Button>
-        </motion.div>
+          ))}
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex items-center justify-between px-6 gap-4">
+          <motion.div
+            className="flex-1"
+            initial={false}
+            animate={{ opacity: isFirstScreen ? 0 : 1 }}
+          >
+            <Button
+              variant="outline"
+              onClick={handleBack}
+              disabled={isFirstScreen}
+              className={cn(
+                "w-full transition-all duration-200 border-border/50",
+                isFirstScreen && "invisible"
+              )}
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          </motion.div>
+
+          <motion.div 
+            className="flex-1" 
+            whileTap={{ scale: 0.97 }}
+          >
+            <Button
+              onClick={handleNext}
+              className="w-full btn-gold relative overflow-hidden group shadow-lg"
+            >
+              {/* Glow effect on tap */}
+              <motion.span
+                className="absolute inset-0 bg-white/20 rounded-md"
+                initial={{ scale: 0, opacity: 0 }}
+                whileTap={{ scale: 2, opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              />
+              <span className="relative z-10 flex items-center justify-center font-semibold">
+                {isLastScreen ? "Get Started" : "Next"}
+                {!isLastScreen && <ChevronRight className="w-4 h-4 ml-2" />}
+              </span>
+            </Button>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
