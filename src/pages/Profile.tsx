@@ -53,22 +53,22 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 header-glass">
+      <header className="sticky top-0 z-10 header-latte">
         <div className="flex items-center justify-between p-4">
-          <StampifyLogo size="sm" />
+          <StampifyLogo size="sm" variant="latte" />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="p-5 pb-28 space-y-6">
+      <main className="p-5 pb-32 space-y-6">
         {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-6"
+          className="latte-card p-6"
         >
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full gold-gradient flex items-center justify-center shadow-gold">
+            <div className="w-16 h-16 rounded-full caramel-gradient flex items-center justify-center shadow-gold">
               <span className="text-2xl font-semibold text-primary-foreground">
                 {user.email?.charAt(0).toUpperCase() || "U"}
               </span>
@@ -79,7 +79,7 @@ export default function Profile() {
               </h2>
               <p className="text-sm text-muted-foreground">{user.email}</p>
               <div className="flex items-center gap-1 mt-1.5">
-                <span className="text-xs px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground font-medium">
+                <span className="text-xs px-2.5 py-1 rounded-full bg-muted/50 text-muted-foreground font-medium">
                   Free Plan
                 </span>
               </div>
@@ -87,24 +87,24 @@ export default function Profile() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-border/50">
+          <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-border/40">
             <div className="text-center">
-              <p className="text-2xl font-semibold gold-text">3</p>
+              <p className="text-2xl font-semibold caramel-text">3</p>
               <p className="text-xs text-muted-foreground mt-0.5">Cards</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-semibold gold-text">16</p>
+              <p className="text-2xl font-semibold caramel-text">16</p>
               <p className="text-xs text-muted-foreground mt-0.5">Stamps</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-semibold gold-text">2</p>
+              <p className="text-2xl font-semibold caramel-text">2</p>
               <p className="text-xs text-muted-foreground mt-0.5">Rewards</p>
             </div>
           </div>
         </motion.div>
 
         {/* Menu Items */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           {menuItems.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -112,19 +112,19 @@ export default function Profile() {
                 key={item.label}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.04, duration: 0.3 }}
+                transition={{ delay: index * 0.05, duration: 0.3 }}
                 onClick={item.action}
-                className={`w-full glass-card p-4 flex items-center gap-4 text-left transition-all duration-300 hover:shadow-glass-lg ${
-                  item.highlight ? "ring-1 ring-primary/25" : ""
+                className={`w-full latte-card p-4 flex items-center gap-4 text-left ${
+                  item.highlight ? "ring-1 ring-primary/20" : ""
                 }`}
               >
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  item.highlight ? "gold-gradient shadow-gold" : "bg-muted/60"
+                  item.highlight ? "caramel-gradient shadow-gold" : "bg-muted/50"
                 }`}>
                   <Icon className={`w-5 h-5 ${item.highlight ? "text-primary-foreground" : "text-primary"}`} />
                 </div>
                 <div className="flex-1">
-                  <h3 className={`font-medium ${item.highlight ? "gold-text" : "text-foreground"}`}>
+                  <h3 className={`font-medium ${item.highlight ? "caramel-text" : "text-foreground"}`}>
                     {item.label}
                   </h3>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
@@ -139,11 +139,11 @@ export default function Profile() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.35 }}
         >
           <Button
             variant="outline"
-            className="w-full glass-subtle border-border/50 text-muted-foreground hover:text-foreground"
+            className="w-full glass-subtle border-border/40 text-muted-foreground hover:text-foreground"
             onClick={handleSignOut}
           >
             <LogOut className="w-4 h-4 mr-2" />
@@ -153,7 +153,7 @@ export default function Profile() {
 
         {/* Subtle branding */}
         <div className="flex justify-center pt-4">
-          <StampifyLogoMark size="xs" opacity={0.15} />
+          <StampifyLogoMark size="xs" opacity={0.12} />
         </div>
       </main>
 
