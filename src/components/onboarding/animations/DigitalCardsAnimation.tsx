@@ -112,7 +112,10 @@ export function DigitalCardsAnimation() {
             {/* Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <img src={stampifyLogo} alt="Stampify" className="w-14 h-14 object-contain" />
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-charcoal/80 to-espresso/70 rounded-xl blur-sm" />
+                  <img src={stampifyLogo} alt="Stampify" className="relative w-14 h-14 object-contain" />
+                </div>
                 <div>
                   <div className="w-24 h-3 bg-white/50 rounded" />
                   <div className="w-16 h-2 bg-white/30 rounded mt-1.5" />
