@@ -245,7 +245,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               onClick={handleBack}
               disabled={isFirstScreen}
               className={cn(
-                "w-full transition-all duration-200 border-border/50",
+                "w-full transition-all duration-200 border-white/30 bg-white/10 text-white hover:bg-white/20",
                 isFirstScreen && "invisible"
               )}
             >
