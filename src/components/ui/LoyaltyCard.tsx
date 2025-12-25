@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Coffee, Gift } from "lucide-react";
-import { StampifyLogoMark } from "./StampifyLogo";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 interface LoyaltyCardProps {
   cafeName: string;
@@ -63,7 +63,7 @@ export function LoyaltyCard({
             CLAIM
           </button>
         ) : (
-          <StampifyLogoMark size="xs" opacity={0.15} />
+          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-15" />
         )}
       </div>
 

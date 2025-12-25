@@ -7,6 +7,7 @@ import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Plus, QrCode, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 // Mock data for demo
 const mockCards = [
@@ -42,8 +43,9 @@ export default function Wallet() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <img src={stampifyLogo} alt="Stampify" className="h-10 w-auto object-contain opacity-60 animate-pulse" />
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
       </div>
     );
   }

@@ -9,11 +9,11 @@ interface StampifyLogoProps {
 }
 
 const sizeClasses = {
-  xs: "w-6 h-6",
-  sm: "w-8 h-8",
-  md: "w-10 h-10",
-  lg: "w-14 h-14",
-  xl: "w-20 h-20",
+  xs: "h-5 w-auto",
+  sm: "h-7 w-auto",
+  md: "h-9 w-auto",
+  lg: "h-12 w-auto",
+  xl: "h-16 w-auto",
 };
 
 const textSizeClasses = {

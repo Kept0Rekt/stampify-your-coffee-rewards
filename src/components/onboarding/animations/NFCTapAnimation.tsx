@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 export function NFCTapAnimation() {
   const [phase, setPhase] = useState<"ready" | "tapping" | "success">("ready");
@@ -96,7 +97,7 @@ export function NFCTapAnimation() {
           {/* App content - Loyalty card */}
           <div className="absolute inset-4 flex flex-col items-center pt-4">
             {/* Mini Stampify logo */}
-            <div className="text-gold text-xs font-bold mb-4">STAMPIFY</div>
+            <img src={stampifyLogo} alt="Stampify" className="h-5 w-auto object-contain mb-4 opacity-80" />
 
             {/* Loyalty card on phone */}
             <motion.div
