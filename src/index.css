@@ -4,113 +4,122 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Stampify Latte Design System
-   Warm café-inspired palette, professional & calming
+/* Stampify Professional Design System
+   Sleek, modern fintech-inspired palette
    
    Primary Palette:
-   - Latte: #F5EDE4 (warm beige background)
-   - Cream: #EDE4D8 (card surfaces)
-   - Mocha: #D4C4B0 (muted elements)
-   - Caramel: #C4956A (warm accent)
-   - Espresso: #4A3F35 (text - deep brown)
-   - Cocoa: #6B5D4D (secondary text)
+   - Background: #F5F3EF (soft warm grey)
+   - Surface: #ECE8E2 (card surfaces)
+   - Secondary Surface: #E2DDD6 (muted taupe)
+   - Primary Text: #1F1F1F (deep charcoal)
+   - Secondary Text: #6F6B66 (muted grey-brown)
+   - Border: #D6D2CC (subtle neutral)
+   
+   Accents:
+   - Gold: #C9A86A (champagne gold)
+   - Success: #6F8F7A (muted olive green)
 */
 
 @layer base {
   :root {
-    /* Latte Theme - Warm Café Palette */
-    --background: 32 35% 93%;
-    --foreground: 30 18% 25%;
+    /* Professional Light Theme */
+    --background: 35 18% 95%;
+    --foreground: 0 0% 12%;
 
-    --card: 32 30% 89%;
-    --card-foreground: 30 18% 25%;
+    --card: 35 16% 91%;
+    --card-foreground: 0 0% 12%;
 
-    --popover: 32 35% 92%;
-    --popover-foreground: 30 18% 25%;
+    --popover: 35 18% 94%;
+    --popover-foreground: 0 0% 12%;
 
-    --primary: 28 45% 58%;
-    --primary-foreground: 32 40% 96%;
+    --primary: 38 38% 60%;
+    --primary-foreground: 0 0% 12%;
 
-    --secondary: 30 25% 52%;
-    --secondary-foreground: 32 40% 96%;
+    --secondary: 140 14% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 32 22% 82%;
-    --muted-foreground: 30 15% 42%;
+    --muted: 35 12% 86%;
+    --muted-foreground: 30 6% 42%;
 
-    --accent: 28 45% 58%;
-    --accent-foreground: 32 40% 96%;
+    --accent: 38 38% 60%;
+    --accent-foreground: 0 0% 12%;
 
     --destructive: 0 55% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 20% 78%;
-    --input: 32 22% 84%;
-    --ring: 28 45% 55%;
+    --border: 35 10% 82%;
+    --input: 35 14% 88%;
+    --ring: 38 38% 55%;
 
-    --radius: 1.25rem;
+    --radius: 1rem;
 
-    /* Latte Glass Variables */
-    --glass-bg: hsla(32, 30%, 91%, 0.8);
-    --glass-border: hsla(32, 20%, 75%, 0.5);
+    /* Glass Variables */
+    --glass-bg: hsla(35, 16%, 93%, 0.85);
+    --glass-border: hsla(35, 10%, 82%, 0.6);
     --glass-blur: 16px;
-    --glass-shadow: 0 4px 20px -4px hsla(30, 20%, 35%, 0.1);
+    --glass-shadow: 0 2px 12px -2px hsla(30, 10%, 40%, 0.06);
     
-    /* Caramel Accent */
-    --caramel: 28 45% 58%;
-    --caramel-light: 28 50% 72%;
-    --caramel-glow: 0 4px 16px hsla(28, 45%, 58%, 0.18);
+    /* Gold Accent */
+    --gold: 38 38% 60%;
+    --gold-light: 38 42% 72%;
+    --gold-glow: 0 2px 10px hsla(38, 38%, 60%, 0.12);
 
-    --sidebar-background: 32 30% 91%;
-    --sidebar-foreground: 30 18% 25%;
-    --sidebar-primary: 28 45% 58%;
-    --sidebar-primary-foreground: 32 40% 96%;
-    --sidebar-accent: 32 22% 84%;
-    --sidebar-accent-foreground: 30 18% 25%;
-    --sidebar-border: 32 20% 78%;
-    --sidebar-ring: 28 45% 55%;
+    /* Success Accent */
+    --success: 140 14% 50%;
+    --success-light: 140 14% 65%;
+
+    --sidebar-background: 35 16% 93%;
+    --sidebar-foreground: 0 0% 12%;
+    --sidebar-primary: 38 38% 60%;
+    --sidebar-primary-foreground: 0 0% 12%;
+    --sidebar-accent: 35 14% 88%;
+    --sidebar-accent-foreground: 0 0% 12%;
+    --sidebar-border: 35 10% 82%;
+    --sidebar-ring: 38 38% 55%;
   }
 
   .dark {
-    --background: 30 12% 10%;
-    --foreground: 32 25% 88%;
+    /* Dark mode - subtle warm dark */
+    --background: 30 8% 8%;
+    --foreground: 35 15% 90%;
 
-    --card: 30 12% 14%;
-    --card-foreground: 32 25% 88%;
+    --card: 30 8% 12%;
+    --card-foreground: 35 15% 90%;
 
-    --popover: 30 12% 14%;
-    --popover-foreground: 32 25% 88%;
+    --popover: 30 8% 12%;
+    --popover-foreground: 35 15% 90%;
 
-    --primary: 28 50% 60%;
-    --primary-foreground: 30 12% 10%;
+    --primary: 38 42% 58%;
+    --primary-foreground: 30 8% 8%;
 
-    --secondary: 30 30% 55%;
-    --secondary-foreground: 30 12% 10%;
+    --secondary: 140 14% 45%;
+    --secondary-foreground: 30 8% 8%;
 
-    --muted: 30 12% 20%;
-    --muted-foreground: 32 18% 55%;
+    --muted: 30 8% 18%;
+    --muted-foreground: 35 10% 55%;
 
-    --accent: 28 50% 60%;
-    --accent-foreground: 30 12% 10%;
+    --accent: 38 42% 58%;
+    --accent-foreground: 30 8% 8%;
 
     --destructive: 0 55% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 12% 22%;
-    --input: 30 12% 20%;
-    --ring: 28 50% 58%;
+    --border: 30 8% 18%;
+    --input: 30 8% 16%;
+    --ring: 38 42% 55%;
 
-    --glass-bg: hsla(30, 12%, 14%, 0.85);
-    --glass-border: hsla(30, 12%, 28%, 0.5);
-    --glass-shadow: 0 4px 20px -4px hsla(0, 0%, 0%, 0.35);
+    --glass-bg: hsla(30, 8%, 12%, 0.9);
+    --glass-border: hsla(30, 8%, 24%, 0.5);
+    --glass-shadow: 0 4px 20px -4px hsla(0, 0%, 0%, 0.3);
 
-    --sidebar-background: 30 12% 12%;
-    --sidebar-foreground: 32 25% 88%;
-    --sidebar-primary: 28 50% 60%;
-    --sidebar-primary-foreground: 30 12% 10%;
-    --sidebar-accent: 30 12% 18%;
-    --sidebar-accent-foreground: 32 25% 88%;
-    --sidebar-border: 30 12% 20%;
-    --sidebar-ring: 28 50% 58%;
+    --sidebar-background: 30 8% 10%;
+    --sidebar-foreground: 35 15% 90%;
+    --sidebar-primary: 38 42% 58%;
+    --sidebar-primary-foreground: 30 8% 8%;
+    --sidebar-accent: 30 8% 16%;
+    --sidebar-accent-foreground: 35 15% 90%;
+    --sidebar-border: 30 8% 18%;
+    --sidebar-ring: 38 42% 55%;
   }
 }
 
@@ -128,23 +137,36 @@
 }
 
 @layer utilities {
-  /* Caramel Accent Utilities */
-  .caramel-gradient {
-    background: linear-gradient(135deg, hsl(28 48% 62%), hsl(25 40% 50%));
+  /* Gold Accent Utilities */
+  .gold-gradient {
+    background: linear-gradient(135deg, hsl(38 42% 62%), hsl(35 35% 52%));
   }
   
-  .caramel-text {
-    background: linear-gradient(135deg, hsl(28 48% 55%), hsl(25 40% 45%));
+  .gold-text {
+    background: linear-gradient(135deg, hsl(38 42% 55%), hsl(35 35% 48%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
-  .caramel-glow {
-    box-shadow: var(--caramel-glow);
+  .gold-glow {
+    box-shadow: var(--gold-glow);
   }
 
-  /* Latte Glass Utilities */
+  /* Caramel/Gold aliases for compatibility */
+  .caramel-gradient {
+    @apply gold-gradient;
+  }
+  
+  .caramel-text {
+    @apply gold-text;
+  }
+  
+  .caramel-glow {
+    @apply gold-glow;
+  }
+
+  /* Glass Utilities */
   .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
@@ -154,10 +176,10 @@
   }
 
   .glass-subtle {
-    background: hsla(32, 28%, 92%, 0.6);
+    background: hsla(35, 16%, 94%, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid hsla(32, 20%, 82%, 0.4);
+    border: 1px solid hsla(35, 10%, 85%, 0.5);
   }
 
   .glass-card {
@@ -170,98 +192,98 @@
   }
 
   .glass-panel {
-    background: hsla(32, 32%, 94%, 0.9);
+    background: hsla(35, 16%, 95%, 0.92);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsla(32, 20%, 85%, 0.5);
-    box-shadow: 0 6px 24px -6px hsla(30, 18%, 35%, 0.1);
+    border: 1px solid hsla(35, 10%, 86%, 0.5);
+    box-shadow: 0 2px 12px -2px hsla(30, 10%, 40%, 0.05);
   }
   
-  /* Latte Card */
+  /* Professional Card */
   .latte-card {
-    background: hsla(32, 28%, 88%, 0.85);
+    background: hsla(35, 14%, 92%, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsla(32, 22%, 80%, 0.5);
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 16px -4px hsla(30, 18%, 30%, 0.08);
+    border: 1px solid hsla(35, 10%, 84%, 0.6);
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px -2px hsla(30, 10%, 40%, 0.05);
   }
   
   .latte-card:hover {
-    box-shadow: 0 6px 20px -4px hsla(30, 18%, 30%, 0.12);
-    transform: translateY(-1px);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px -2px hsla(30, 10%, 40%, 0.08);
+    transition: all 0.25s ease;
   }
 
   /* Text utilities */
   .text-espresso {
-    color: hsl(30 18% 25%);
+    color: hsl(0 0% 12%);
   }
 
   .text-cocoa {
-    color: hsl(30 15% 42%);
+    color: hsl(30 6% 42%);
   }
 }
 
 @layer components {
-  /* Caramel Button */
+  /* Primary Gold Button */
+  .btn-gold {
+    @apply gold-gradient text-primary-foreground font-medium px-6 py-3 rounded-full transition-all duration-200;
+    box-shadow: 0 2px 8px hsla(38, 38%, 55%, 0.15);
+  }
+
+  .btn-gold:hover {
+    box-shadow: 0 3px 12px hsla(38, 38%, 55%, 0.22);
+  }
+
+  .btn-gold:active {
+    transform: scale(0.98);
+  }
+
+  /* Caramel button alias */
   .btn-caramel {
-    @apply caramel-gradient text-primary-foreground font-medium px-6 py-3 rounded-2xl transition-all duration-300;
-    box-shadow: 0 3px 12px hsla(28, 45%, 55%, 0.2);
-  }
-
-  .btn-caramel:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 18px hsla(28, 45%, 55%, 0.28);
-  }
-
-  .btn-caramel:active {
-    transform: translateY(0);
+    @apply btn-gold;
   }
   
   /* Glass Button */
   .btn-glass {
-    @apply glass rounded-2xl px-6 py-3 font-medium text-foreground transition-all duration-300;
+    @apply glass rounded-full px-6 py-3 font-medium text-foreground transition-all duration-200;
   }
 
   .btn-glass:hover {
-    background: hsla(32, 28%, 88%, 0.95);
-    transform: translateY(-1px);
+    background: hsla(35, 14%, 92%, 0.95);
   }
   
-  /* Claim Button - Soft Pill */
+  /* Claim Button - Subtle Pill */
   .btn-claim {
-    background: hsla(32, 30%, 90%, 0.9);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid hsla(28, 40%, 60%, 0.3);
-    color: hsl(28 45% 48%);
-    box-shadow: 0 2px 10px hsla(28, 45%, 55%, 0.1);
+    background: hsla(35, 16%, 94%, 0.95);
+    border: 1px solid hsla(38, 35%, 65%, 0.4);
+    color: hsl(38 38% 45%);
+    box-shadow: 0 1px 4px hsla(38, 38%, 55%, 0.08);
     @apply rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200;
   }
 
   .btn-claim:hover {
-    background: hsla(32, 30%, 88%, 0.95);
-    box-shadow: 0 3px 12px hsla(28, 45%, 55%, 0.15);
+    background: hsla(38, 35%, 92%, 0.98);
+    border-color: hsla(38, 35%, 60%, 0.5);
   }
 
-  /* Navigation - Latte Glass */
+  /* Navigation - Professional Glass */
   .nav-latte {
-    background: hsla(32, 32%, 92%, 0.92);
+    background: hsla(35, 16%, 95%, 0.92);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid hsla(32, 20%, 82%, 0.5);
+    border-top: 1px solid hsla(35, 10%, 85%, 0.5);
   }
 
-  /* Header - Latte Glass */
+  /* Header - Professional Glass */
   .header-latte {
-    background: hsla(32, 32%, 93%, 0.9);
+    background: hsla(35, 16%, 96%, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid hsla(32, 20%, 82%, 0.4);
+    border-bottom: 1px solid hsla(35, 10%, 85%, 0.4);
   }
 
-  /* Keep legacy classes for compatibility */
+  /* Legacy class aliases */
   .nav-glass {
     @apply nav-latte;
   }
@@ -270,16 +292,21 @@
     @apply header-latte;
   }
 
-  .gold-gradient {
-    @apply caramel-gradient;
-  }
-
-  .gold-text {
-    @apply caramel-text;
-  }
-
   .shadow-gold {
-    box-shadow: 0 3px 12px hsla(28, 45%, 55%, 0.2);
+    box-shadow: 0 2px 8px hsla(38, 38%, 55%, 0.12);
+  }
+
+  /* Card Premium - elevated surface */
+  .card-premium {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: 1rem;
+    box-shadow: 0 1px 6px -1px hsla(30, 10%, 40%, 0.04);
+  }
+
+  .card-premium:hover {
+    box-shadow: 0 2px 10px -2px hsla(30, 10%, 40%, 0.08);
+    transition: box-shadow 0.25s ease;
   }
 }
 
@@ -294,10 +321,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsla(32, 18%, 68%, 0.5);
+  background: hsla(35, 10%, 72%, 0.5);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsla(32, 18%, 58%, 0.7);
+  background: hsla(35, 10%, 62%, 0.6);
 }

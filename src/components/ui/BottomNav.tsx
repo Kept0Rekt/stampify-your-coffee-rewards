@@ -15,7 +15,7 @@ export function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 nav-latte">
-      <div className="flex items-center justify-around py-4 px-6 max-w-md mx-auto">
+      <div className="flex items-center justify-around py-3 px-6 max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
@@ -25,30 +25,30 @@ export function BottomNav() {
               key={item.path}
               onClick={() => navigate(item.path)}
               className={cn(
-                "flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all duration-300",
+                "flex flex-col items-center gap-1 px-5 py-2 rounded-xl transition-all duration-200",
                 isActive && "text-primary",
                 !isActive && "text-muted-foreground hover:text-foreground"
               )}
             >
               <motion.div
-                whileTap={{ scale: 0.92 }}
+                whileTap={{ scale: 0.95 }}
                 className="relative"
               >
                 <Icon
-                  className="w-6 h-6 transition-all duration-300"
-                  strokeWidth={isActive ? 2.25 : 1.5}
+                  className="w-5 h-5 transition-all duration-200"
+                  strokeWidth={isActive ? 2 : 1.5}
                 />
                 {isActive && (
                   <motion.div
                     layoutId="activeNavTab"
-                    className="absolute -inset-3 rounded-2xl -z-10 glass-subtle"
+                    className="absolute -inset-2.5 rounded-xl -z-10 bg-primary/8"
                     initial={false}
-                    transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                    transition={{ type: "spring", bounce: 0.12, duration: 0.4 }}
                   />
                 )}
               </motion.div>
               <span className={cn(
-                "text-xs font-medium transition-all duration-300",
+                "text-[11px] font-medium transition-all duration-200",
                 isActive && "text-primary"
               )}>
                 {item.label}

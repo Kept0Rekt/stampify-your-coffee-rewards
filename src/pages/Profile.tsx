@@ -62,26 +62,26 @@ export default function Profile() {
       </header>
 
       {/* Main Content */}
-      <main className="p-5 pb-32 space-y-6">
+      <main className="p-5 pb-28 space-y-5">
         {/* Profile Card */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="latte-card p-6"
+          className="latte-card p-5"
         >
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full caramel-gradient flex items-center justify-center shadow-gold">
-              <span className="text-2xl font-semibold text-primary-foreground">
+            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-xl font-semibold text-primary">
                 {user.email?.charAt(0).toUpperCase() || "U"}
               </span>
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-semibold text-foreground">
+              <h2 className="text-lg font-semibold text-foreground">
                 {user.email?.split("@")[0] || "User"}
               </h2>
               <p className="text-sm text-muted-foreground">{user.email}</p>
               <div className="flex items-center gap-1 mt-1.5">
-                <span className="text-xs px-2.5 py-1 rounded-full bg-muted/50 text-muted-foreground font-medium">
+                <span className="text-xs px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground font-medium">
                   Free Plan
                 </span>
               </div>
@@ -89,49 +89,49 @@ export default function Profile() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-border/40">
+          <div className="grid grid-cols-3 gap-4 mt-5 pt-5 border-t border-border/50">
             <div className="text-center">
-              <p className="text-2xl font-semibold caramel-text">3</p>
+              <p className="text-xl font-semibold text-primary">3</p>
               <p className="text-xs text-muted-foreground mt-0.5">Cards</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-semibold caramel-text">16</p>
+              <p className="text-xl font-semibold text-primary">16</p>
               <p className="text-xs text-muted-foreground mt-0.5">Stamps</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-semibold caramel-text">2</p>
+              <p className="text-xl font-semibold text-primary">2</p>
               <p className="text-xs text-muted-foreground mt-0.5">Rewards</p>
             </div>
           </div>
         </motion.div>
 
         {/* Menu Items */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {menuItems.map((item, index) => {
             const Icon = item.icon;
             return (
               <motion.button
                 key={item.label}
-                initial={{ opacity: 0, x: -10 }}
+                initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.3 }}
+                transition={{ delay: index * 0.04, duration: 0.25 }}
                 onClick={item.action}
-                className={`w-full latte-card p-4 flex items-center gap-4 text-left ${
-                  item.highlight ? "ring-1 ring-primary/20" : ""
+                className={`w-full latte-card p-4 flex items-center gap-3.5 text-left ${
+                  item.highlight ? "ring-1 ring-primary/15" : ""
                 }`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  item.highlight ? "caramel-gradient shadow-gold" : "bg-muted/50"
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                  item.highlight ? "bg-primary/15" : "bg-muted/60"
                 }`}>
-                  <Icon className={`w-5 h-5 ${item.highlight ? "text-primary-foreground" : "text-primary"}`} />
+                  <Icon className={`w-4.5 h-4.5 ${item.highlight ? "text-primary" : "text-muted-foreground"}`} />
                 </div>
                 <div className="flex-1">
-                  <h3 className={`font-medium ${item.highlight ? "caramel-text" : "text-foreground"}`}>
+                  <h3 className={`font-medium text-[15px] ${item.highlight ? "text-primary" : "text-foreground"}`}>
                     {item.label}
                   </h3>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                <ChevronRight className="w-4 h-4 text-muted-foreground/60" />
               </motion.button>
             );
           })}
@@ -141,11 +141,11 @@ export default function Profile() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.35 }}
+          transition={{ delay: 0.3 }}
         >
           <Button
             variant="outline"
-            className="w-full glass-subtle border-border/40 text-muted-foreground hover:text-foreground"
+            className="w-full bg-transparent border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
             onClick={handleSignOut}
           >
             <LogOut className="w-4 h-4 mr-2" />
@@ -154,8 +154,8 @@ export default function Profile() {
         </motion.div>
 
         {/* Subtle branding */}
-        <div className="flex justify-center pt-4">
-          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-10" />
+        <div className="flex justify-center pt-3">
+          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-8" />
         </div>
       </main>
 
