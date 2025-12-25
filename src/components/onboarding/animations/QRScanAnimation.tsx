@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 // QR Code component
 function QRCode({ size = "md" }: { size?: "sm" | "md" }) {
@@ -209,12 +210,12 @@ function IPhoneDevice({
                   {/* Header */}
                   <div className="flex items-center gap-3">
                     <motion.div 
-                      className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center"
+                      className="w-12 h-12 rounded-xl bg-charcoal/40 backdrop-blur-sm flex items-center justify-center p-2"
                       initial={{ scale: 0 }}
                       animate={{ scale: showCard ? 1 : 0 }}
                       transition={{ delay: 0.4, duration: 0.25, type: "spring", stiffness: 300 }}
                     >
-                      <span className="text-2xl">☕</span>
+                      <img src={stampifyLogo} alt="Stampify" className="h-8 w-auto object-contain" />
                     </motion.div>
                     <div>
                       <motion.div 

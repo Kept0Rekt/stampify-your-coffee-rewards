@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { StampifyLogo, StampifyLogoMark } from "@/components/ui/StampifyLogo";
+import { StampifyLogo } from "@/components/ui/StampifyLogo";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { Loader2, LogOut, ChevronRight, Crown, Bell, HelpCircle, Shield, History, Play } from "lucide-react";
 import { motion } from "framer-motion";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 export default function Profile() {
   const { user, isLoading, signOut } = useAuth();
@@ -21,8 +22,9 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <img src={stampifyLogo} alt="Stampify" className="h-10 w-auto object-contain opacity-60 animate-pulse" />
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
       </div>
     );
   }
@@ -153,7 +155,7 @@ export default function Profile() {
 
         {/* Subtle branding */}
         <div className="flex justify-center pt-4">
-          <StampifyLogoMark size="xs" opacity={0.12} />
+          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-10" />
         </div>
       </main>
 
