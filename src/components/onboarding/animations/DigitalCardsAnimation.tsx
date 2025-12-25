@@ -85,7 +85,7 @@ export function DigitalCardsAnimation() {
         }}
       >
         <motion.div
-          className="relative w-72 h-44 rounded-2xl bg-gradient-to-br from-gold via-caramel to-copper shadow-2xl overflow-hidden"
+          className="relative w-72 h-44 rounded-2xl bg-gradient-to-br from-charcoal via-espresso to-charcoal shadow-2xl overflow-hidden"
           animate={phase === "complete" ? {
             boxShadow: [
               "0 20px 60px rgba(212, 175, 55, 0.3)",
