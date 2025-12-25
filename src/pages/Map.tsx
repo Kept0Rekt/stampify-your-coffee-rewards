@@ -33,9 +33,9 @@ export default function MapPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border">
+      <header className="sticky top-0 z-10 header-latte">
         <div className="flex items-center justify-between p-4">
-          <StampifyLogo size="sm" />
+          <StampifyLogo size="sm" variant="latte" />
           <div className="flex items-center gap-2 text-muted-foreground">
             <MapPin className="w-4 h-4" />
             <span className="text-sm">Nearby</span>
@@ -44,29 +44,29 @@ export default function MapPage() {
       </header>
 
       {/* Main Content */}
-      <main className="p-4 pb-24 space-y-6">
+      <main className="p-4 pb-28 space-y-5">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-1"
         >
-          <h1 className="text-2xl font-bold text-foreground">Discover Cafés</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl font-semibold text-foreground">Discover Cafés</h1>
+          <p className="text-muted-foreground text-sm">
             Find Stampify partner cafés near you
           </p>
         </motion.div>
 
         {/* Placeholder Map Area */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="card-premium aspect-[4/3] flex flex-col items-center justify-center gap-4"
+          className="latte-card aspect-[4/3] flex flex-col items-center justify-center gap-4 p-6"
         >
-          <div className="w-16 h-16 rounded-2xl gold-gradient flex items-center justify-center gold-glow">
-            <Coffee className="w-8 h-8 text-primary-foreground" />
+          <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Coffee className="w-6 h-6 text-primary" />
           </div>
-          <div className="text-center space-y-2">
-            <h3 className="text-lg font-semibold text-card-foreground">
+          <div className="text-center space-y-1.5">
+            <h3 className="text-base font-semibold text-foreground">
               Map Coming Soon
             </h3>
             <p className="text-muted-foreground text-sm max-w-xs">
@@ -76,8 +76,8 @@ export default function MapPage() {
         </motion.div>
 
         {/* Mock Café List */}
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-foreground">Popular Nearby</h2>
+        <div className="space-y-2">
+          <h2 className="text-base font-semibold text-foreground">Popular Nearby</h2>
           {[
             { name: "The Daily Grind", distance: "0.3 km", stamps: "8 stamps" },
             { name: "Espresso House", distance: "0.5 km", stamps: "8 stamps" },
@@ -85,20 +85,20 @@ export default function MapPage() {
           ].map((cafe, index) => (
             <motion.div
               key={cafe.name}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="card-premium p-4 flex items-center gap-4"
+              transition={{ delay: index * 0.08 }}
+              className="latte-card p-4 flex items-center gap-3.5"
             >
-              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
-                <Coffee className="w-6 h-6 text-gold" />
+              <div className="w-10 h-10 rounded-lg bg-muted/60 flex items-center justify-center">
+                <Coffee className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1">
-                <h3 className="font-medium text-card-foreground">{cafe.name}</h3>
+                <h3 className="font-medium text-foreground text-[15px]">{cafe.name}</h3>
                 <p className="text-sm text-muted-foreground">{cafe.stamps} = free coffee</p>
               </div>
               <div className="text-right">
-                <span className="text-sm text-gold font-medium">{cafe.distance}</span>
+                <span className="text-sm text-primary font-medium">{cafe.distance}</span>
               </div>
             </motion.div>
           ))}

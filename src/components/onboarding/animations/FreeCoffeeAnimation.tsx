@@ -18,8 +18,8 @@ export function FreeCoffeeAnimation() {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-espresso/10 to-charcoal" />
+      {/* Background gradient - professional light */}
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
       {/* Free Plan Section */}
       <motion.div
@@ -34,7 +34,7 @@ export function FreeCoffeeAnimation() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <span className="text-muted-foreground text-sm font-medium">FREE PLAN</span>
+          <span className="text-neutral-500 text-sm font-medium">FREE PLAN</span>
         </motion.div>
 
         {/* 8 Stamps Row */}
@@ -45,13 +45,14 @@ export function FreeCoffeeAnimation() {
               className="relative"
             >
               <motion.div
-                className="w-10 h-10 rounded-full border-2 border-gold/40 flex items-center justify-center"
+                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center bg-white"
                 initial={{ scale: 0.8, opacity: 0.5 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3 + i * 0.05 }}
               >
                 <motion.div
-                  className="w-6 h-6 rounded-full bg-gradient-to-br from-gold to-caramel"
+                  className="w-6 h-6 rounded-full"
+                  style={{ background: "hsl(38 38% 60%)" }}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{
@@ -66,7 +67,7 @@ export function FreeCoffeeAnimation() {
         </div>
 
         <motion.p
-          className="text-center text-muted-foreground text-sm"
+          className="text-center text-neutral-500 text-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
@@ -92,7 +93,7 @@ export function FreeCoffeeAnimation() {
           animate={phase === "premium" || phase === "reward" ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2 }}
         >
-          <span className="text-gold text-sm font-bold flex items-center justify-center gap-2">
+          <span className="text-sm font-semibold flex items-center justify-center gap-2" style={{ color: "hsl(38 38% 50%)" }}>
             <span className="text-lg">👑</span> PREMIUM PLAN
           </span>
         </motion.div>
@@ -105,17 +106,17 @@ export function FreeCoffeeAnimation() {
               className="relative"
             >
               <motion.div
-                className="w-14 h-14 rounded-full border-3 border-gold flex items-center justify-center shadow-lg"
+                className="w-14 h-14 rounded-full flex items-center justify-center shadow-sm bg-white"
                 style={{ 
-                  background: "linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05))",
-                  borderWidth: 3,
+                  border: "2px solid hsl(38 38% 60%)",
                 }}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={phase === "premium" || phase === "reward" ? { scale: 1, opacity: 1 } : {}}
                 transition={{ delay: 0.3 + i * 0.08 }}
               >
                 <motion.div
-                  className="w-9 h-9 rounded-full bg-gradient-to-br from-gold via-caramel to-copper shadow-md"
+                  className="w-9 h-9 rounded-full"
+                  style={{ background: "hsl(38 38% 60%)" }}
                   initial={{ scale: 0 }}
                   animate={phase === "premium" || phase === "reward" ? { scale: 1 } : {}}
                   transition={{
@@ -129,9 +130,10 @@ export function FreeCoffeeAnimation() {
               {/* Glow on last stamp */}
               {i === premiumStamps - 1 && (phase === "premium" || phase === "reward") && (
                 <motion.div
-                  className="absolute -inset-2 rounded-full bg-gold/30 -z-10"
+                  className="absolute -inset-2 rounded-full -z-10"
+                  style={{ background: "hsla(38, 38%, 60%, 0.15)" }}
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: [0, 0.8, 0], scale: [0.8, 1.3, 1.5] }}
+                  animate={{ opacity: [0, 0.6, 0], scale: [0.8, 1.3, 1.5] }}
                   transition={{ duration: 0.8, delay: 1.2 }}
                 />
               )}
@@ -140,7 +142,8 @@ export function FreeCoffeeAnimation() {
         </div>
 
         <motion.p
-          className="text-center text-gold text-sm font-semibold"
+          className="text-center text-sm font-medium"
+          style={{ color: "hsl(38 38% 50%)" }}
           initial={{ opacity: 0 }}
           animate={phase === "premium" || phase === "reward" ? { opacity: 1 } : {}}
           transition={{ delay: 1.2 }}
@@ -167,11 +170,11 @@ export function FreeCoffeeAnimation() {
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-1.5 bg-gradient-to-t from-white/40 to-transparent rounded-full"
+                  className="w-1.5 bg-gradient-to-t from-neutral-300 to-transparent rounded-full"
                   initial={{ height: 0, opacity: 0 }}
                   animate={phase === "reward" ? {
                     height: [0, 20, 30, 20],
-                    opacity: [0, 0.6, 0.4, 0],
+                    opacity: [0, 0.5, 0.3, 0],
                     y: [0, -5, -15, -25],
                   } : {}}
                   transition={{
@@ -186,21 +189,22 @@ export function FreeCoffeeAnimation() {
 
             {/* Cup */}
             <motion.div
-              className="relative w-20 h-24 bg-gradient-to-b from-latte to-caramel/80 rounded-b-3xl rounded-t-lg shadow-xl"
+              className="relative w-20 h-24 rounded-b-3xl rounded-t-lg shadow-md"
+              style={{ background: "linear-gradient(to bottom, hsl(35 18% 92%), hsl(35 16% 88%))" }}
               animate={phase === "reward" ? {
                 boxShadow: [
-                  "0 10px 40px rgba(212, 175, 55, 0.3)",
-                  "0 15px 60px rgba(212, 175, 55, 0.5)",
-                  "0 10px 40px rgba(212, 175, 55, 0.3)",
+                  "0 4px 16px hsla(38, 38%, 60%, 0.12)",
+                  "0 8px 24px hsla(38, 38%, 60%, 0.18)",
+                  "0 4px 16px hsla(38, 38%, 60%, 0.12)",
                 ],
               } : {}}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               {/* Coffee */}
-              <div className="absolute inset-x-2 top-3 bottom-3 bg-gradient-to-b from-amber-800 to-amber-950 rounded-b-2xl rounded-t-sm" />
+              <div className="absolute inset-x-2 top-3 bottom-3 bg-gradient-to-b from-amber-700 to-amber-900 rounded-b-2xl rounded-t-sm" />
               
               {/* Handle */}
-              <div className="absolute top-3 -right-4 w-5 h-12 border-4 border-latte rounded-r-full" />
+              <div className="absolute top-3 -right-4 w-5 h-12 border-4 rounded-r-full" style={{ borderColor: "hsl(35 18% 92%)" }} />
             </motion.div>
           </div>
 
@@ -216,17 +220,18 @@ export function FreeCoffeeAnimation() {
             }}
           >
             <motion.div
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-gold via-caramel to-copper shadow-xl"
+              className="px-6 py-3 rounded-full shadow-md"
+              style={{ background: "hsl(38 38% 60%)" }}
               animate={phase === "reward" ? {
                 boxShadow: [
-                  "0 4px 20px rgba(212, 175, 55, 0.4)",
-                  "0 8px 40px rgba(212, 175, 55, 0.6)",
-                  "0 4px 20px rgba(212, 175, 55, 0.4)",
+                  "0 2px 12px hsla(38, 38%, 60%, 0.2)",
+                  "0 4px 20px hsla(38, 38%, 60%, 0.3)",
+                  "0 2px 12px hsla(38, 38%, 60%, 0.2)",
                 ],
               } : {}}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <span className="text-white font-bold text-lg">🎉 FREE COFFEE!</span>
+              <span className="text-white font-semibold text-base">🎉 FREE COFFEE!</span>
             </motion.div>
           </motion.div>
         </div>
@@ -239,8 +244,8 @@ export function FreeCoffeeAnimation() {
         animate={phase === "premium" ? { opacity: 1, x: 0 } : { opacity: 0 }}
         transition={{ delay: 0.8 }}
       >
-        <span className="text-green-400 text-2xl font-bold">3×</span>
-        <span className="text-green-400 text-sm">faster</span>
+        <span className="text-2xl font-bold" style={{ color: "hsl(140 14% 50%)" }}>3×</span>
+        <span className="text-sm" style={{ color: "hsl(140 14% 50%)" }}>faster</span>
       </motion.div>
     </div>
   );

@@ -58,46 +58,46 @@ export default function Wallet() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 header-latte">
-        <div className="flex items-center justify-center py-5 px-5">
+        <div className="flex items-center justify-center py-4 px-5">
           <StampifyLogo size="sm" variant="latte" />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="px-5 pt-8 pb-36">
+      <main className="px-5 pt-6 pb-32">
         {/* Welcome Section */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mb-8"
+          transition={{ duration: 0.35 }}
+          className="mb-6"
         >
-          <h1 className="text-2xl font-semibold text-foreground">Your Wallet</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <h1 className="text-xl font-semibold text-foreground">Your Wallet</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">
             {mockCards.length} loyalty {mockCards.length === 1 ? "card" : "cards"}
           </p>
         </motion.div>
 
         {/* Loyalty Cards */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           {mockCards.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="latte-card p-10 text-center space-y-6"
+              className="latte-card p-8 text-center space-y-5"
             >
-              <div className="w-16 h-16 mx-auto rounded-2xl caramel-gradient flex items-center justify-center shadow-gold">
-                <QrCode className="w-7 h-7 text-primary-foreground" />
+              <div className="w-14 h-14 mx-auto rounded-xl bg-primary/10 flex items-center justify-center">
+                <QrCode className="w-6 h-6 text-primary" />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-lg font-medium text-foreground">
+              <div className="space-y-1.5">
+                <h3 className="text-base font-medium text-foreground">
                   No loyalty cards yet
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto">
                   Scan a café's QR code to add your first loyalty card
                 </p>
               </div>
-              <Button className="btn-caramel">
+              <Button className="btn-gold">
                 <QrCode className="w-4 h-4 mr-2" />
                 Scan QR Code
               </Button>
@@ -106,11 +106,11 @@ export default function Wallet() {
             mockCards.map((card, index) => (
               <motion.div
                 key={card.id}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
-                  delay: index * 0.1, 
-                  duration: 0.4, 
+                  delay: index * 0.08, 
+                  duration: 0.35, 
                   ease: [0.4, 0, 0.2, 1] 
                 }}
               >
@@ -127,17 +127,17 @@ export default function Wallet() {
       </main>
 
       {/* Floating Action Button */}
-      <div className="fixed bottom-28 right-5 z-20">
+      <div className="fixed bottom-24 right-5 z-20">
         <motion.div
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
         >
           <Button
             size="lg"
-            className="btn-caramel rounded-full w-14 h-14 p-0 shadow-lg"
+            className="btn-gold rounded-full w-12 h-12 p-0 shadow-gold"
             onClick={() => navigate("/scan")}
           >
-            <Plus className="w-6 h-6" strokeWidth={2.5} />
+            <Plus className="w-5 h-5" strokeWidth={2} />
           </Button>
         </motion.div>
       </div>

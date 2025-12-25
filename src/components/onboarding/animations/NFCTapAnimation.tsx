@@ -16,24 +16,24 @@ export function NFCTapAnimation() {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-espresso/10 to-charcoal" />
+      {/* Background gradient - professional light */}
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
       {/* NFC Terminal at bottom */}
       <motion.div
-        className="absolute bottom-[35%] w-56 h-20 rounded-2xl bg-gradient-to-b from-zinc-700 to-zinc-800 border border-zinc-600 shadow-2xl"
+        className="absolute bottom-[35%] w-56 h-20 rounded-2xl bg-gradient-to-b from-neutral-200 to-neutral-300 border border-neutral-300 shadow-lg"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {/* Terminal screen */}
-        <div className="absolute inset-2 rounded-xl bg-zinc-900 flex items-center justify-center">
+        <div className="absolute inset-2 rounded-xl bg-white flex items-center justify-center">
           <motion.div
             className="w-12 h-12 rounded-full flex items-center justify-center"
             animate={{
               backgroundColor: phase === "success" 
-                ? "rgba(72, 187, 120, 0.3)" 
-                : "rgba(212, 175, 55, 0.2)",
+                ? "hsla(140, 14%, 50%, 0.15)" 
+                : "hsla(38, 38%, 60%, 0.1)",
             }}
           >
             {/* NFC Symbol */}
@@ -45,11 +45,11 @@ export function NFCTapAnimation() {
                   style={{
                     width: 16 + i * 12,
                     height: 16 + i * 12,
-                    borderColor: phase === "success" ? "rgba(72, 187, 120, 0.8)" : "rgba(212, 175, 55, 0.6)",
+                    borderColor: phase === "success" ? "hsl(140 14% 50%)" : "hsl(38 38% 60%)",
                   }}
                   animate={{
                     scale: [1, 1.1, 1],
-                    opacity: [0.4, 0.8, 0.4],
+                    opacity: [0.4, 0.7, 0.4],
                   }}
                   transition={{
                     duration: 1.2,
@@ -65,21 +65,21 @@ export function NFCTapAnimation() {
 
         {/* Terminal indicator */}
         <motion.div
-          className="absolute top-3 right-4 w-3 h-3 rounded-full"
+          className="absolute top-3 right-4 w-2.5 h-2.5 rounded-full"
           animate={{
             backgroundColor: phase === "success" 
-              ? "rgb(72, 187, 120)" 
-              : "rgba(212, 175, 55, 0.6)",
+              ? "hsl(140 14% 50%)" 
+              : "hsl(38 38% 60%)",
             boxShadow: phase === "success"
-              ? "0 0 12px rgba(72, 187, 120, 0.8)"
-              : "0 0 8px rgba(212, 175, 55, 0.4)",
+              ? "0 0 8px hsla(140, 14%, 50%, 0.5)"
+              : "0 0 6px hsla(38, 38%, 60%, 0.3)",
           }}
         />
       </motion.div>
 
       {/* Phone Device */}
       <motion.div
-        className="absolute w-48 h-80 rounded-[2.5rem] bg-gradient-to-b from-zinc-800 to-zinc-900 border-4 border-zinc-700 shadow-2xl overflow-hidden"
+        className="absolute w-48 h-80 rounded-[2.5rem] bg-gradient-to-b from-neutral-100 to-white border border-neutral-200 shadow-lg overflow-hidden"
         initial={{ y: -60 }}
         animate={{
           y: phase === "tapping" || phase === "success" ? 40 : -60,
@@ -90,31 +90,31 @@ export function NFCTapAnimation() {
         }}
       >
         {/* Phone notch */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 rounded-full bg-zinc-950" />
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-6 rounded-full bg-neutral-200" />
 
         {/* Phone screen */}
-        <div className="absolute inset-3 top-10 rounded-2xl bg-gradient-to-b from-background to-muted overflow-hidden">
+        <div className="absolute inset-3 top-10 rounded-2xl bg-white overflow-hidden border border-neutral-100">
           {/* App content - Loyalty card */}
           <div className="absolute inset-4 flex flex-col items-center pt-4">
             {/* Mini Stampify logo */}
-            <img src={stampifyLogo} alt="Stampify" className="h-5 w-auto object-contain mb-4 opacity-80" />
+            <img src={stampifyLogo} alt="Stampify" className="h-5 w-auto object-contain mb-4 opacity-70" />
 
             {/* Loyalty card on phone */}
             <motion.div
-              className="w-full h-28 rounded-xl bg-gradient-to-br from-gold via-caramel to-copper shadow-lg"
+              className="w-full h-28 rounded-xl bg-gradient-to-br from-stone-100 to-neutral-50 border border-neutral-200 shadow-sm"
               animate={phase === "success" ? {
                 boxShadow: [
-                  "0 4px 20px rgba(212, 175, 55, 0.3)",
-                  "0 8px 30px rgba(212, 175, 55, 0.5)",
-                  "0 4px 20px rgba(212, 175, 55, 0.3)",
+                  "0 2px 12px hsla(38, 38%, 60%, 0.1)",
+                  "0 4px 16px hsla(38, 38%, 60%, 0.15)",
+                  "0 2px 12px hsla(38, 38%, 60%, 0.1)",
                 ],
               } : {}}
               transition={{ duration: 0.6 }}
             >
               <div className="p-3 h-full flex flex-col justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-white/30" />
-                  <div className="w-12 h-1.5 bg-white/40 rounded" />
+                  <div className="w-6 h-6 rounded-full bg-neutral-200" />
+                  <div className="w-12 h-1.5 bg-neutral-200 rounded" />
                 </div>
 
                 {/* Stamps */}
@@ -122,13 +122,13 @@ export function NFCTapAnimation() {
                   {[...Array(8)].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center"
-                      initial={{ 
-                        backgroundColor: i < 4 ? "rgba(255,255,255,0.5)" : "transparent" 
+                      className="w-4 h-4 rounded-full border border-neutral-300 flex items-center justify-center"
+                      style={{ 
+                        backgroundColor: i < 4 ? "hsl(38 38% 60%)" : "transparent" 
                       }}
                       animate={phase === "success" && i === 4 ? {
-                        backgroundColor: "rgba(255,255,255,0.5)",
-                        scale: [1, 1.4, 1],
+                        backgroundColor: "hsl(38 38% 60%)",
+                        scale: [1, 1.3, 1],
                       } : {}}
                       transition={{
                         duration: 0.4,
@@ -143,7 +143,7 @@ export function NFCTapAnimation() {
 
             {/* Tap instruction */}
             <motion.p
-              className="text-muted-foreground text-[10px] mt-4 text-center"
+              className="text-neutral-400 text-[10px] mt-4 text-center"
               animate={{ opacity: phase === "ready" ? 1 : 0.5 }}
             >
               Hold near reader
@@ -156,10 +156,11 @@ export function NFCTapAnimation() {
       {(phase === "tapping" || phase === "success") && [...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute bottom-[38%] w-40 h-12 rounded-full border-2 border-gold/40"
+          className="absolute bottom-[38%] w-40 h-12 rounded-full border-2"
+          style={{ borderColor: "hsla(38, 38%, 60%, 0.3)" }}
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{
-            opacity: [0, 0.8, 0],
+            opacity: [0, 0.6, 0],
             scale: [0.5, 1.5 + i * 0.3, 2 + i * 0.3],
           }}
           transition={{
@@ -175,7 +176,7 @@ export function NFCTapAnimation() {
         className="absolute top-[18%] right-[15%]"
         initial={{ scale: 0, opacity: 0 }}
         animate={phase === "success" ? {
-          scale: [0, 1.3, 1],
+          scale: [0, 1.2, 1],
           opacity: 1,
         } : {}}
         transition={{
@@ -185,12 +186,13 @@ export function NFCTapAnimation() {
         }}
       >
         <motion.div
-          className="w-16 h-16 rounded-full bg-gradient-to-br from-gold to-caramel flex items-center justify-center shadow-xl"
+          className="w-14 h-14 rounded-full flex items-center justify-center shadow-md"
+          style={{ background: "hsl(38 38% 60%)" }}
           animate={phase === "success" ? {
             boxShadow: [
-              "0 4px 20px rgba(212, 175, 55, 0.4)",
-              "0 8px 40px rgba(212, 175, 55, 0.6)",
-              "0 4px 20px rgba(212, 175, 55, 0.4)",
+              "0 2px 12px hsla(38, 38%, 60%, 0.2)",
+              "0 4px 20px hsla(38, 38%, 60%, 0.3)",
+              "0 2px 12px hsla(38, 38%, 60%, 0.2)",
             ],
           } : {}}
           transition={{
@@ -199,10 +201,11 @@ export function NFCTapAnimation() {
             ease: "easeInOut",
           }}
         >
-          <span className="text-2xl text-white font-bold">✓</span>
+          <span className="text-xl text-white font-semibold">✓</span>
         </motion.div>
         <motion.p
-          className="text-gold text-sm font-semibold text-center mt-2"
+          className="text-sm font-medium text-center mt-2"
+          style={{ color: "hsl(38 38% 50%)" }}
           initial={{ opacity: 0, y: 5 }}
           animate={phase === "success" ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.5 }}

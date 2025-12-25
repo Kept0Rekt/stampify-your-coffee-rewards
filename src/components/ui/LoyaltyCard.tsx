@@ -26,27 +26,27 @@ export function LoyaltyCard({
     <div
       onClick={onClick}
       className={cn(
-        "cursor-pointer latte-card p-7 space-y-6 transition-all duration-300",
-        isRewardReady && "ring-1 ring-primary/25",
+        "cursor-pointer latte-card p-6 space-y-5 transition-all duration-200",
+        isRewardReady && "ring-1 ring-primary/20",
         className
       )}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {cafeLogoUrl ? (
             <img
               src={cafeLogoUrl}
               alt={cafeName}
-              className="w-12 h-12 rounded-xl object-cover"
+              className="w-11 h-11 rounded-xl object-cover"
             />
           ) : (
-            <div className="w-12 h-12 rounded-xl caramel-gradient shadow-gold flex items-center justify-center">
-              <Coffee className="w-5 h-5 text-primary-foreground" />
+            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Coffee className="w-5 h-5 text-primary" />
             </div>
           )}
           <div>
-            <h3 className="font-medium text-foreground text-base">
+            <h3 className="font-medium text-foreground text-[15px]">
               {cafeName}
             </h3>
             <p className="text-sm text-muted-foreground mt-0.5">
@@ -63,25 +63,25 @@ export function LoyaltyCard({
             CLAIM
           </button>
         ) : (
-          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-15" />
+          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-12" />
         )}
       </div>
 
       {/* Stamps Row - Hero Element */}
-      <div className="flex justify-center items-center gap-4 py-3">
+      <div className="flex justify-center items-center gap-3 py-2">
         {Array.from({ length: stampsRequired }).map((_, index) => {
           const isCollected = index < stampsCollected;
           return (
             <div
               key={index}
               className={cn(
-                "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300",
-                isCollected && "caramel-gradient shadow-sm",
-                !isCollected && "border-2 border-muted/60 bg-transparent"
+                "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
+                isCollected && "bg-primary",
+                !isCollected && "border border-border bg-transparent"
               )}
             >
               {isCollected && (
-                <Coffee className="w-4 h-4 text-primary-foreground" />
+                <Coffee className="w-3.5 h-3.5 text-primary-foreground" />
               )}
             </div>
           );

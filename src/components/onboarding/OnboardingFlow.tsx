@@ -125,7 +125,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex flex-col overflow-hidden relative">
+    <div className="min-h-screen bg-background flex flex-col overflow-hidden relative">
       {/* Header - Fixed at top with transparency */}
       <motion.div
         className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-6"
@@ -167,7 +167,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       </div>
 
       {/* Bottom Content Area - Text anchored at bottom */}
-      <div className="relative z-20 bg-gradient-to-t from-charcoal via-charcoal to-transparent pt-16 pb-6">
+      <div className="relative z-20 bg-gradient-to-t from-background via-background to-transparent pt-16 pb-6">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={`text-${currentIndex}`}
@@ -245,7 +245,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               onClick={handleBack}
               disabled={isFirstScreen}
               className={cn(
-                "w-full transition-all duration-200 border-white/30 bg-white/10 text-white hover:bg-white/20",
+                "w-full transition-all duration-200 border-border bg-muted/50 text-foreground hover:bg-muted",
                 isFirstScreen && "invisible"
               )}
             >
