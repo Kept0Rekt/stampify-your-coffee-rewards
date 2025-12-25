@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="system" storageKey="stampify-theme">
+    <ThemeProvider defaultTheme="light" storageKey="stampify-theme">
       <AuthProvider>
         <TooltipProvider>
           <Toaster />
