@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import stampifyLogo from "@/assets/stampify-logo.png";
 
 export function DigitalCardsAnimation() {
   const [phase, setPhase] = useState<"scatter" | "merge" | "complete">("scatter");
@@ -111,9 +112,7 @@ export function DigitalCardsAnimation() {
             {/* Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center">
-                  <span className="text-lg">☕</span>
-                </div>
+                <img src={stampifyLogo} alt="Stampify" className="w-10 h-10 object-contain" />
                 <div>
                   <div className="w-20 h-2.5 bg-white/50 rounded" />
                   <div className="w-14 h-1.5 bg-white/30 rounded mt-1" />
