@@ -199,10 +199,11 @@
     box-shadow: 0 2px 12px -2px hsla(30, 10%, 40%, 0.05);
   }
   
-  /* Professional Card - Lighter than tabs */
+  /* Professional Card - Warm latte tone */
   .latte-card {
-    background: hsla(32, 18%, 94%, 0.92);
+    background: hsl(32, 29%, 87%);
     backdrop-filter: blur(12px);
+    box-shadow: 0 2px 8px -2px hsla(25, 20%, 30%, 0.08);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsla(30, 14%, 82%, 0.55);
     border-radius: 1rem;
