@@ -1,49 +1,244 @@
-import { MapPin } from "lucide-react";
+import type React from "react";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 
 interface LocationMapProps {
-  cafeName: string;
-  latitude: number;
-  longitude: number;
+  location?: string;
+  coordinates?: string;
+  className?: string;
 }
 
-export function LocationMap({ cafeName, latitude, longitude }: LocationMapProps) {
-  // Generate a static map preview using OpenStreetMap tiles
-  const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${longitude - 0.005}%2C${latitude - 0.003}%2C${longitude + 0.005}%2C${latitude + 0.003}&layer=mapnik&marker=${latitude}%2C${longitude}`;
-  
-  const openInMaps = () => {
-    window.open(
-      `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`,
-      "_blank"
-    );
+export function LocationMap({
+  location = "San Francisco, CA",
+  coordinates = "37.7749° N, 122.4194° W",
+  className,
+}: LocationMapProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useTransform(mouseY, [-50, 50], [5, -5]);
+  const rotateY = useTransform(mouseX, [-50, 50], [-5, 5]);
+
+  const springRotateX = useSpring(rotateX, { stiffness: 300, damping: 30 });
+  const springRotateY = useSpring(rotateY, { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    mouseX.set(e.clientX - centerX);
+    mouseY.set(e.clientY - centerY);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setIsHovered(false);
   };
 
   return (
-    <div className="w-full">
-      {/* Map Container */}
-      <div className="relative w-full h-40 rounded-xl overflow-hidden bg-muted">
-        <iframe
-          src={mapUrl}
-          className="w-full h-full border-0"
-          title={`Map showing ${cafeName} location`}
-          loading="lazy"
-        />
-        
-        {/* Overlay for click handling */}
-        <button
-          onClick={openInMaps}
-          className="absolute inset-0 bg-transparent hover:bg-foreground/5 transition-colors cursor-pointer"
-          aria-label={`Open ${cafeName} in maps`}
-        />
-      </div>
-      
-      {/* Location Info */}
-      <button
-        onClick={openInMaps}
-        className="flex items-center gap-2 mt-3 px-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+    <motion.div
+      ref={containerRef}
+      className={`relative select-none ${className}`}
+      style={{ perspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        className="relative overflow-hidden rounded-xl bg-background border border-border"
+        style={{
+          rotateX: springRotateX,
+          rotateY: springRotateY,
+          transformStyle: "preserve-3d",
+        }}
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: 180, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 35 }}
       >
-        <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-        <span className="truncate">Get directions to {cafeName}</span>
-      </button>
-    </div>
+        {/* Map visualization */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <div className="absolute inset-0 bg-muted" />
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            {/* Main roads */}
+            <motion.line
+              x1="0%"
+              y1="35%"
+              x2="100%"
+              y2="35%"
+              className="stroke-foreground/25"
+              strokeWidth="4"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            />
+            <motion.line
+              x1="0%"
+              y1="65%"
+              x2="100%"
+              y2="65%"
+              className="stroke-foreground/25"
+              strokeWidth="4"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            />
+            {/* Vertical main roads */}
+            <motion.line
+              x1="30%"
+              y1="0%"
+              x2="30%"
+              y2="100%"
+              className="stroke-foreground/20"
+              strokeWidth="3"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            />
+            <motion.line
+              x1="70%"
+              y1="0%"
+              x2="70%"
+              y2="100%"
+              className="stroke-foreground/20"
+              strokeWidth="3"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            />
+            {/* Secondary streets */}
+            {[20, 50, 80].map((y, i) => (
+              <motion.line
+                key={`h-${i}`}
+                x1="0%"
+                y1={`${y}%`}
+                x2="100%"
+                y2={`${y}%`}
+                className="stroke-foreground/10"
+                strokeWidth="1.5"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+              />
+            ))}
+            {[15, 45, 55, 85].map((x, i) => (
+              <motion.line
+                key={`v-${i}`}
+                x1={`${x}%`}
+                y1="0%"
+                x2={`${x}%`}
+                y2="100%"
+                className="stroke-foreground/10"
+                strokeWidth="1.5"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.5, delay: 0.7 + i * 0.1 }}
+              />
+            ))}
+          </svg>
+
+          {/* Buildings */}
+          <motion.div
+            className="absolute top-[40%] left-[10%] w-[15%] h-[20%] rounded-sm bg-muted-foreground/30 border border-muted-foreground/20"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+          />
+          <motion.div
+            className="absolute top-[15%] left-[35%] w-[12%] h-[15%] rounded-sm bg-muted-foreground/25 border border-muted-foreground/15"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.6 }}
+          />
+          <motion.div
+            className="absolute top-[70%] left-[75%] w-[18%] h-[18%] rounded-sm bg-muted-foreground/28 border border-muted-foreground/18"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.7 }}
+          />
+          <motion.div
+            className="absolute top-[20%] right-[10%] w-[10%] h-[25%] rounded-sm bg-muted-foreground/22 border border-muted-foreground/15"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.55 }}
+          />
+          <motion.div
+            className="absolute top-[55%] left-[5%] w-[8%] h-[12%] rounded-sm bg-muted-foreground/20 border border-muted-foreground/12"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.65 }}
+          />
+          <motion.div
+            className="absolute top-[8%] left-[75%] w-[14%] h-[10%] rounded-sm bg-muted-foreground/22 border border-muted-foreground/15"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.75 }}
+          />
+
+          {/* Location pin */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            initial={{ scale: 0, y: -20 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20, delay: 0.3 }}
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              className="drop-shadow-lg"
+              style={{ filter: "drop-shadow(0 0 10px hsl(var(--primary) / 0.5))" }}
+            >
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                className="fill-primary"
+              />
+              <circle cx="12" cy="9" r="2.5" className="fill-primary-foreground" />
+            </svg>
+          </motion.div>
+
+          {/* Bottom gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+        </motion.div>
+
+        {/* Content overlay */}
+        <div className="relative z-10 h-full flex flex-col justify-end p-4">
+          <div className="space-y-1">
+            <motion.h3
+              className="text-foreground font-medium text-sm tracking-tight"
+              animate={{ x: isHovered ? 4 : 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+              {location}
+            </motion.h3>
+            <motion.p
+              className="text-muted-foreground text-xs font-mono"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: 0.2 }}
+            >
+              {coordinates}
+            </motion.p>
+            {/* Animated underline */}
+            <motion.div
+              className="h-px bg-gradient-to-r from-primary/50 via-primary/30 to-transparent"
+              initial={{ scaleX: 0, originX: 0 }}
+              animate={{ scaleX: isHovered ? 1 : 0.3 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            />
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
