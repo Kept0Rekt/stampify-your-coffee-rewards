@@ -8,15 +8,13 @@ import { DigitalCardsAnimation } from "./animations/DigitalCardsAnimation";
 import { NFCTapAnimation } from "./animations/NFCTapAnimation";
 import { QRScanAnimation } from "./animations/QRScanAnimation";
 import { FreeCoffeeAnimation } from "./animations/FreeCoffeeAnimation";
-import { PlanSelectionAnimation } from "./animations/PlanSelectionAnimation";
 import { PrivacyAnimation } from "./animations/PrivacyAnimation";
 
 interface OnboardingScreen {
-  animation: React.ReactNode | ((props: { onSelectPlan: (plan: "free" | "premium") => void }) => React.ReactNode);
+  animation: React.ReactNode;
   title: string;
   description: string;
   highlight?: string;
-  isInteractive?: boolean;
 }
 
 const screens: OnboardingScreen[] = [
@@ -43,12 +41,6 @@ const screens: OnboardingScreen[] = [
     title: "Earn Rewards Faster",
     description: "Free plan: 8 stamps = free coffee. Premium plan: only 6 stamps needed! Upgrade anytime.",
     highlight: "Premium: 6 stamps only",
-  },
-  {
-    animation: ({ onSelectPlan }) => <PlanSelectionAnimation onSelectPlan={onSelectPlan} />,
-    title: "Choose Your Plan",
-    description: "Select the plan that works best for you. You can always upgrade later!",
-    isInteractive: true,
   },
   {
     animation: <PrivacyAnimation />,
@@ -98,10 +90,8 @@ interface OnboardingFlowProps {
 
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [[currentIndex, direction], setPage] = useState([0, 0]);
-  const [selectedPlan, setSelectedPlan] = useState<"free" | "premium" | null>(null);
   const isLastScreen = currentIndex === screens.length - 1;
   const isFirstScreen = currentIndex === 0;
-  const currentScreen = screens[currentIndex];
 
   const paginate = useCallback((newDirection: number) => {
     if (newDirection > 0 && currentIndex < screens.length - 1) {
@@ -132,21 +122,6 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const goToScreen = (index: number) => {
     const newDirection = index > currentIndex ? 1 : -1;
     setPage([index, newDirection]);
-  };
-
-  const handleSelectPlan = (plan: "free" | "premium") => {
-    setSelectedPlan(plan);
-    // Auto-advance to next step after selecting a plan
-    setTimeout(() => paginate(1), 300);
-  };
-
-  // Render animation - handle both static and interactive animations
-  const renderAnimation = () => {
-    const animation = currentScreen.animation;
-    if (typeof animation === "function") {
-      return animation({ onSelectPlan: handleSelectPlan });
-    }
-    return animation;
   };
 
   return (
@@ -186,7 +161,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             }}
             className="absolute inset-0"
           >
-            {renderAnimation()}
+            {screens[currentIndex].animation}
           </motion.div>
         </AnimatePresence>
       </div>
