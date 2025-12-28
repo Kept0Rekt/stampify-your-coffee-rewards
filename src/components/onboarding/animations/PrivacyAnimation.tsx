@@ -78,7 +78,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
 
         {/* Trust badges */}
         <motion.div 
-          className="flex items-center justify-center gap-2 mt-4"
+          className="flex items-center justify-center gap-2 mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
