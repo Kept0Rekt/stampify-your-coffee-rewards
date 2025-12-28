@@ -9,24 +9,31 @@ import { motion } from "framer-motion";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
 // Mock data for demo
+// Mock data for demo with coordinates
 const mockCards = [
   {
     id: "1",
     cafeName: "The Daily Grind",
     stampsCollected: 6,
     stampsRequired: 8,
+    latitude: 40.7128,
+    longitude: -74.006,
   },
   {
     id: "2",
     cafeName: "Espresso House",
     stampsCollected: 8,
     stampsRequired: 8,
+    latitude: 40.7580,
+    longitude: -73.9855,
   },
   {
     id: "3",
     cafeName: "Artisan Roasters",
     stampsCollected: 2,
     stampsRequired: 8,
+    latitude: 40.7484,
+    longitude: -73.9857,
   },
 ];
 
@@ -169,7 +176,8 @@ export default function Wallet() {
                   cafeName={card.cafeName}
                   stampsCollected={card.stampsCollected}
                   stampsRequired={card.stampsRequired}
-                  onClick={() => navigate(`/card/${card.id}`)}
+                  latitude={card.latitude}
+                  longitude={card.longitude}
                 />
               </motion.div>
             ))}
