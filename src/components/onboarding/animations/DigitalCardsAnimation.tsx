@@ -14,14 +14,14 @@ export function DigitalCardsAnimation() {
     };
   }, []);
 
-  // Scattered paper cards with different positions
+  // Scattered paper cards - smaller positions for mobile
   const paperCards = [
-    { id: 1, initialX: -120, initialY: -80, initialRotate: -25, delay: 0 },
-    { id: 2, initialX: 100, initialY: -60, initialRotate: 18, delay: 0.05 },
-    { id: 3, initialX: -80, initialY: 40, initialRotate: -12, delay: 0.1 },
-    { id: 4, initialX: 90, initialY: 70, initialRotate: 22, delay: 0.15 },
-    { id: 5, initialX: -30, initialY: -120, initialRotate: 8, delay: 0.08 },
-    { id: 6, initialX: 50, initialY: 100, initialRotate: -18, delay: 0.12 },
+    { id: 1, initialX: -80, initialY: -50, initialRotate: -25, delay: 0 },
+    { id: 2, initialX: 70, initialY: -40, initialRotate: 18, delay: 0.05 },
+    { id: 3, initialX: -50, initialY: 30, initialRotate: -12, delay: 0.1 },
+    { id: 4, initialX: 60, initialY: 50, initialRotate: 22, delay: 0.15 },
+    { id: 5, initialX: -20, initialY: -80, initialRotate: 8, delay: 0.08 },
+    { id: 6, initialX: 30, initialY: 70, initialRotate: -18, delay: 0.12 },
   ];
 
   return (
@@ -29,11 +29,11 @@ export function DigitalCardsAnimation() {
       {/* Background gradient - professional light */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
-      {/* Scattered paper cards */}
+      {/* Scattered paper cards - smaller for mobile */}
       {paperCards.map((card) => (
         <motion.div
           key={card.id}
-          className="absolute w-32 h-20 rounded-lg bg-white border border-neutral-200 shadow-sm"
+          className="absolute w-24 h-14 rounded-lg bg-white border border-neutral-200 shadow-sm"
           initial={{
             x: card.initialX,
             y: card.initialY,
@@ -55,13 +55,13 @@ export function DigitalCardsAnimation() {
           }}
         >
           {/* Paper card stamps */}
-          <div className="p-2">
-            <div className="w-8 h-1.5 bg-neutral-300 rounded mb-2" />
-            <div className="flex gap-1 flex-wrap">
+          <div className="p-1.5">
+            <div className="w-6 h-1 bg-neutral-300 rounded mb-1.5" />
+            <div className="flex gap-0.5 flex-wrap">
               {[...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-3 h-3 rounded-full bg-neutral-200 border border-neutral-300"
+                  className="w-2 h-2 rounded-full bg-neutral-200 border border-neutral-300"
                 />
               ))}
             </div>
@@ -69,7 +69,7 @@ export function DigitalCardsAnimation() {
         </motion.div>
       ))}
 
-      {/* Digital wallet card - large, centered */}
+      {/* Digital wallet card - responsive size */}
       <motion.div
         className="absolute"
         initial={{ scale: 0.3, opacity: 0, y: 50 }}
@@ -85,7 +85,7 @@ export function DigitalCardsAnimation() {
         }}
       >
         <motion.div
-          className="relative w-80 h-52 rounded-2xl bg-gradient-to-br from-stone-100 via-neutral-50 to-stone-100 border border-neutral-200 shadow-xl overflow-hidden"
+          className="relative w-64 h-40 sm:w-72 sm:h-44 rounded-2xl bg-gradient-to-br from-stone-100 via-neutral-50 to-stone-100 border border-neutral-200 shadow-xl overflow-hidden"
           animate={phase === "complete" ? {
             boxShadow: [
               "0 10px 30px rgba(201, 168, 106, 0.12)",
@@ -108,26 +108,26 @@ export function DigitalCardsAnimation() {
           />
 
           {/* Card content */}
-          <div className="absolute inset-0 p-6 flex flex-col justify-between">
+          <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-between">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="bg-white/80 rounded-xl p-2 shadow-sm">
-                  <img src={stampifyLogo} alt="Stampify" className="h-10 w-auto object-contain" />
+              <div className="flex items-center gap-2">
+                <div className="bg-white/80 rounded-lg p-1.5 shadow-sm">
+                  <img src={stampifyLogo} alt="Stampify" className="h-7 sm:h-8 w-auto object-contain" />
                 </div>
                 <div>
-                  <div className="w-24 h-3 bg-neutral-300 rounded" />
-                  <div className="w-16 h-2.5 bg-neutral-200 rounded mt-1.5" />
+                  <div className="w-16 sm:w-20 h-2 bg-neutral-300 rounded" />
+                  <div className="w-12 sm:w-14 h-2 bg-neutral-200 rounded mt-1" />
                 </div>
               </div>
             </div>
 
             {/* Stamp progress */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-1">
               {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="w-8 h-8 rounded-full border border-neutral-300 flex items-center justify-center bg-white/50"
+                  className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-neutral-300 flex items-center justify-center bg-white/50"
                   initial={{ scale: 0 }}
                   animate={phase === "complete" ? { scale: 1 } : {}}
                   transition={{
@@ -136,9 +136,9 @@ export function DigitalCardsAnimation() {
                     ease: [0.34, 1.56, 0.64, 1],
                   }}
                 >
-                {i < 5 && (
+                  {i < 5 && (
                     <motion.div
-                      className="w-5 h-5 rounded-full"
+                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-full"
                       style={{ background: "hsl(38 38% 60%)" }}
                       initial={{ scale: 0 }}
                       animate={phase === "complete" ? { scale: 1 } : {}}
@@ -172,10 +172,10 @@ export function DigitalCardsAnimation() {
       </motion.div>
 
       {/* Floating particles */}
-      {phase === "complete" && [...Array(8)].map((_, i) => (
+      {phase === "complete" && [...Array(6)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1.5 h-1.5 rounded-full"
+          className="absolute w-1 h-1 rounded-full"
           style={{ background: "hsla(38, 38%, 60%, 0.5)" }}
           initial={{ 
             opacity: 0, 
@@ -186,8 +186,8 @@ export function DigitalCardsAnimation() {
           animate={{
             opacity: [0, 1, 0],
             scale: [0, 1, 0.5],
-            x: (Math.random() - 0.5) * 200,
-            y: (Math.random() - 0.5) * 200,
+            x: (Math.random() - 0.5) * 120,
+            y: (Math.random() - 0.5) * 120,
           }}
           transition={{
             duration: 1.5,

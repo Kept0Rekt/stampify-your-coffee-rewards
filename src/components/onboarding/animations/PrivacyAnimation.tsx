@@ -14,12 +14,12 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
   ];
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden px-6">
+    <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden px-4">
       {/* Clean background */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 to-neutral-100" />
 
       {/* Content wrapper */}
-      <div className="relative flex flex-col items-center justify-center gap-8">
+      <div className="relative flex flex-col items-center justify-center gap-6 sm:gap-8">
         {/* Shield with pulsing animation */}
         <motion.div
           className="relative flex items-center justify-center"
@@ -29,7 +29,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
         >
           {/* Outer pulsing ring */}
           <motion.div
-            className="absolute w-40 h-40 rounded-full border-2"
+            className="absolute w-32 h-32 sm:w-36 sm:h-36 rounded-full border-2"
             style={{ borderColor: "hsla(38, 38%, 55%, 0.25)" }}
             animate={{ 
               scale: [1, 1.12, 1],
@@ -44,7 +44,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
 
           {/* Inner glow */}
           <motion.div
-            className="absolute w-32 h-32 rounded-full"
+            className="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full"
             style={{ 
               background: "radial-gradient(circle, hsla(38, 38%, 55%, 0.15) 0%, transparent 70%)" 
             }}
@@ -69,7 +69,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
             }}
           >
             <ShieldCheck 
-              className="w-24 h-24 drop-shadow-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-lg"
               style={{ color: "hsl(38 38% 50%)" }}
               strokeWidth={1.3}
             />
@@ -78,7 +78,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
 
         {/* Trust badges */}
         <motion.div 
-          className="flex items-center justify-center gap-2 mt-8"
+          className="flex items-center justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
@@ -86,7 +86,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
           {trustBadges.map(({ icon: Icon, label }, index) => (
             <motion.div
               key={label}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 border border-neutral-200 shadow-sm"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/90 border border-neutral-200 shadow-sm"
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ 
@@ -95,15 +95,15 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
                 ease: [0.34, 1.56, 0.64, 1],
               }}
             >
-              <Icon className="w-3.5 h-3.5 text-neutral-500" strokeWidth={2} />
-              <span className="text-xs font-medium text-neutral-600">{label}</span>
+              <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-neutral-500" strokeWidth={2} />
+              <span className="text-[10px] sm:text-xs font-medium text-neutral-600">{label}</span>
             </motion.div>
           ))}
         </motion.div>
 
         {/* Privacy message */}
         <motion.p
-          className="text-sm text-neutral-500 text-center font-medium"
+          className="text-xs sm:text-sm text-neutral-500 text-center font-medium"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
