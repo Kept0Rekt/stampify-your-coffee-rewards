@@ -1,6 +1,4 @@
-import type React from "react";
-import { useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface LocationMapProps {
   location?: string;
@@ -13,51 +11,12 @@ export function LocationMap({
   coordinates = "37.7749° N, 122.4194° W",
   className,
 }: LocationMapProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useTransform(mouseY, [-50, 50], [5, -5]);
-  const rotateY = useTransform(mouseX, [-50, 50], [-5, 5]);
-
-  const springRotateX = useSpring(rotateX, { stiffness: 300, damping: 30 });
-  const springRotateY = useSpring(rotateY, { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    mouseX.set(e.clientX - centerX);
-    mouseY.set(e.clientY - centerY);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-    setIsHovered(false);
-  };
-
   return (
-    <motion.div
-      ref={containerRef}
-      className={`relative select-none ${className}`}
-      style={{ perspective: 1000 }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className={`relative select-none ${className}`}>
       <motion.div
         className="relative overflow-hidden rounded-xl bg-background border border-border"
-        style={{
-          rotateX: springRotateX,
-          rotateY: springRotateY,
-          transformStyle: "preserve-3d",
-        }}
         initial={{ height: 0, opacity: 0 }}
-        animate={{ height: 180, opacity: 1 }}
+        animate={{ height: 160, opacity: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 35 }}
       >
         {/* Map visualization */}
@@ -214,13 +173,9 @@ export function LocationMap({
         {/* Content overlay */}
         <div className="relative z-10 h-full flex flex-col justify-end p-4">
           <div className="space-y-1">
-            <motion.h3
-              className="text-foreground font-medium text-sm tracking-tight"
-              animate={{ x: isHovered ? 4 : 0 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            >
+            <h3 className="text-foreground font-medium text-sm tracking-tight">
               {location}
-            </motion.h3>
+            </h3>
             <motion.p
               className="text-muted-foreground text-xs font-mono"
               initial={{ opacity: 0, y: -10 }}
@@ -229,16 +184,16 @@ export function LocationMap({
             >
               {coordinates}
             </motion.p>
-            {/* Animated underline */}
+            {/* Underline accent */}
             <motion.div
               className="h-px bg-gradient-to-r from-primary/50 via-primary/30 to-transparent"
               initial={{ scaleX: 0, originX: 0 }}
-              animate={{ scaleX: isHovered ? 1 : 0.3 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              animate={{ scaleX: 0.5 }}
+              transition={{ duration: 0.4, ease: "easeOut", delay: 0.3 }}
             />
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }
