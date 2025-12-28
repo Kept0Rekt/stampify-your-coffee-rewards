@@ -33,14 +33,14 @@ const screens: OnboardingScreen[] = [
   {
     animation: <QRScanAnimation />,
     title: "Join New Cafés",
-    description: "Scan any QR code to join and get a free welcome stamp!",
+    description: "Scan a café's QR code to add their loyalty card to your wallet. Get a welcome free coffee!",
     highlight: "Free coffee on signup",
   },
   {
     animation: <FreeCoffeeAnimation />,
     title: "Earn Rewards Faster",
-    description: "Premium members need only 6 stamps—2 fewer than the free plan!",
-    highlight: "Upgrade to Premium",
+    description: "Free plan: 8 stamps = free coffee. Premium plan: only 6 stamps needed! Upgrade anytime.",
+    highlight: "Premium: 6 stamps only",
   },
   {
     animation: <PrivacyAnimation />,

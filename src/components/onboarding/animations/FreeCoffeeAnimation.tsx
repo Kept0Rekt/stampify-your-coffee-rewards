@@ -45,10 +45,10 @@ export function FreeCoffeeAnimation() {
         }}
       />
 
-      <div className="relative w-full max-w-md px-4">
-        {/* Free Plan Card - smaller */}
+      <div className="relative w-full max-w-sm px-6">
+        {/* Free Plan Card */}
         <motion.div
-          className="rounded-2xl p-4 mb-3"
+          className="rounded-2xl p-5 mb-4"
           style={{ 
             background: 'white',
             boxShadow: '0 2px 12px hsla(35, 20%, 50%, 0.08)'
@@ -57,24 +57,24 @@ export function FreeCoffeeAnimation() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium" style={{ color: 'hsl(35 15% 50%)' }}>
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium" style={{ color: 'hsl(35 15% 45%)' }}>
               Free Plan
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ 
+            <span className="text-xs px-2.5 py-1 rounded-full" style={{ 
               background: 'hsl(35 20% 94%)',
-              color: 'hsl(35 15% 55%)'
+              color: 'hsl(35 15% 50%)'
             }}>
               Current
             </span>
           </div>
           
-          {/* 8 stamps - smaller */}
-          <div className="flex justify-between gap-1 mb-2.5">
+          {/* 8 stamps */}
+          <div className="flex justify-between gap-1.5 mb-3">
             {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="relative w-7 h-7 rounded-full flex items-center justify-center"
+                className="relative w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
                   background: "transparent",
                   border: "1.5px solid hsl(35 15% 85%)",
@@ -82,18 +82,19 @@ export function FreeCoffeeAnimation() {
                 initial={{ scale: 0.98, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{
-                  delay: 0.25 + i * 0.05,
+                  delay: 0.25 + i * 0.06,
                   duration: 0.28,
                   ease: [0.25, 0.1, 0.25, 1],
                 }}
               >
+                {/* Fill dot -> expands to fill the circle */}
                 <motion.div
-                  className="absolute inset-[2px] rounded-full"
-                  style={{ background: "hsl(35 20% 70%)" }}
+                  className="absolute inset-[3px] rounded-full"
+                  style={{ background: "hsl(38 45% 55%)" }}
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: [0, 1.06, 1], opacity: [0, 1, 1] }}
                   transition={{
-                    delay: 0.55 + i * 0.07,
+                    delay: 0.55 + i * 0.085,
                     duration: 0.42,
                     ease: [0.34, 1.56, 0.64, 1],
                   }}
@@ -103,59 +104,60 @@ export function FreeCoffeeAnimation() {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-[11px]" style={{ color: 'hsl(35 12% 55%)' }}>
-              <span style={{ textDecoration: 'line-through', opacity: 0.6 }}>8 stamps</span> required
+            <span className="text-xs" style={{ color: 'hsl(35 12% 55%)' }}>
+              8 stamps required
             </span>
-            <div className="flex items-center gap-1">
-              <ToGoCup size={16} />
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs" style={{ color: 'hsl(35 12% 55%)' }}>=</span>
+              <ToGoCup size={20} />
             </div>
           </div>
         </motion.div>
 
-        {/* Premium Plan Card - larger and more prominent */}
+        {/* Premium Plan Card */}
         <motion.div
-          className="rounded-3xl p-6 relative overflow-hidden"
+          className="rounded-2xl p-5 relative overflow-hidden"
           style={{ 
-            background: 'linear-gradient(135deg, hsl(38 55% 58%) 0%, hsl(38 50% 48%) 100%)',
-            boxShadow: '0 8px 32px hsla(38, 50%, 40%, 0.35), 0 2px 8px hsla(38, 50%, 40%, 0.2)'
+            background: 'linear-gradient(135deg, hsl(38 50% 56%) 0%, hsl(38 45% 50%) 100%)',
+            boxShadow: '0 4px 20px hsla(38, 45%, 45%, 0.25)'
           }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ 
             opacity: showPremium ? 1 : 0.4, 
             y: showPremium ? 0 : 8,
-            scale: showPremium ? 1.02 : 0.96
+            scale: showPremium ? 1 : 0.98
           }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
           {/* Subtle shine */}
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12"
-            initial={{ x: -250 }}
-            animate={showPremium ? { x: 350 } : {}}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
+            initial={{ x: -200 }}
+            animate={showPremium ? { x: 300 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           />
 
           <div className="relative">
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-base font-bold text-white">
-                  ⭐ Premium Plan
+                <span className="text-sm font-semibold text-white">
+                  Premium Plan
                 </span>
               </div>
-              <span className="text-xs px-3 py-1.5 rounded-full bg-white/25 text-white font-semibold">
+              <span className="text-xs px-2.5 py-1 rounded-full bg-white/20 text-white font-medium">
                 Recommended
               </span>
             </div>
             
-            {/* 6 stamps - larger */}
-            <div className="flex justify-center gap-2.5 mb-4">
+            {/* 6 stamps */}
+            <div className="flex justify-center gap-2 mb-3">
               {[...Array(6)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="relative w-12 h-12 rounded-full flex items-center justify-center"
+                  className="relative w-10 h-10 rounded-full flex items-center justify-center"
                   style={{
                     background: "transparent",
-                    border: "2px solid hsla(0, 0%, 100%, 0.5)",
+                    border: "1.5px solid hsla(0, 0%, 100%, 0.45)",
                   }}
                   initial={{ scale: 0.98, opacity: 0 }}
                   animate={showPremium ? { scale: 1, opacity: 1 } : {}}
@@ -165,6 +167,7 @@ export function FreeCoffeeAnimation() {
                     ease: [0.25, 0.1, 0.25, 1],
                   }}
                 >
+                  {/* Fill dot -> expands to fill the circle */}
                   <motion.div
                     className="absolute inset-[4px] rounded-full"
                     style={{ background: "hsl(0 0% 100%)" }}
@@ -180,47 +183,28 @@ export function FreeCoffeeAnimation() {
               ))}
             </div>
 
-            {/* Comparison highlight */}
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20">
-                <span className="text-white/60 text-sm line-through">8</span>
-                <span className="text-white text-sm">→</span>
-                <span className="text-white text-lg font-bold">6</span>
-                <span className="text-white/90 text-xs font-medium">stamps</span>
-              </div>
-              <div className="px-2.5 py-1 rounded-full bg-green-400/30 border border-green-300/40">
-                <span className="text-green-100 text-xs font-semibold">-2 stamps!</span>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-white/80">
+                6 stamps required
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-white/90">
+                  2 fewer stamps
+                </span>
               </div>
             </div>
-
-            {/* Upgrade button */}
-            <motion.button
-              className="w-full py-3 rounded-xl font-semibold text-sm transition-all"
-              style={{
-                background: 'white',
-                color: 'hsl(38 50% 40%)',
-                boxShadow: '0 4px 12px hsla(0, 0%, 0%, 0.15)'
-              }}
-              initial={{ opacity: 0, y: 8 }}
-              animate={showPremium ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.7, duration: 0.3 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Upgrade to Premium
-            </motion.button>
           </div>
         </motion.div>
 
         {/* Summary */}
         <motion.p
-          className="text-center mt-5 text-sm font-medium"
-          style={{ color: 'hsl(35 18% 45%)' }}
+          className="text-center mt-6 text-sm"
+          style={{ color: 'hsl(35 15% 50%)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showPremium ? 1 : 0 }}
-          transition={{ delay: 0.8, duration: 0.4 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
         >
-          Get free coffee 25% faster!
+          Earn free coffee faster with Premium
         </motion.p>
       </div>
     </div>
