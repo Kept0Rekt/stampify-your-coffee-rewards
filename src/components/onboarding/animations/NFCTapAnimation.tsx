@@ -16,19 +16,23 @@ export function NFCTapAnimation() {
     };
   }, []);
 
-  // Natural arc motion for human-like movement
+  // Phone animation - enters from bottom-left, taps with top edge
   const getPhoneAnimation = () => {
     switch (phase) {
       case "ready":
-        return { y: -50, rotate: -8, x: 10 };
+        // Start from bottom-left, rotated so top faces up-right
+        return { x: -60, y: 80, rotate: 35 };
       case "approaching":
-        return { y: 5, rotate: -2, x: 3 };
+        // Move toward reader, adjusting angle
+        return { x: -15, y: 25, rotate: 15 };
       case "tapping":
-        return { y: 18, rotate: 0, x: 0 };
+        // Top edge touches the reader
+        return { x: 0, y: 5, rotate: 5 };
       case "success":
-        return { y: 12, rotate: 0, x: 0 };
+        // Slight settle back
+        return { x: -5, y: 12, rotate: 8 };
       default:
-        return { y: -50, rotate: -8, x: 10 };
+        return { x: -60, y: 80, rotate: 35 };
     }
   };
 
@@ -37,11 +41,12 @@ export function NFCTapAnimation() {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
-      {/* NFC Terminal at bottom - mobile sized */}
+      {/* NFC Terminal - centered */}
       <motion.div
-        className="absolute bottom-[30%] w-40 sm:w-48 h-14 sm:h-16 rounded-xl bg-gradient-to-b from-neutral-200 to-neutral-300 border border-neutral-300 shadow-lg"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        className="absolute w-40 sm:w-48 h-14 sm:h-16 rounded-xl bg-gradient-to-b from-neutral-200 to-neutral-300 border border-neutral-300 shadow-lg"
+        style={{ top: "38%" }}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
         {/* Terminal screen */}
@@ -97,31 +102,23 @@ export function NFCTapAnimation() {
         />
       </motion.div>
 
-      {/* Phone Device - natural human-like motion */}
+      {/* Phone Device - enters from bottom-left, taps with top edge */}
       <motion.div
         className="absolute w-32 sm:w-36 h-52 sm:h-60 rounded-[1.75rem] bg-gradient-to-b from-neutral-100 to-white border border-neutral-200 shadow-lg overflow-hidden"
-        initial={{ y: -50, rotate: -8, x: 10, opacity: 0 }}
+        style={{ 
+          top: "42%",
+          transformOrigin: "top center" 
+        }}
+        initial={{ x: -60, y: 80, rotate: 35, opacity: 0 }}
         animate={{
           ...getPhoneAnimation(),
           opacity: 1,
         }}
         transition={{
-          y: {
-            type: "spring",
-            stiffness: phase === "tapping" ? 300 : 120,
-            damping: phase === "tapping" ? 15 : 20,
-            mass: 0.8,
-          },
-          rotate: {
-            type: "spring",
-            stiffness: 100,
-            damping: 15,
-          },
-          x: {
-            type: "spring",
-            stiffness: 100,
-            damping: 18,
-          },
+          type: "spring",
+          stiffness: phase === "tapping" ? 280 : 100,
+          damping: phase === "tapping" ? 18 : 16,
+          mass: 0.9,
           opacity: { duration: 0.3 },
         }}
       >
@@ -188,28 +185,21 @@ export function NFCTapAnimation() {
             </motion.p>
           </div>
         </div>
-
-        {/* Subtle phone shadow during tap */}
-        <motion.div
-          className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-2 bg-black/10 rounded-full blur-sm"
-          animate={{
-            scaleX: phase === "tapping" || phase === "success" ? 1.2 : 0.8,
-            opacity: phase === "tapping" || phase === "success" ? 0.3 : 0.1,
-          }}
-          transition={{ duration: 0.2 }}
-        />
       </motion.div>
 
-      {/* Ripple effects on contact - synced with tap */}
+      {/* Ripple effects on contact - positioned at top of phone contact point */}
       {(phase === "tapping" || phase === "success") && [...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute bottom-[32%] w-28 h-8 rounded-full border-2"
-          style={{ borderColor: "hsla(38, 38%, 60%, 0.4)" }}
+          className="absolute w-24 h-8 rounded-full border-2"
+          style={{ 
+            borderColor: "hsla(38, 38%, 60%, 0.4)",
+            top: "40%",
+          }}
           initial={{ opacity: 0, scale: 0.4 }}
           animate={{
             opacity: [0, 0.7, 0],
-            scale: [0.4, 1.3 + i * 0.25, 1.8 + i * 0.3],
+            scale: [0.4, 1.4 + i * 0.2, 1.8 + i * 0.25],
           }}
           transition={{
             duration: 0.6,
@@ -219,9 +209,9 @@ export function NFCTapAnimation() {
         />
       ))}
 
-      {/* Success stamp indicator - appears in sync with tap */}
+      {/* Success stamp indicator */}
       <motion.div
-        className="absolute top-[20%] right-[6%]"
+        className="absolute top-[22%] right-[8%]"
         initial={{ scale: 0, opacity: 0, y: 20 }}
         animate={phase === "success" ? {
           scale: 1,
