@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Coffee, Gift, ChevronDown, ChevronUp } from "lucide-react";
+import { Coffee, Gift, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LocationMap } from "./LocationMap";
 
@@ -13,6 +13,13 @@ interface LoyaltyCardProps {
   longitude?: number;
   className?: string;
   onClick?: () => void;
+}
+
+// Helper to convert decimal coordinates to DMS format
+function formatCoordinates(lat: number, lng: number): string {
+  const latDir = lat >= 0 ? "N" : "S";
+  const lngDir = lng >= 0 ? "E" : "W";
+  return `${Math.abs(lat).toFixed(4)}° ${latDir}, ${Math.abs(lng).toFixed(4)}° ${lngDir}`;
 }
 
 export function LoyaltyCard({
@@ -30,9 +37,10 @@ export function LoyaltyCard({
   const stampsRemaining = stampsRequired - stampsCollected;
   const progress = Math.min((stampsCollected / stampsRequired) * 100, 100);
 
-  // Default coordinates if not provided (for demo purposes)
+  // Default coordinates if not provided
   const lat = latitude ?? 40.7128;
   const lng = longitude ?? -74.006;
+  const coordinates = formatCoordinates(lat, lng);
 
   const handleClick = () => {
     setIsExpanded(!isExpanded);
@@ -155,9 +163,8 @@ export function LoyaltyCard({
           >
             <div className="px-5 pb-5 pt-2 border-t border-border/30">
               <LocationMap
-                cafeName={cafeName}
-                latitude={lat}
-                longitude={lng}
+                location={cafeName}
+                coordinates={coordinates}
               />
             </div>
           </motion.div>
