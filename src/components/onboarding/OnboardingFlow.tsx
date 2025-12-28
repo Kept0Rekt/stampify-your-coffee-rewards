@@ -22,13 +22,13 @@ const screens: OnboardingScreen[] = [
     animation: <DigitalCardsAnimation />,
     title: "Digital Loyalty Cards",
     description: "Replace all your paper loyalty cards with beautiful digital ones. Never lose a stamp again!",
-    highlight: "One app, all your cafés",
+    highlight: "Get Started Free",
   },
   {
     animation: <NFCTapAnimation />,
     title: "Tap to Earn Stamps",
     description: "Simply tap your phone on the café's NFC reader to collect stamps instantly. No scanning needed!",
-    highlight: "Just tap & go",
+    highlight: "Start Collecting Now",
   },
   {
     animation: <QRScanAnimation />,

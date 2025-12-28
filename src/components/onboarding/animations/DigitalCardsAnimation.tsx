@@ -85,7 +85,7 @@ export function DigitalCardsAnimation() {
         }}
       >
         <motion.div
-          className="relative w-72 h-44 rounded-2xl bg-gradient-to-br from-stone-100 via-neutral-50 to-stone-100 border border-neutral-200 shadow-lg overflow-hidden"
+          className="relative w-80 h-52 rounded-2xl bg-gradient-to-br from-stone-100 via-neutral-50 to-stone-100 border border-neutral-200 shadow-xl overflow-hidden"
           animate={phase === "complete" ? {
             boxShadow: [
               "0 10px 30px rgba(201, 168, 106, 0.12)",
@@ -108,16 +108,16 @@ export function DigitalCardsAnimation() {
           />
 
           {/* Card content */}
-          <div className="absolute inset-0 p-5 flex flex-col justify-between">
+          <div className="absolute inset-0 p-6 flex flex-col justify-between">
             {/* Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="bg-white/80 rounded-xl p-2 shadow-sm">
-                  <img src={stampifyLogo} alt="Stampify" className="h-8 w-auto object-contain" />
+                  <img src={stampifyLogo} alt="Stampify" className="h-10 w-auto object-contain" />
                 </div>
                 <div>
-                  <div className="w-20 h-2.5 bg-neutral-300 rounded" />
-                  <div className="w-14 h-2 bg-neutral-200 rounded mt-1.5" />
+                  <div className="w-24 h-3 bg-neutral-300 rounded" />
+                  <div className="w-16 h-2.5 bg-neutral-200 rounded mt-1.5" />
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export function DigitalCardsAnimation() {
               {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="w-7 h-7 rounded-full border border-neutral-300 flex items-center justify-center bg-white/50"
+                  className="w-8 h-8 rounded-full border border-neutral-300 flex items-center justify-center bg-white/50"
                   initial={{ scale: 0 }}
                   animate={phase === "complete" ? { scale: 1 } : {}}
                   transition={{
@@ -136,9 +136,9 @@ export function DigitalCardsAnimation() {
                     ease: [0.34, 1.56, 0.64, 1],
                   }}
                 >
-                  {i < 5 && (
+                {i < 5 && (
                     <motion.div
-                      className="w-4 h-4 rounded-full"
+                      className="w-5 h-5 rounded-full"
                       style={{ background: "hsl(38 38% 60%)" }}
                       initial={{ scale: 0 }}
                       animate={phase === "complete" ? { scale: 1 } : {}}

@@ -77,15 +77,16 @@ export function NFCTapAnimation() {
         />
       </motion.div>
 
-      {/* Phone Device */}
+      {/* Phone Device - animated tapping motion */}
       <motion.div
         className="absolute w-48 h-80 rounded-[2.5rem] bg-gradient-to-b from-neutral-100 to-white border border-neutral-200 shadow-lg overflow-hidden"
-        initial={{ y: -60 }}
+        initial={{ y: -80, rotate: -5 }}
         animate={{
-          y: phase === "tapping" || phase === "success" ? 40 : -60,
+          y: phase === "tapping" || phase === "success" ? 35 : -80,
+          rotate: phase === "tapping" || phase === "success" ? 0 : -5,
         }}
         transition={{
-          duration: 0.6,
+          duration: 0.5,
           ease: [0.4, 0, 0.2, 1],
         }}
       >
@@ -171,9 +172,9 @@ export function NFCTapAnimation() {
         />
       ))}
 
-      {/* Success stamp indicator */}
+      {/* Success stamp indicator - more prominent */}
       <motion.div
-        className="absolute top-[18%] right-[15%]"
+        className="absolute top-[15%] right-[10%]"
         initial={{ scale: 0, opacity: 0 }}
         animate={phase === "success" ? {
           scale: [0, 1.2, 1],
@@ -186,32 +187,33 @@ export function NFCTapAnimation() {
         }}
       >
         <motion.div
-          className="w-14 h-14 rounded-full flex items-center justify-center shadow-md"
-          style={{ background: "hsl(38 38% 60%)" }}
+          className="w-20 h-20 rounded-full flex items-center justify-center shadow-lg"
+          style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 50%))" }}
           animate={phase === "success" ? {
             boxShadow: [
-              "0 2px 12px hsla(38, 38%, 60%, 0.2)",
-              "0 4px 20px hsla(38, 38%, 60%, 0.3)",
-              "0 2px 12px hsla(38, 38%, 60%, 0.2)",
+              "0 4px 20px hsla(38, 45%, 55%, 0.3)",
+              "0 8px 32px hsla(38, 45%, 55%, 0.5)",
+              "0 4px 20px hsla(38, 45%, 55%, 0.3)",
             ],
+            scale: [1, 1.05, 1],
           } : {}}
           transition={{
-            duration: 1,
-            repeat: 1,
+            duration: 1.2,
+            repeat: Infinity,
             ease: "easeInOut",
           }}
         >
-          <span className="text-xl text-white font-semibold">✓</span>
+          <span className="text-2xl text-white font-bold">✓</span>
         </motion.div>
-        <motion.p
-          className="text-sm font-medium text-center mt-2"
-          style={{ color: "hsl(38 38% 50%)" }}
-          initial={{ opacity: 0, y: 5 }}
-          animate={phase === "success" ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5 }}
+        <motion.div
+          className="mt-3 px-4 py-2 rounded-full shadow-lg"
+          style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 50%))" }}
+          initial={{ opacity: 0, y: 10, scale: 0.8 }}
+          animate={phase === "success" ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ delay: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
         >
-          +1 Stamp
-        </motion.p>
+          <span className="text-base font-bold text-white">+1 Stamp</span>
+        </motion.div>
       </motion.div>
     </div>
   );
