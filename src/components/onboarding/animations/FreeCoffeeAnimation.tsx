@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-// Simple To-Go Coffee Cup SVG
-function ToGoCup({ size = 48 }: { size?: number }) {
+// Simple To-Go Coffee Cup SVG - mobile sized
+function ToGoCup({ size = 36 }: { size?: number }) {
   return (
     <svg width={size} height={size * 1.25} viewBox="0 0 48 60" fill="none">
       {/* Lid */}
@@ -45,10 +45,10 @@ export function FreeCoffeeAnimation() {
         }}
       />
 
-      <div className="relative w-full max-w-sm px-6">
+      <div className="relative w-full max-w-xs px-4">
         {/* Free Plan Card */}
         <motion.div
-          className="rounded-2xl p-5 mb-4"
+          className="rounded-xl p-4 mb-3"
           style={{ 
             background: 'white',
             boxShadow: '0 2px 12px hsla(35, 20%, 50%, 0.08)'
@@ -57,11 +57,11 @@ export function FreeCoffeeAnimation() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium" style={{ color: 'hsl(35 15% 45%)' }}>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-medium" style={{ color: 'hsl(35 15% 45%)' }}>
               Free Plan
             </span>
-            <span className="text-xs px-2.5 py-1 rounded-full" style={{ 
+            <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ 
               background: 'hsl(35 20% 94%)',
               color: 'hsl(35 15% 50%)'
             }}>
@@ -70,11 +70,11 @@ export function FreeCoffeeAnimation() {
           </div>
           
           {/* 8 stamps */}
-          <div className="flex justify-between gap-1.5 mb-3">
+          <div className="flex justify-between gap-1 mb-2.5">
             {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="relative w-8 h-8 rounded-full flex items-center justify-center"
+                className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center"
                 style={{
                   background: "transparent",
                   border: "1.5px solid hsl(35 15% 85%)",
@@ -89,7 +89,7 @@ export function FreeCoffeeAnimation() {
               >
                 {/* Fill dot -> expands to fill the circle */}
                 <motion.div
-                  className="absolute inset-[3px] rounded-full"
+                  className="absolute inset-[2px] rounded-full"
                   style={{ background: "hsl(38 45% 55%)" }}
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: [0, 1.06, 1], opacity: [0, 1, 1] }}
@@ -104,19 +104,19 @@ export function FreeCoffeeAnimation() {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-xs" style={{ color: 'hsl(35 12% 55%)' }}>
+            <span className="text-[10px]" style={{ color: 'hsl(35 12% 55%)' }}>
               8 stamps required
             </span>
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs" style={{ color: 'hsl(35 12% 55%)' }}>=</span>
-              <ToGoCup size={20} />
+            <div className="flex items-center gap-1">
+              <span className="text-[10px]" style={{ color: 'hsl(35 12% 55%)' }}>=</span>
+              <ToGoCup size={16} />
             </div>
           </div>
         </motion.div>
 
         {/* Premium Plan Card */}
         <motion.div
-          className="rounded-2xl p-5 relative overflow-hidden"
+          className="rounded-xl p-4 relative overflow-hidden"
           style={{ 
             background: 'linear-gradient(135deg, hsl(38 50% 56%) 0%, hsl(38 45% 50%) 100%)',
             boxShadow: '0 4px 20px hsla(38, 45%, 45%, 0.25)'
@@ -132,29 +132,29 @@ export function FreeCoffeeAnimation() {
           {/* Subtle shine */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
-            initial={{ x: -200 }}
-            animate={showPremium ? { x: 300 } : {}}
+            initial={{ x: -160 }}
+            animate={showPremium ? { x: 240 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           />
 
           <div className="relative">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-white">
+                <span className="text-xs font-semibold text-white">
                   Premium Plan
                 </span>
               </div>
-              <span className="text-xs px-2.5 py-1 rounded-full bg-white/20 text-white font-medium">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/20 text-white font-medium">
                 Recommended
               </span>
             </div>
             
             {/* 6 stamps */}
-            <div className="flex justify-center gap-2 mb-3">
+            <div className="flex justify-center gap-1.5 mb-2.5">
               {[...Array(6)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="relative w-10 h-10 rounded-full flex items-center justify-center"
+                  className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center"
                   style={{
                     background: "transparent",
                     border: "1.5px solid hsla(0, 0%, 100%, 0.45)",
@@ -169,7 +169,7 @@ export function FreeCoffeeAnimation() {
                 >
                   {/* Fill dot -> expands to fill the circle */}
                   <motion.div
-                    className="absolute inset-[4px] rounded-full"
+                    className="absolute inset-[3px] rounded-full"
                     style={{ background: "hsl(0 0% 100%)" }}
                     initial={{ scale: 0, opacity: 0 }}
                     animate={showPremium ? { scale: [0, 1.06, 1], opacity: [0, 1, 1] } : {}}
@@ -184,11 +184,11 @@ export function FreeCoffeeAnimation() {
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-xs text-white/80">
+              <span className="text-[10px] text-white/80">
                 6 stamps required
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-white/90">
+                <span className="text-[10px] font-medium text-white/90">
                   2 fewer stamps
                 </span>
               </div>
@@ -198,7 +198,7 @@ export function FreeCoffeeAnimation() {
 
         {/* Summary */}
         <motion.p
-          className="text-center mt-6 text-sm"
+          className="text-center mt-5 text-xs"
           style={{ color: 'hsl(35 15% 50%)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showPremium ? 1 : 0 }}
