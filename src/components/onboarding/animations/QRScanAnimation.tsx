@@ -2,43 +2,61 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
-// QR Code component
+// QR Code component - warm styled
 function QRCode({ size = "md" }: { size?: "sm" | "md" }) {
-  const dim = size === "sm" ? "w-16 h-16" : "w-24 h-24";
+  const dim = size === "sm" ? "w-14 h-14" : "w-20 h-20";
   return (
-    <div className={`${dim} bg-white rounded-lg p-2 shadow-lg`}>
+    <div className={`${dim} bg-white rounded-xl p-2 shadow-soft`}>
       <div className="w-full h-full grid grid-cols-5 gap-0.5">
         {[1,1,1,0,1, 1,0,1,1,1, 1,1,0,1,0, 0,1,1,0,1, 1,1,1,1,1].map((f, i) => (
-          <div key={i} className={`rounded-[1px] ${f ? "bg-charcoal" : "bg-transparent"}`} />
+          <div 
+            key={i} 
+            className={`rounded-[1px] ${f ? "bg-foreground" : "bg-transparent"}`} 
+          />
         ))}
       </div>
     </div>
   );
 }
 
-// QR Machine below phone
-function QRMachine() {
+// QR Terminal - warm beige styling
+function QRTerminal() {
   return (
     <div className="relative flex flex-col items-center">
       {/* Terminal body */}
-      <div 
-        className="w-28 h-20 rounded-xl bg-gradient-to-b from-zinc-700 to-zinc-800 relative"
-        style={{ boxShadow: '0 8px 24px -8px rgba(0,0,0,0.5)' }}
+      <motion.div 
+        className="w-32 h-24 rounded-2xl relative overflow-hidden"
+        style={{ 
+          background: 'linear-gradient(180deg, hsl(35 20% 88%) 0%, hsl(35 18% 82%) 100%)',
+          boxShadow: '0 4px 20px -4px hsla(35, 20%, 40%, 0.15), 0 1px 3px hsla(0, 0%, 0%, 0.05)'
+        }}
       >
-        {/* Screen */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-10 rounded-lg bg-gradient-to-b from-zinc-900 to-black overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <QRCode size="sm" />
-          </div>
+        {/* Screen area */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-14 rounded-xl bg-white flex items-center justify-center shadow-inner">
+          <QRCode size="sm" />
         </div>
-      </div>
-      {/* Base stand */}
-      <div className="w-16 h-2 rounded-b-lg bg-zinc-800 -mt-1" />
+        
+        {/* Status indicator */}
+        <motion.div 
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary"
+          animate={{ 
+            opacity: [0.5, 1, 0.5],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+      
+      {/* Base */}
+      <div 
+        className="w-20 h-2 rounded-b-lg -mt-0.5"
+        style={{ background: 'hsl(35 18% 78%)' }}
+      />
     </div>
   );
 }
 
-// iPhone device with 3D transform support
+// iPhone device - warm palette
 function IPhoneDevice({ 
   showCard = false, 
   showScanner = true,
@@ -51,80 +69,59 @@ function IPhoneDevice({
   showQRInside?: boolean;
 }) {
   return (
-    <div className="relative w-52 h-[380px]" style={{ transformStyle: 'preserve-3d' }}>
-      {/* Outer frame with metallic edge */}
+    <div className="relative w-48 h-[360px]" style={{ transformStyle: 'preserve-3d' }}>
+      {/* Outer frame - warm metallic */}
       <div 
-        className="absolute inset-0 rounded-[3rem] bg-gradient-to-b from-zinc-600 via-zinc-700 to-zinc-800"
+        className="absolute inset-0 rounded-[2.75rem]"
         style={{
+          background: 'linear-gradient(180deg, hsl(35 15% 75%) 0%, hsl(35 12% 68%) 100%)',
           boxShadow: `
-            inset 0 1px 0 rgba(255,255,255,0.15),
-            inset 0 -1px 0 rgba(0,0,0,0.3),
-            0 25px 50px -12px rgba(0,0,0,0.5)
+            inset 0 1px 0 hsla(35, 20%, 90%, 0.5),
+            0 20px 40px -12px hsla(35, 20%, 30%, 0.25)
           `
         }}
       />
       
       {/* Inner bezel */}
-      <div className="absolute inset-[3px] rounded-[2.75rem] bg-zinc-900" />
-      
-      {/* Screen area */}
       <div 
-        className="absolute inset-[6px] rounded-[2.5rem] overflow-hidden"
-        style={{
-          background: 'linear-gradient(180deg, #1a1a1e 0%, #0d0d0f 100%)',
-          boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.5)'
-        }}
+        className="absolute inset-[3px] rounded-[2.5rem]"
+        style={{ background: 'hsl(35 10% 92%)' }}
+      />
+      
+      {/* Screen */}
+      <div 
+        className="absolute inset-[5px] rounded-[2.35rem] overflow-hidden bg-background"
       >
         {/* Dynamic Island */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[90px] h-[28px] bg-black rounded-full z-20 flex items-center justify-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-700">
-            <div className="w-1 h-1 rounded-full bg-zinc-600 mt-[2px] ml-[2px]" />
-          </div>
-        </div>
+        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-6 bg-foreground/90 rounded-full z-20" />
 
         {/* Screen content */}
-        <div className="absolute inset-0 pt-14 pb-2 px-3">
+        <div className="absolute inset-0 pt-12 pb-2 px-3">
           
-          {/* Camera/Scanner view */}
+          {/* Scanner view */}
           <motion.div 
-            className="absolute inset-0 pt-16 flex flex-col items-center justify-center"
+            className="absolute inset-0 pt-14 flex flex-col items-center justify-center"
             animate={{ opacity: showScanner && !showCard ? 1 : 0 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Status bar */}
-            <div className="absolute top-16 left-0 right-0 flex justify-between px-6">
-              <span className="text-[10px] text-white/40 font-light tracking-wide">9:41</span>
-              <div className="flex items-center gap-1">
-                <div className="flex gap-0.5">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="w-0.5 rounded-full bg-white/40" style={{ height: 4 + i }} />
-                  ))}
-                </div>
-                <div className="w-5 h-2.5 rounded-sm border border-white/40 relative ml-1">
-                  <div className="absolute inset-0.5 right-1 bg-white/40 rounded-[1px]" />
-                </div>
-              </div>
-            </div>
-
-            {/* Viewfinder frame */}
-            <div className="relative w-36 h-36 flex items-center justify-center">
-              {/* Corner brackets */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 144 144">
-                <path d="M4 36 L4 8 Q4 4 8 4 L36 4" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                <path d="M108 4 L136 4 Q140 4 140 8 L140 36" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                <path d="M4 108 L4 136 Q4 140 8 140 L36 140" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                <path d="M108 140 L136 140 Q140 140 140 136 L140 108" stroke="rgba(212,175,55,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            {/* Viewfinder */}
+            <div className="relative w-32 h-32 flex items-center justify-center">
+              {/* Corner brackets - gold accent */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 128 128">
+                <path d="M4 32 L4 8 Q4 4 8 4 L32 4" stroke="hsl(38 45% 55%)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M96 4 L120 4 Q124 4 124 8 L124 32" stroke="hsl(38 45% 55%)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M4 96 L4 120 Q4 124 8 124 L32 124" stroke="hsl(38 45% 55%)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M96 124 L120 124 Q124 124 124 120 L124 96" stroke="hsl(38 45% 55%)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
               </svg>
               
               {/* Scanning pulse */}
               <motion.div
-                className="absolute inset-4 rounded-xl border-2 border-gold/0"
+                className="absolute inset-3 rounded-xl"
                 animate={isScanning ? {
-                  borderColor: ["rgba(212,175,55,0)", "rgba(212,175,55,0.5)", "rgba(212,175,55,0)"],
                   boxShadow: [
-                    "inset 0 0 0 rgba(212,175,55,0)",
-                    "inset 0 0 20px rgba(212,175,55,0.2)",
-                    "inset 0 0 0 rgba(212,175,55,0)"
+                    "inset 0 0 0 hsla(38, 45%, 55%, 0)",
+                    "inset 0 0 20px hsla(38, 45%, 55%, 0.15)",
+                    "inset 0 0 0 hsla(38, 45%, 55%, 0)"
                   ]
                 } : {}}
                 transition={{ duration: 0.8, repeat: 2 }}
@@ -133,15 +130,15 @@ function IPhoneDevice({
               {/* Scan line */}
               {isScanning && (
                 <motion.div
-                  className="absolute left-4 right-4 h-0.5 bg-gold rounded-full z-10"
-                  style={{ boxShadow: "0 0 12px rgba(212,175,55,0.8)" }}
-                  initial={{ top: 16 }}
-                  animate={{ top: [16, 128, 16] }}
+                  className="absolute left-3 right-3 h-0.5 bg-primary rounded-full z-10"
+                  style={{ boxShadow: "0 0 12px hsla(38, 45%, 55%, 0.6)" }}
+                  initial={{ top: 12 }}
+                  animate={{ top: [12, 116, 12] }}
                   transition={{ duration: 1.5, ease: "easeInOut" }}
                 />
               )}
 
-              {/* QR appears inside viewfinder after scan */}
+              {/* QR appears inside viewfinder */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ 
@@ -156,48 +153,39 @@ function IPhoneDevice({
 
             {/* Instruction text */}
             <motion.span 
-              className="text-white/50 text-[13px] font-light tracking-tight mt-5"
-              animate={{ opacity: isScanning ? 0.3 : 0.5 }}
+              className="text-muted-foreground text-xs font-medium mt-4"
+              animate={{ opacity: isScanning ? 0.5 : 0.7 }}
             >
               {isScanning ? "Scanning..." : showQRInside ? "Found!" : "Point at QR code"}
             </motion.span>
           </motion.div>
 
-          {/* Loyalty card - morphs from QR */}
+          {/* Loyalty card view */}
           <motion.div 
-            className="absolute inset-0 pt-16 pb-8 px-4 flex flex-col items-center justify-center"
+            className="absolute inset-0 pt-14 pb-6 px-4 flex flex-col items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: showCard ? 1 : 0 }}
             transition={{ duration: 0.4 }}
           >
             <motion.div 
               className="w-full"
-              initial={{ scale: 0.4, borderRadius: 8 }}
-              animate={{ 
-                scale: showCard ? 1 : 0.4,
-                borderRadius: showCard ? 16 : 8
-              }}
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ scale: 0.5 }}
+              animate={{ scale: showCard ? 1 : 0.5 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             >
               {/* Loyalty Card */}
               <motion.div 
-                className="w-full h-[150px] rounded-2xl overflow-hidden relative"
-                initial={{ 
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)'
+                className="w-full h-36 rounded-2xl overflow-hidden relative"
+                style={{ 
+                  background: 'linear-gradient(145deg, hsl(38 50% 58%) 0%, hsl(38 45% 50%) 100%)',
+                  boxShadow: '0 8px 24px -8px hsla(38, 45%, 45%, 0.35)'
                 }}
-                animate={{ 
-                  background: showCard 
-                    ? 'linear-gradient(135deg, #D4AF37 0%, #B8860B 50%, #8B6914 100%)'
-                    : 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)'
-                }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                style={{ boxShadow: '0 10px 30px -10px rgba(212,175,55,0.3)' }}
               >
                 {/* Shine effect */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
-                  initial={{ x: -200 }}
-                  animate={showCard ? { x: 250 } : { x: -200 }}
+                  initial={{ x: -180 }}
+                  animate={showCard ? { x: 220 } : { x: -180 }}
                   transition={{ duration: 0.7, delay: 0.4 }}
                 />
                 
@@ -210,26 +198,26 @@ function IPhoneDevice({
                   {/* Header */}
                   <div className="flex items-center gap-3">
                     <motion.div 
-                      className="w-12 h-12 rounded-xl bg-charcoal/40 backdrop-blur-sm flex items-center justify-center p-2"
+                      className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center p-1.5"
                       initial={{ scale: 0 }}
                       animate={{ scale: showCard ? 1 : 0 }}
-                      transition={{ delay: 0.4, duration: 0.25, type: "spring", stiffness: 300 }}
+                      transition={{ delay: 0.4, type: "spring", stiffness: 400, damping: 20 }}
                     >
-                      <img src={stampifyLogo} alt="Stampify" className="h-8 w-auto object-contain" />
+                      <img src={stampifyLogo} alt="Stampify" className="h-6 w-auto object-contain" />
                     </motion.div>
                     <div>
                       <motion.div 
-                        className="text-white font-semibold text-[15px] tracking-tight"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: showCard ? 1 : 0, x: showCard ? 0 : -10 }}
+                        className="text-white font-semibold text-sm"
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: showCard ? 1 : 0, x: showCard ? 0 : -8 }}
                         transition={{ delay: 0.45, duration: 0.25 }}
                       >
                         The Daily Grind
                       </motion.div>
                       <motion.div 
-                        className="text-white/60 text-[11px] font-light"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: showCard ? 1 : 0, x: showCard ? 0 : -10 }}
+                        className="text-white/70 text-[10px] font-medium"
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: showCard ? 1 : 0, x: showCard ? 0 : -8 }}
                         transition={{ delay: 0.5, duration: 0.25 }}
                       >
                         Loyalty Card
@@ -237,22 +225,22 @@ function IPhoneDevice({
                     </div>
                   </div>
 
-                  {/* Stamps */}
+                  {/* Stamps row */}
                   <div className="flex justify-between px-0.5">
                     {[...Array(8)].map((_, i) => (
                       <motion.div
                         key={i}
-                        className="w-[24px] h-[24px] rounded-full bg-white/10 border border-white/30 flex items-center justify-center"
+                        className="w-5 h-5 rounded-full bg-white/15 border border-white/30 flex items-center justify-center"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={showCard ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                        transition={{ delay: 0.55 + i * 0.04, duration: 0.2 }}
+                        transition={{ delay: 0.55 + i * 0.035, duration: 0.2 }}
                       >
                         {i === 0 && (
                           <motion.div 
-                            className="w-3.5 h-3.5 rounded-full bg-white/70"
+                            className="w-3 h-3 rounded-full bg-white/80"
                             initial={{ scale: 0 }}
                             animate={showCard ? { scale: 1 } : { scale: 0 }}
-                            transition={{ delay: 0.85, duration: 0.15 }}
+                            transition={{ delay: 0.85, type: "spring", stiffness: 500 }}
                           />
                         )}
                       </motion.div>
@@ -264,13 +252,13 @@ function IPhoneDevice({
               {/* Welcome badge */}
               <motion.div
                 className="flex justify-center mt-4"
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: showCard ? 1 : 0, y: showCard ? 0 : 5 }}
-                transition={{ delay: 1, duration: 0.25 }}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: showCard ? 1 : 0, y: showCard ? 0 : 4 }}
+                transition={{ delay: 0.9, duration: 0.25 }}
               >
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
                   <span className="text-xs">🎁</span>
-                  <span className="text-white/60 text-[11px] font-light">Welcome stamp added</span>
+                  <span className="text-primary text-[10px] font-medium">Welcome stamp added</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -278,7 +266,7 @@ function IPhoneDevice({
         </div>
 
         {/* Home indicator */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 bg-white/20 rounded-full" />
+        <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-24 h-1 bg-foreground/20 rounded-full" />
       </div>
     </div>
   );
@@ -289,10 +277,10 @@ export function QRScanAnimation() {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase("scan"), 300),      // Start scanning
-      setTimeout(() => setPhase("found"), 1800),    // QR found
-      setTimeout(() => setPhase("pivot"), 2400),    // Phone pivots
-      setTimeout(() => setPhase("morph"), 3200),    // QR morphs to card
+      setTimeout(() => setPhase("scan"), 400),
+      setTimeout(() => setPhase("found"), 1900),
+      setTimeout(() => setPhase("pivot"), 2500),
+      setTimeout(() => setPhase("morph"), 3300),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -302,78 +290,99 @@ export function QRScanAnimation() {
   const isPivoting = phase === "pivot" || phase === "morph";
   const showCard = phase === "morph";
 
-  // 3D rotation values
-  const phoneRotation = {
-    idle: { rotateX: 12, rotateY: -20, rotateZ: 3 },
-    scan: { rotateX: 12, rotateY: -20, rotateZ: 3 },
-    found: { rotateX: 12, rotateY: -20, rotateZ: 3 },
-    pivot: { rotateX: 0, rotateY: 0, rotateZ: 0 },
-    morph: { rotateX: 0, rotateY: 0, rotateZ: 0 },
-  };
-
-  const currentRotation = phoneRotation[phase] || phoneRotation.idle;
-
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      {/* Clean background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal to-espresso/10" />
-
-      {/* 3D perspective container - no overflow hidden */}
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+      {/* Warm background gradient */}
       <div 
-        className="relative flex flex-col items-center gap-6"
-        style={{ perspective: '1200px' }}
+        className="absolute inset-0"
+        style={{ 
+          background: 'linear-gradient(180deg, hsl(35 25% 92%) 0%, hsl(35 20% 88%) 50%, hsl(35 18% 85%) 100%)'
+        }}
+      />
+
+      {/* Subtle pattern overlay */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, hsla(35, 15%, 70%, 0.15) 1px, transparent 0)',
+          backgroundSize: '24px 24px'
+        }}
+      />
+
+      {/* 3D perspective container */}
+      <div 
+        className="relative flex flex-col items-center gap-8"
+        style={{ perspective: '1000px' }}
       >
-        {/* QR Machine - above phone, fades out during pivot */}
+        {/* QR Terminal - fades during pivot */}
         <motion.div
-          initial={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ 
             opacity: isPivoting ? 0 : 1,
-            y: isPivoting ? -20 : 0,
+            y: isPivoting ? -10 : 0,
             scale: isPivoting ? 0.9 : 1
           }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <QRMachine />
+          <QRTerminal />
         </motion.div>
 
-        {/* Confirmation badge - slides out from behind phone on the right */}
+        {/* Success badge - slides from right */}
         <motion.div
-          className="absolute top-1/2 left-1/2 z-0"
-          initial={{ opacity: 0, x: 20, y: "-50%", scale: 0.8 }}
+          className="absolute top-1/2 right-0 z-30"
+          initial={{ opacity: 0, x: -20, y: "-50%" }}
           animate={showCard 
-            ? { opacity: 1, x: 120, y: "-50%", scale: 1 } 
-            : { opacity: 0, x: 20, y: "-50%", scale: 0.8 }
+            ? { opacity: 1, x: 90, y: "-50%" } 
+            : { opacity: 0, x: -20, y: "-50%" }
           }
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.5, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <div className="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-green-500/20 border border-green-500/40 backdrop-blur-md shadow-xl">
-            <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center shadow-md">
-              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-white">
+          <div 
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl"
+            style={{
+              background: 'hsla(140, 40%, 45%, 0.15)',
+              border: '1px solid hsla(140, 40%, 50%, 0.3)',
+              backdropFilter: 'blur(8px)'
+            }}
+          >
+            <div 
+              className="w-5 h-5 rounded-full flex items-center justify-center"
+              style={{ background: 'hsl(140 40% 45%)' }}
+            >
+              <svg viewBox="0 0 24 24" className="w-3 h-3 text-white">
                 <path d="M5 12l5 5L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </div>
-            <span className="text-green-400 font-semibold text-base whitespace-nowrap">Café added</span>
+            <span 
+              className="font-semibold text-sm whitespace-nowrap"
+              style={{ color: 'hsl(140 40% 35%)' }}
+            >
+              Café added
+            </span>
           </div>
         </motion.div>
 
-        {/* iPhone with 3D pivot animation */}
+        {/* iPhone with 3D pivot */}
         <motion.div
           style={{ transformStyle: 'preserve-3d' }}
           initial={{ 
-            rotateX: -12, 
-            rotateY: -20, 
-            rotateZ: -3,
-            y: 0 
+            rotateX: -10, 
+            rotateY: -15, 
+            rotateZ: -2,
+            y: 10,
+            opacity: 0
           }}
           animate={{ 
-            rotateX: isPivoting ? 0 : -12,
-            rotateY: isPivoting ? 0 : -20,
-            rotateZ: isPivoting ? 0 : -3,
-            y: isPivoting ? 20 : 0
+            rotateX: isPivoting ? 0 : -10,
+            rotateY: isPivoting ? 0 : -15,
+            rotateZ: isPivoting ? 0 : -2,
+            y: isPivoting ? 30 : 10,
+            opacity: 1
           }}
           transition={{ 
-            duration: 0.8, 
-            ease: [0.4, 0, 0.2, 1]
+            duration: 0.7, 
+            ease: [0.25, 0.1, 0.25, 1],
+            opacity: { duration: 0.4 }
           }}
         >
           <IPhoneDevice 
