@@ -1,20 +1,33 @@
 import { motion } from "framer-motion";
+import { Navigation } from "lucide-react";
 
 interface LocationMapProps {
   location?: string;
   coordinates?: string;
+  latitude?: number;
+  longitude?: number;
   className?: string;
 }
 
 export function LocationMap({
   location = "San Francisco, CA",
   coordinates = "37.7749° N, 122.4194° W",
+  latitude = 37.7749,
+  longitude = -122.4194,
   className,
 }: LocationMapProps) {
+  const handleOpenMaps = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    // Universal maps URL - works on iOS (Apple Maps), Android (Google Maps), and desktop
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    window.open(mapsUrl, "_blank");
+  };
+
   return (
     <div className={`relative select-none ${className}`}>
-      <motion.div
-        className="relative overflow-hidden rounded-xl bg-background border border-border"
+      <motion.button
+        onClick={handleOpenMaps}
+        className="relative w-full overflow-hidden rounded-xl bg-background border border-border cursor-pointer active:scale-[0.98] transition-transform"
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: 160, opacity: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 35 }}
@@ -171,13 +184,26 @@ export function LocationMap({
         </motion.div>
 
         {/* Content overlay */}
-        <div className="relative z-10 h-full flex flex-col justify-end p-4">
+        <div className="relative z-10 h-full flex flex-col justify-between p-4">
+          {/* Navigation hint */}
+          <div className="flex justify-end">
+            <motion.div
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 backdrop-blur-sm"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              <Navigation className="w-3 h-3 text-primary" />
+              <span className="text-[10px] font-medium text-primary">Directions</span>
+            </motion.div>
+          </div>
+
           <div className="space-y-1">
-            <h3 className="text-foreground font-medium text-sm tracking-tight">
+            <h3 className="text-foreground font-medium text-sm tracking-tight text-left">
               {location}
             </h3>
             <motion.p
-              className="text-muted-foreground text-xs font-mono"
+              className="text-muted-foreground text-xs font-mono text-left"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, delay: 0.2 }}
@@ -193,7 +219,7 @@ export function LocationMap({
             />
           </div>
         </div>
-      </motion.div>
+      </motion.button>
     </div>
   );
 }
