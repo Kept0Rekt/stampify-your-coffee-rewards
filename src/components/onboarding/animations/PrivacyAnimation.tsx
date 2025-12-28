@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { ShieldCheck, Lock, Eye, Server } from "lucide-react";
 
 interface PrivacyAnimationProps {
@@ -8,36 +7,6 @@ interface PrivacyAnimationProps {
 }
 
 export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
-  const [showGlow, setShowGlow] = useState(false);
-
-  useEffect(() => {
-    const glowTimer = setTimeout(() => setShowGlow(true), 600);
-    const permissionTimer = setTimeout(() => requestPermissions(), 3000);
-    
-    return () => {
-      clearTimeout(glowTimer);
-      clearTimeout(permissionTimer);
-    };
-  }, []);
-
-  const requestPermissions = async () => {
-    try {
-      await navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          stream.getTracks().forEach(track => track.stop());
-        })
-        .catch(() => {});
-
-      navigator.geolocation.getCurrentPosition(
-        () => onAllow?.(),
-        () => onSkip?.(),
-        { timeout: 10000 }
-      );
-    } catch {
-      onSkip?.();
-    }
-  };
-
   const trustBadges = [
     { icon: Lock, label: "Encrypted" },
     { icon: Eye, label: "Private" },
@@ -49,45 +18,40 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
       {/* Clean background */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 to-neutral-100" />
 
-      {/* Content wrapper for proper centering */}
-      <div className="flex flex-col items-center justify-center gap-10">
-        {/* Single authoritative shield */}
+      {/* Content wrapper */}
+      <div className="relative flex flex-col items-center justify-center gap-8">
+        {/* Shield with pulsing animation */}
         <motion.div
           className="relative flex items-center justify-center"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            duration: 0.6,
-            ease: [0.34, 1.56, 0.64, 1],
-          }}
+          transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
         >
           {/* Outer pulsing ring */}
           <motion.div
-            className="absolute w-44 h-44 rounded-full border-2"
-            style={{ borderColor: "hsla(38, 38%, 55%, 0.2)" }}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={showGlow ? { 
-              scale: [1, 1.15, 1],
-              opacity: [0.4, 0, 0.4],
-            } : {}}
+            className="absolute w-40 h-40 rounded-full border-2"
+            style={{ borderColor: "hsla(38, 38%, 55%, 0.25)" }}
+            animate={{ 
+              scale: [1, 1.12, 1],
+              opacity: [0.4, 0.1, 0.4],
+            }}
             transition={{
               duration: 2.5,
               repeat: Infinity,
-              ease: "easeOut",
+              ease: "easeInOut",
             }}
           />
 
           {/* Inner glow */}
           <motion.div
-            className="absolute w-36 h-36 rounded-full"
+            className="absolute w-32 h-32 rounded-full"
             style={{ 
-              background: "radial-gradient(circle, hsla(38, 38%, 55%, 0.2) 0%, transparent 70%)" 
+              background: "radial-gradient(circle, hsla(38, 38%, 55%, 0.15) 0%, transparent 70%)" 
             }}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={showGlow ? { 
-              scale: [1, 1.1, 1],
-              opacity: [0.6, 1, 0.6],
-            } : {}}
+            animate={{ 
+              scale: [1, 1.08, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
             transition={{
               duration: 2,
               repeat: Infinity,
@@ -95,12 +59,9 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
             }}
           />
 
-          {/* Main shield icon with pulse */}
+          {/* Main shield icon with subtle pulse */}
           <motion.div
-            initial={{ scale: 1 }}
-            animate={showGlow ? { 
-              scale: [1, 1.05, 1],
-            } : {}}
+            animate={{ scale: [1, 1.03, 1] }}
             transition={{
               duration: 2,
               repeat: Infinity,
@@ -108,50 +69,47 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
             }}
           >
             <ShieldCheck 
-              className="w-28 h-28 drop-shadow-lg"
+              className="w-24 h-24 drop-shadow-lg"
               style={{ color: "hsl(38 38% 50%)" }}
               strokeWidth={1.3}
             />
           </motion.div>
         </motion.div>
 
-        {/* Trust badges and message container */}
-        <div className="flex flex-col items-center gap-4">
-          {/* Trust badges */}
-          <motion.div 
-            className="flex items-center justify-center gap-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
-          >
-            {trustBadges.map(({ icon: Icon, label }, index) => (
-              <motion.div
-                key={label}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-neutral-200 shadow-sm"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ 
-                  duration: 0.4, 
-                  delay: 1 + index * 0.1,
-                  ease: [0.34, 1.56, 0.64, 1],
-                }}
-              >
-                <Icon className="w-3.5 h-3.5 text-neutral-500" strokeWidth={2} />
-                <span className="text-xs font-medium text-neutral-600">{label}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+        {/* Trust badges */}
+        <motion.div 
+          className="flex items-center justify-center gap-2"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+        >
+          {trustBadges.map(({ icon: Icon, label }, index) => (
+            <motion.div
+              key={label}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 border border-neutral-200 shadow-sm"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                duration: 0.4, 
+                delay: 0.5 + index * 0.1,
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
+            >
+              <Icon className="w-3.5 h-3.5 text-neutral-500" strokeWidth={2} />
+              <span className="text-xs font-medium text-neutral-600">{label}</span>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* Privacy message */}
-          <motion.p
-            className="text-xs text-neutral-400 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 1.4 }}
-          >
-            Your data stays on your device
-          </motion.p>
-        </div>
+        {/* Privacy message */}
+        <motion.p
+          className="text-sm text-neutral-500 text-center font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
+          Your data stays on your device
+        </motion.p>
       </div>
     </div>
   );
