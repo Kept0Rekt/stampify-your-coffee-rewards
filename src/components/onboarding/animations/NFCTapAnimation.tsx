@@ -3,38 +3,64 @@ import { useEffect, useState } from "react";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
 export function NFCTapAnimation() {
-  const [phase, setPhase] = useState<"ready" | "approaching" | "tapping" | "success">("ready");
+  const [phase, setPhase] = useState<"offscreen" | "entering" | "hovering" | "tapping" | "contact" | "settle">("offscreen");
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setPhase("approaching"), 400);
-    const timer2 = setTimeout(() => setPhase("tapping"), 1000);
-    const timer3 = setTimeout(() => setPhase("success"), 1200);
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
+    const timers = [
+      setTimeout(() => setPhase("entering"), 200),
+      setTimeout(() => setPhase("hovering"), 700),
+      setTimeout(() => setPhase("tapping"), 1100),
+      setTimeout(() => setPhase("contact"), 1250),
+      setTimeout(() => setPhase("settle"), 1400),
+    ];
+    return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Phone animation - enters from bottom-left, taps with top edge
+  // Natural arc motion - mimics how a person would bring their phone to tap
   const getPhoneAnimation = () => {
     switch (phase) {
-      case "ready":
-        // Start from bottom-left, rotated so top faces up-right
-        return { x: -60, y: 80, rotate: 35 };
-      case "approaching":
-        // Move toward reader, adjusting angle
-        return { x: -15, y: 25, rotate: 15 };
+      case "offscreen":
+        // Start off-screen bottom-left
+        return { x: -100, y: 140, rotate: 45, scale: 0.9 };
+      case "entering":
+        // Arc upward and inward - accelerating
+        return { x: -35, y: 50, rotate: 25, scale: 1 };
+      case "hovering":
+        // Slow down as approaching - moment of aim
+        return { x: -10, y: 18, rotate: 12, scale: 1 };
       case "tapping":
-        // Top edge touches the reader
-        return { x: 0, y: 5, rotate: 5 };
-      case "success":
-        // Slight settle back
-        return { x: -5, y: 12, rotate: 8 };
+        // Final approach - slowing for contact
+        return { x: -2, y: 6, rotate: 6, scale: 1 };
+      case "contact":
+        // Gentle contact with slight compression feel
+        return { x: 0, y: 2, rotate: 4, scale: 1 };
+      case "settle":
+        // Natural settle back after tap
+        return { x: -8, y: 16, rotate: 10, scale: 1 };
       default:
-        return { x: -60, y: 80, rotate: 35 };
+        return { x: -100, y: 140, rotate: 45, scale: 0.9 };
     }
   };
+
+  // Dynamic spring config based on phase
+  const getSpringConfig = () => {
+    switch (phase) {
+      case "entering":
+        return { stiffness: 80, damping: 18, mass: 1 };
+      case "hovering":
+        return { stiffness: 60, damping: 20, mass: 1.2 }; // Slower, more deliberate
+      case "tapping":
+        return { stiffness: 120, damping: 15, mass: 0.8 }; // Slight acceleration
+      case "contact":
+        return { stiffness: 300, damping: 25, mass: 0.5 }; // Quick, precise contact
+      case "settle":
+        return { stiffness: 100, damping: 18, mass: 1 }; // Natural settle
+      default:
+        return { stiffness: 80, damping: 18, mass: 1 };
+    }
+  };
+
+  const isContact = phase === "contact" || phase === "settle";
 
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
@@ -44,21 +70,21 @@ export function NFCTapAnimation() {
       {/* NFC Terminal - centered */}
       <motion.div
         className="absolute w-40 sm:w-48 h-14 sm:h-16 rounded-xl bg-gradient-to-b from-neutral-200 to-neutral-300 border border-neutral-300 shadow-lg"
-        style={{ top: "38%" }}
-        initial={{ opacity: 0, scale: 0.9 }}
+        style={{ top: "36%" }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       >
         {/* Terminal screen */}
         <div className="absolute inset-1.5 rounded-lg bg-white flex items-center justify-center">
           <motion.div
             className="w-9 h-9 rounded-full flex items-center justify-center"
             animate={{
-              backgroundColor: phase === "success" 
+              backgroundColor: isContact
                 ? "hsla(140, 14%, 50%, 0.15)" 
                 : "hsla(38, 38%, 60%, 0.1)",
             }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
           >
             {/* NFC Symbol */}
             <div className="relative">
@@ -69,16 +95,16 @@ export function NFCTapAnimation() {
                   style={{
                     width: 10 + i * 8,
                     height: 10 + i * 8,
-                    borderColor: phase === "success" ? "hsl(140 14% 50%)" : "hsl(38 38% 60%)",
+                    borderColor: isContact ? "hsl(140 14% 50%)" : "hsl(38 38% 60%)",
                   }}
                   animate={{
-                    scale: phase === "tapping" || phase === "success" ? [1, 1.15, 1] : [1, 1.08, 1],
-                    opacity: phase === "tapping" || phase === "success" ? [0.6, 1, 0.6] : [0.4, 0.6, 0.4],
+                    scale: phase === "contact" ? [1, 1.2, 1] : [1, 1.08, 1],
+                    opacity: phase === "contact" ? [0.7, 1, 0.7] : [0.4, 0.6, 0.4],
                   }}
                   transition={{
-                    duration: phase === "tapping" ? 0.3 : 1.2,
-                    delay: i * 0.1,
-                    repeat: phase === "success" ? 0 : Infinity,
+                    duration: phase === "contact" ? 0.25 : 1.2,
+                    delay: i * 0.08,
+                    repeat: phase === "settle" ? 0 : Infinity,
                     ease: "easeInOut",
                   }}
                 />
@@ -91,35 +117,33 @@ export function NFCTapAnimation() {
         <motion.div
           className="absolute top-2 right-2.5 w-2 h-2 rounded-full"
           animate={{
-            backgroundColor: phase === "success" 
+            backgroundColor: isContact
               ? "hsl(140 14% 50%)" 
               : "hsl(38 38% 60%)",
-            boxShadow: phase === "success"
-              ? "0 0 8px hsla(140, 14%, 50%, 0.6)"
+            boxShadow: isContact
+              ? "0 0 10px hsla(140, 14%, 50%, 0.7)"
               : "0 0 4px hsla(38, 38%, 60%, 0.3)",
           }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
         />
       </motion.div>
 
-      {/* Phone Device - enters from bottom-left, taps with top edge */}
+      {/* Phone Device - natural arc motion from bottom-left */}
       <motion.div
         className="absolute w-32 sm:w-36 h-52 sm:h-60 rounded-[1.75rem] bg-gradient-to-b from-neutral-100 to-white border border-neutral-200 shadow-lg overflow-hidden"
         style={{ 
-          top: "42%",
+          top: "40%",
           transformOrigin: "top center" 
         }}
-        initial={{ x: -60, y: 80, rotate: 35, opacity: 0 }}
+        initial={{ x: -100, y: 140, rotate: 45, opacity: 0, scale: 0.9 }}
         animate={{
           ...getPhoneAnimation(),
           opacity: 1,
         }}
         transition={{
           type: "spring",
-          stiffness: phase === "tapping" ? 280 : 100,
-          damping: phase === "tapping" ? 18 : 16,
-          mass: 0.9,
-          opacity: { duration: 0.3 },
+          ...getSpringConfig(),
+          opacity: { duration: 0.25 },
         }}
       >
         {/* Phone notch */}
@@ -135,14 +159,14 @@ export function NFCTapAnimation() {
             {/* Loyalty card on phone */}
             <motion.div
               className="w-full h-16 sm:h-20 rounded-lg bg-gradient-to-br from-stone-100 to-neutral-50 border border-neutral-200 shadow-sm"
-              animate={phase === "success" ? {
+              animate={isContact ? {
                 boxShadow: [
                   "0 2px 8px hsla(38, 38%, 60%, 0.1)",
-                  "0 4px 12px hsla(38, 38%, 60%, 0.2)",
+                  "0 4px 14px hsla(38, 38%, 60%, 0.25)",
                   "0 2px 8px hsla(38, 38%, 60%, 0.1)",
                 ],
               } : {}}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4 }}
             >
               <div className="p-1.5 h-full flex flex-col justify-between">
                 <div className="flex items-center gap-1">
@@ -159,13 +183,13 @@ export function NFCTapAnimation() {
                       style={{ 
                         backgroundColor: i < 4 ? "hsl(38 38% 60%)" : "transparent" 
                       }}
-                      animate={phase === "success" && i === 4 ? {
+                      animate={phase === "settle" && i === 4 ? {
                         backgroundColor: "hsl(38 38% 60%)",
-                        scale: [1, 1.4, 1],
+                        scale: [1, 1.5, 1],
                       } : {}}
                       transition={{
-                        duration: 0.35,
-                        delay: 0.1,
+                        duration: 0.3,
+                        delay: 0.05,
                         ease: [0.34, 1.56, 0.64, 1],
                       }}
                     />
@@ -178,7 +202,7 @@ export function NFCTapAnimation() {
             <motion.p
               className="text-neutral-400 text-[8px] mt-2 text-center"
               animate={{ 
-                opacity: phase === "ready" || phase === "approaching" ? 1 : 0.4 
+                opacity: phase === "offscreen" || phase === "entering" || phase === "hovering" ? 1 : 0.3 
               }}
             >
               Hold near reader
@@ -187,48 +211,48 @@ export function NFCTapAnimation() {
         </div>
       </motion.div>
 
-      {/* Ripple effects on contact - positioned at top of phone contact point */}
-      {(phase === "tapping" || phase === "success") && [...Array(3)].map((_, i) => (
+      {/* Contact ripple effects */}
+      {(phase === "contact" || phase === "settle") && [...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-24 h-8 rounded-full border-2"
+          className="absolute w-20 h-6 rounded-full border-2"
           style={{ 
-            borderColor: "hsla(38, 38%, 60%, 0.4)",
-            top: "40%",
+            borderColor: "hsla(38, 38%, 60%, 0.5)",
+            top: "38%",
           }}
-          initial={{ opacity: 0, scale: 0.4 }}
+          initial={{ opacity: 0, scale: 0.3 }}
           animate={{
-            opacity: [0, 0.7, 0],
-            scale: [0.4, 1.4 + i * 0.2, 1.8 + i * 0.25],
+            opacity: [0, 0.8, 0],
+            scale: [0.3, 1.2 + i * 0.2, 1.6 + i * 0.25],
           }}
           transition={{
-            duration: 0.6,
-            delay: i * 0.08,
+            duration: 0.5,
+            delay: i * 0.06,
             ease: "easeOut",
           }}
         />
       ))}
 
-      {/* Success stamp indicator */}
+      {/* Success stamp indicator - synced with contact */}
       <motion.div
-        className="absolute top-[22%] right-[8%]"
-        initial={{ scale: 0, opacity: 0, y: 20 }}
-        animate={phase === "success" ? {
+        className="absolute top-[20%] right-[8%]"
+        initial={{ scale: 0, opacity: 0, y: 15 }}
+        animate={phase === "settle" ? {
           scale: 1,
           opacity: 1,
           y: 0,
         } : {}}
         transition={{
           type: "spring",
-          stiffness: 400,
-          damping: 20,
-          delay: 0.05,
+          stiffness: 350,
+          damping: 22,
+          delay: 0.08,
         }}
       >
         <motion.div
           className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg"
           style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 50%))" }}
-          animate={phase === "success" ? {
+          animate={phase === "settle" ? {
             boxShadow: [
               "0 4px 16px hsla(38, 45%, 55%, 0.3)",
               "0 6px 24px hsla(38, 45%, 55%, 0.5)",
@@ -247,13 +271,13 @@ export function NFCTapAnimation() {
         <motion.div
           className="mt-1.5 px-2.5 py-1 rounded-full shadow-md text-center"
           style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 50%))" }}
-          initial={{ opacity: 0, y: 8, scale: 0.85 }}
-          animate={phase === "success" ? { opacity: 1, y: 0, scale: 1 } : {}}
+          initial={{ opacity: 0, y: 6, scale: 0.85 }}
+          animate={phase === "settle" ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{ 
             type: "spring",
-            stiffness: 350,
-            damping: 22,
-            delay: 0.15 
+            stiffness: 320,
+            damping: 20,
+            delay: 0.18 
           }}
         >
           <span className="text-xs font-bold text-white">+1 Stamp</span>
