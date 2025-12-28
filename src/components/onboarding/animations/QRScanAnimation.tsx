@@ -249,17 +249,14 @@ function IPhoneDevice({
                 </motion.div>
               </motion.div>
 
-              {/* Welcome badge */}
+              {/* Card registered text */}
               <motion.div
                 className="flex justify-center mt-4"
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: showCard ? 1 : 0, y: showCard ? 0 : 4 }}
                 transition={{ delay: 0.9, duration: 0.25 }}
               >
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-                  <span className="text-xs">🎁</span>
-                  <span className="text-primary text-[10px] font-medium">Welcome stamp added</span>
-                </div>
+                <span className="text-muted-foreground text-[10px] font-medium">Card registered</span>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -327,38 +324,50 @@ export function QRScanAnimation() {
           <QRTerminal />
         </motion.div>
 
-        {/* Success badge - slides from right */}
+        {/* Success badge - combined message */}
         <motion.div
           className="absolute top-1/2 right-0 z-30"
-          initial={{ opacity: 0, x: -20, y: "-50%" }}
+          initial={{ opacity: 0, x: -20, y: "-50%", scale: 0.9 }}
           animate={showCard 
-            ? { opacity: 1, x: 90, y: "-50%" } 
-            : { opacity: 0, x: -20, y: "-50%" }
+            ? { opacity: 1, x: 85, y: "-50%", scale: 1 } 
+            : { opacity: 0, x: -20, y: "-50%", scale: 0.9 }
           }
           transition={{ duration: 0.5, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <div 
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl"
+            className="flex items-center gap-2.5 px-5 py-3 rounded-2xl"
             style={{
-              background: 'hsla(140, 40%, 45%, 0.15)',
-              border: '1px solid hsla(140, 40%, 50%, 0.3)',
-              backdropFilter: 'blur(8px)'
+              background: 'linear-gradient(135deg, hsla(140, 45%, 45%, 0.2) 0%, hsla(140, 40%, 40%, 0.15) 100%)',
+              border: '1.5px solid hsla(140, 45%, 50%, 0.4)',
+              backdropFilter: 'blur(12px)',
+              boxShadow: '0 8px 24px -6px hsla(140, 40%, 30%, 0.2)'
             }}
           >
             <div 
-              className="w-5 h-5 rounded-full flex items-center justify-center"
-              style={{ background: 'hsl(140 40% 45%)' }}
+              className="w-7 h-7 rounded-full flex items-center justify-center"
+              style={{ 
+                background: 'linear-gradient(135deg, hsl(140 45% 50%) 0%, hsl(140 40% 42%) 100%)',
+                boxShadow: '0 2px 8px hsla(140, 45%, 40%, 0.4)'
+              }}
             >
-              <svg viewBox="0 0 24 24" className="w-3 h-3 text-white">
+              <svg viewBox="0 0 24 24" className="w-4 h-4 text-white">
                 <path d="M5 12l5 5L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </div>
-            <span 
-              className="font-semibold text-sm whitespace-nowrap"
-              style={{ color: 'hsl(140 40% 35%)' }}
-            >
-              Café added
-            </span>
+            <div className="flex flex-col">
+              <span 
+                className="font-bold text-sm whitespace-nowrap"
+                style={{ color: 'hsl(140 45% 32%)' }}
+              >
+                Welcome!
+              </span>
+              <span 
+                className="text-xs font-medium whitespace-nowrap"
+                style={{ color: 'hsl(140 35% 42%)' }}
+              >
+                +1 Free Stamp
+              </span>
+            </div>
           </div>
         </motion.div>
 
