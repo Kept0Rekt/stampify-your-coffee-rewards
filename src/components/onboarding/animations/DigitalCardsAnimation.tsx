@@ -124,15 +124,15 @@ export function DigitalCardsAnimation() {
 
             {/* Stamp progress */}
             <div className="flex justify-between items-center gap-1">
-              {[...Array(8)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-neutral-300 flex items-center justify-center bg-white/50"
                   initial={{ scale: 0 }}
                   animate={phase === "complete" ? { scale: 1 } : {}}
                   transition={{
-                    duration: 0.3,
-                    delay: 1.5 + i * 0.08,
+                    duration: 0.2,
+                    delay: 0.8 + i * 0.04,
                     ease: [0.34, 1.56, 0.64, 1],
                   }}
                 >
@@ -143,8 +143,8 @@ export function DigitalCardsAnimation() {
                       initial={{ scale: 0 }}
                       animate={phase === "complete" ? { scale: 1 } : {}}
                       transition={{
-                        duration: 0.25,
-                        delay: 1.7 + i * 0.1,
+                        duration: 0.15,
+                        delay: 0.9 + i * 0.05,
                       }}
                     />
                   )}
