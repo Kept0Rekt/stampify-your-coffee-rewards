@@ -1,13 +1,38 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { StampifyLogo } from "@/components/ui/StampifyLogo";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
-import { Loader2, LogOut, ChevronRight, Crown, Bell, HelpCircle, Shield, History, Play } from "lucide-react";
+import { 
+  Loader2, LogOut, ChevronRight, Crown, Bell, 
+  HelpCircle, Shield, History, Play 
+} from "lucide-react";
 import { motion } from "framer-motion";
 import stampifyLogo from "@/assets/stampify-logo.png";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.04,
+      delayChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+};
 
 export default function Profile() {
   const { user, isLoading, signOut } = useAuth();
@@ -22,9 +47,9 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
-        <img src={stampifyLogo} alt="Stampify" className="h-10 w-auto object-contain opacity-60 animate-pulse" />
-        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-5">
+        <img src={stampifyLogo} alt="Stampify" className="h-8 w-auto object-contain opacity-50 animate-pulse-soft" />
+        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -39,15 +64,14 @@ export default function Profile() {
   };
 
   const menuItems = [
-    { icon: Crown, label: "Upgrade to Premium", description: "Earn free coffee faster", action: () => {}, highlight: true },
-    { icon: History, label: "Activity History", description: "View your stamps & rewards", action: () => {} },
-    { icon: Bell, label: "Notifications", description: "Manage your alerts", action: () => {} },
-    { icon: Shield, label: "Privacy & Security", description: "Manage your data", action: () => {} },
-    { icon: HelpCircle, label: "Help & Support", description: "Get assistance", action: () => {} },
-    { icon: Play, label: "Preview Onboarding", description: "View the welcome animations", action: () => setShowOnboarding(true), highlight: false },
+    { icon: Crown, label: "Upgrade to Premium", description: "Earn rewards faster", highlight: true },
+    { icon: History, label: "Activity", description: "View your stamp history" },
+    { icon: Bell, label: "Notifications", description: "Manage alerts" },
+    { icon: Shield, label: "Privacy", description: "Manage your data" },
+    { icon: HelpCircle, label: "Help", description: "Get support" },
+    { icon: Play, label: "Onboarding", description: "View welcome tour", action: () => setShowOnboarding(true) },
   ];
 
-  // Show onboarding preview
   if (showOnboarding) {
     return <OnboardingFlow onComplete={() => setShowOnboarding(false)} />;
   }
@@ -55,19 +79,28 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 header-latte">
-        <div className="flex items-center justify-between p-4">
-          <StampifyLogo size="sm" variant="latte" />
+      <header className="pt-safe">
+        <div className="px-6 pt-10 pb-2">
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <h1 className="text-3xl font-semibold text-foreground tracking-tight">
+              Profile
+            </h1>
+          </motion.div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="p-5 pb-28 space-y-5">
+      <main className="px-5 pt-4 pb-32">
         {/* Profile Card */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="latte-card p-5"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="latte-card p-5 mb-6"
         >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
@@ -75,88 +108,87 @@ export default function Profile() {
                 {user.email?.charAt(0).toUpperCase() || "U"}
               </span>
             </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold text-foreground">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-semibold text-foreground truncate">
                 {user.email?.split("@")[0] || "User"}
               </h2>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
-              <div className="flex items-center gap-1 mt-1.5">
-                <span className="text-xs px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground font-medium">
-                  Free Plan
-                </span>
-              </div>
+              <p className="text-sm text-muted-foreground truncate">{user.email}</p>
             </div>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-5 pt-5 border-t border-border/50">
-            <div className="text-center">
-              <p className="text-xl font-semibold text-primary">3</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Cards</p>
-            </div>
-            <div className="text-center">
-              <p className="text-xl font-semibold text-primary">16</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Stamps</p>
-            </div>
-            <div className="text-center">
-              <p className="text-xl font-semibold text-primary">2</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Rewards</p>
-            </div>
+          <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-border/40">
+            {[
+              { value: "3", label: "Cards" },
+              { value: "16", label: "Stamps" },
+              { value: "2", label: "Rewards" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-2xl font-semibold text-primary tabular-nums">
+                  {stat.value}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </motion.div>
 
         {/* Menu Items */}
-        <div className="space-y-2">
-          {menuItems.map((item, index) => {
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-2"
+        >
+          {menuItems.map((item) => {
             const Icon = item.icon;
             return (
               <motion.button
                 key={item.label}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.04, duration: 0.25 }}
+                variants={itemVariants}
+                whileTap={{ scale: 0.98 }}
                 onClick={item.action}
-                className={`w-full latte-card p-4 flex items-center gap-3.5 text-left ${
+                className={`w-full latte-card p-4 flex items-center gap-4 text-left ${
                   item.highlight ? "ring-1 ring-primary/15" : ""
                 }`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                  item.highlight ? "bg-primary/15" : "bg-muted/60"
+                <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center ${
+                  item.highlight ? "bg-primary/10" : "bg-muted/50"
                 }`}>
-                  <Icon className={`w-4.5 h-4.5 ${item.highlight ? "text-primary" : "text-muted-foreground"}`} />
+                  <Icon className={`w-[18px] h-[18px] ${
+                    item.highlight ? "text-primary" : "text-muted-foreground"
+                  }`} />
                 </div>
-                <div className="flex-1">
-                  <h3 className={`font-medium text-[15px] ${item.highlight ? "text-primary" : "text-foreground"}`}>
+                <div className="flex-1 min-w-0">
+                  <h3 className={`font-medium text-base ${
+                    item.highlight ? "text-primary" : "text-foreground"
+                  }`}>
                     {item.label}
                   </h3>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground/60" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground/40 flex-shrink-0" />
               </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Sign Out */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8"
         >
           <Button
-            variant="outline"
-            className="w-full bg-transparent border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
+            variant="ghost"
+            className="w-full h-12 text-muted-foreground hover:text-foreground hover:bg-muted/40 rounded-xl"
             onClick={handleSignOut}
           >
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
           </Button>
         </motion.div>
-
-        {/* Subtle branding */}
-        <div className="flex justify-center pt-3">
-          <img src={stampifyLogo} alt="Stampify" className="h-4 w-auto object-contain opacity-8" />
-        </div>
       </main>
 
       <BottomNav />
