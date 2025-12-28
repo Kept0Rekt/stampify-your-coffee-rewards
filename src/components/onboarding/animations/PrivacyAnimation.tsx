@@ -1,7 +1,6 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Shield, Camera, Smartphone, Lock, Check } from "lucide-react";
-import stampifyLogo from "@/assets/stampify-logo.png";
 
 interface PrivacyAnimationProps {
   onAllow?: () => void;
@@ -9,18 +8,48 @@ interface PrivacyAnimationProps {
 }
 
 export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
-  const [phase, setPhase] = useState<"icons" | "shield" | "complete" | "popup">("icons");
+  const [phase, setPhase] = useState<"icons" | "shield" | "complete">("icons");
 
   useEffect(() => {
     const timer1 = setTimeout(() => setPhase("shield"), 1000);
     const timer2 = setTimeout(() => setPhase("complete"), 2200);
-    const timer3 = setTimeout(() => setPhase("popup"), 3500);
+    const timer3 = setTimeout(() => requestPermissions(), 3500);
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
   }, []);
+
+  const requestPermissions = async () => {
+    try {
+      // Request camera permission
+      await navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          // Stop the stream immediately, we just needed permission
+          stream.getTracks().forEach(track => track.stop());
+        })
+        .catch(() => {
+          // User denied or error - continue anyway
+        });
+
+      // Request location permission
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          // Permission granted
+          onAllow?.();
+        },
+        () => {
+          // Permission denied or error
+          onSkip?.();
+        },
+        { timeout: 10000 }
+      );
+    } catch {
+      // If any error occurs, call onSkip
+      onSkip?.();
+    }
+  };
 
   const permissionIcons = [
     { Icon: Camera, label: "Camera", delay: 0, x: -80, y: -60 },
@@ -38,7 +67,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
           key={index}
           className="absolute flex flex-col items-center gap-2"
           initial={{ x, y, opacity: 1, scale: 1 }}
-          animate={phase === "shield" || phase === "complete" || phase === "popup" ? {
+          animate={phase === "shield" || phase === "complete" ? {
             x: 0,
             y: -20,
             opacity: 0,
@@ -72,16 +101,13 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
       <motion.div
         className="absolute"
         initial={{ scale: 0, opacity: 0 }}
-        animate={phase === "popup" ? {
-          scale: 0.8,
-          opacity: 0.3,
-        } : (phase === "shield" || phase === "complete") ? {
+        animate={phase === "shield" || phase === "complete" ? {
           scale: 1,
           opacity: 1,
         } : {}}
         transition={{
           duration: 0.5,
-          delay: phase === "popup" ? 0 : 0.3,
+          delay: 0.3,
           ease: [0.34, 1.56, 0.64, 1],
         }}
       >
@@ -210,74 +236,6 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
           }}
         />
       ))}
-
-      {/* iOS-style Permission Popup */}
-      <AnimatePresence>
-        {phase === "popup" && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="absolute inset-0 bg-black/40 z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            />
-
-            {/* Popup */}
-            <motion.div
-              className="absolute z-50 w-[280px]"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ 
-                duration: 0.25, 
-                ease: [0.32, 0.72, 0, 1] 
-              }}
-            >
-              <div className="bg-white/95 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl">
-                {/* Content */}
-                <div className="px-5 pt-5 pb-4 text-center">
-                  {/* App Icon */}
-                  <div className="mx-auto mb-4 w-16 h-16 rounded-2xl overflow-hidden shadow-lg">
-                    <img 
-                      src={stampifyLogo} 
-                      alt="Stampify" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-[17px] font-semibold text-neutral-900 mb-2">
-                    "Stampify" Would Like to Access Your Camera and Location
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-[13px] text-neutral-500 leading-relaxed">
-                    Camera access is needed to scan QR codes at cafés. Location helps you discover nearby participating coffee shops.
-                  </p>
-                </div>
-
-                {/* Buttons */}
-                <div className="border-t border-neutral-200/80">
-                  <button
-                    onClick={onSkip}
-                    className="w-full py-3 text-[17px] text-[#007AFF] font-normal border-b border-neutral-200/80 active:bg-neutral-100 transition-colors"
-                  >
-                    Don't Allow
-                  </button>
-                  <button
-                    onClick={onAllow}
-                    className="w-full py-3 text-[17px] text-[#007AFF] font-semibold active:bg-neutral-100 transition-colors"
-                  >
-                    Allow
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
