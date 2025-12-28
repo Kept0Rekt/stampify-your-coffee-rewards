@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const navItems = [
   { path: "/wallet", label: "Wallet", icon: Wallet },
-  { path: "/map", label: "Map", icon: Map },
+  { path: "/map", label: "Discover", icon: Map },
   { path: "/profile", label: "Profile", icon: User },
 ];
 
@@ -15,50 +15,53 @@ export function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 nav-latte">
-      <div className="flex items-center justify-around py-3 px-6 max-w-md mx-auto">
+      <div className="flex items-center justify-around py-2 px-4 max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
 
           return (
-            <button
+            <motion.button
               key={item.path}
               onClick={() => navigate(item.path)}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.1 }}
               className={cn(
-                "flex flex-col items-center gap-1 px-5 py-2 rounded-xl transition-all duration-200",
-                isActive && "text-primary",
-                !isActive && "text-muted-foreground hover:text-foreground"
+                "flex flex-col items-center gap-1 py-2 px-6 rounded-2xl transition-colors duration-200",
+                isActive ? "text-primary" : "text-muted-foreground"
               )}
             >
-              <motion.div
-                whileTap={{ scale: 0.95 }}
-                className="relative"
-              >
+              <div className="relative">
                 <Icon
-                  className="w-5 h-5 transition-all duration-200"
+                  className={cn(
+                    "w-[22px] h-[22px] transition-all duration-200",
+                  )}
                   strokeWidth={isActive ? 2 : 1.5}
                 />
                 {isActive && (
                   <motion.div
-                    layoutId="activeNavTab"
-                    className="absolute -inset-2.5 rounded-xl -z-10 bg-primary/8"
-                    initial={false}
-                    transition={{ type: "spring", bounce: 0.12, duration: 0.4 }}
+                    layoutId="navIndicator"
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 500, 
+                      damping: 35 
+                    }}
                   />
                 )}
-              </motion.div>
+              </div>
               <span className={cn(
-                "text-[11px] font-medium transition-all duration-200",
-                isActive && "text-primary"
+                "text-[10px] font-medium transition-colors duration-200",
+                isActive ? "text-primary" : "text-muted-foreground"
               )}>
                 {item.label}
               </span>
-            </button>
+            </motion.button>
           );
         })}
       </div>
-      {/* Safe area padding for iOS */}
-      <div className="h-safe-area-inset-bottom" />
+      {/* Safe area for iOS */}
+      <div className="h-safe pb-safe" />
     </nav>
   );
 }
