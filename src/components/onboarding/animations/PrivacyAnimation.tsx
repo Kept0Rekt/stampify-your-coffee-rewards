@@ -9,16 +9,13 @@ interface PrivacyAnimationProps {
 
 export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
   const [showGlow, setShowGlow] = useState(false);
-  const [showBadges, setShowBadges] = useState(false);
 
   useEffect(() => {
     const glowTimer = setTimeout(() => setShowGlow(true), 600);
-    const badgesTimer = setTimeout(() => setShowBadges(true), 1000);
     const permissionTimer = setTimeout(() => requestPermissions(), 3000);
     
     return () => {
       clearTimeout(glowTimer);
-      clearTimeout(badgesTimer);
       clearTimeout(permissionTimer);
     };
   }, []);
@@ -124,18 +121,18 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
           <motion.div 
             className="flex items-center justify-center gap-2"
             initial={{ opacity: 0, y: 10 }}
-            animate={showBadges ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
           >
             {trustBadges.map(({ icon: Icon, label }, index) => (
               <motion.div
                 key={label}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-neutral-200 shadow-sm"
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={showBadges ? { opacity: 1, scale: 1 } : {}}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ 
                   duration: 0.4, 
-                  delay: index * 0.1,
+                  delay: 1 + index * 0.1,
                   ease: [0.34, 1.56, 0.64, 1],
                 }}
               >
@@ -149,8 +146,8 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
           <motion.p
             className="text-xs text-neutral-400 text-center"
             initial={{ opacity: 0 }}
-            animate={showBadges ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.4 }}
           >
             Your data stays on your device
           </motion.p>
