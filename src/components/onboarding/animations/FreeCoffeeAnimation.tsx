@@ -79,11 +79,11 @@ export function FreeCoffeeAnimation() {
                   background: 'hsl(35 18% 94%)',
                   border: '1.5px solid hsl(35 15% 85%)'
                 }}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
                 transition={{ 
-                  delay: 0.3 + i * 0.06, 
-                  duration: 0.25,
+                  delay: 0.3 + i * 0.07, 
+                  duration: 0.3,
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
               >
@@ -93,8 +93,8 @@ export function FreeCoffeeAnimation() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ 
-                    delay: 0.5 + i * 0.08, 
-                    duration: 0.2,
+                    delay: 0.6 + i * 0.09, 
+                    duration: 0.25,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
                 />
