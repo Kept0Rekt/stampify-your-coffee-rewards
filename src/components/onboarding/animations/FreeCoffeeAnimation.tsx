@@ -74,28 +74,29 @@ export function FreeCoffeeAnimation() {
             {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ 
-                  background: 'hsl(35 18% 94%)',
-                  border: '1.5px solid hsl(35 15% 85%)'
+                className="relative w-8 h-8 rounded-full flex items-center justify-center"
+                style={{
+                  background: "transparent",
+                  border: "1.5px solid hsl(35 15% 85%)",
                 }}
-                initial={{ scale: 0, opacity: 0 }}
+                initial={{ scale: 0.98, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ 
-                  delay: 0.3 + i * 0.07, 
-                  duration: 0.3,
-                  ease: [0.25, 0.1, 0.25, 1]
+                transition={{
+                  delay: 0.25 + i * 0.06,
+                  duration: 0.28,
+                  ease: [0.25, 0.1, 0.25, 1],
                 }}
               >
+                {/* Fill dot -> expands to fill the circle */}
                 <motion.div
-                  className="w-4 h-4 rounded-full"
-                  style={{ background: 'hsl(38 45% 55%)' }}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ 
-                    delay: 0.6 + i * 0.09, 
-                    duration: 0.25,
-                    ease: [0.25, 0.1, 0.25, 1]
+                  className="absolute inset-[3px] rounded-full"
+                  style={{ background: "hsl(38 45% 55%)" }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: [0, 1.06, 1], opacity: [0, 1, 1] }}
+                  transition={{
+                    delay: 0.55 + i * 0.085,
+                    duration: 0.42,
+                    ease: [0.34, 1.56, 0.64, 1],
                   }}
                 />
               </motion.div>
@@ -153,27 +154,29 @@ export function FreeCoffeeAnimation() {
               {[...Array(6)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{ 
-                    background: 'hsla(0, 0%, 100%, 0.2)',
-                    border: '1.5px solid hsla(0, 0%, 100%, 0.4)'
+                  className="relative w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    background: "transparent",
+                    border: "1.5px solid hsla(0, 0%, 100%, 0.45)",
                   }}
-                  initial={{ scale: 0, opacity: 0 }}
+                  initial={{ scale: 0.98, opacity: 0 }}
                   animate={showPremium ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ 
-                    delay: 0.2 + i * 0.08, 
-                    duration: 0.3,
-                    ease: [0.25, 0.1, 0.25, 1]
+                  transition={{
+                    delay: 0.15 + i * 0.075,
+                    duration: 0.28,
+                    ease: [0.25, 0.1, 0.25, 1],
                   }}
                 >
+                  {/* Fill dot -> expands to fill the circle */}
                   <motion.div
-                    className="w-5 h-5 rounded-full bg-white"
-                    initial={{ scale: 0 }}
-                    animate={showPremium ? { scale: 1 } : {}}
-                    transition={{ 
-                      delay: 0.4 + i * 0.1, 
-                      duration: 0.2,
-                      ease: [0.25, 0.1, 0.25, 1]
+                    className="absolute inset-[4px] rounded-full"
+                    style={{ background: "hsl(0 0% 100%)" }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={showPremium ? { scale: [0, 1.06, 1], opacity: [0, 1, 1] } : {}}
+                    transition={{
+                      delay: 0.35 + i * 0.095,
+                      duration: 0.42,
+                      ease: [0.34, 1.56, 0.64, 1],
                     }}
                   />
                 </motion.div>
