@@ -49,43 +49,60 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{
-          duration: 0.5,
+          duration: 0.6,
           ease: [0.34, 1.56, 0.64, 1],
         }}
       >
-        {/* Subtle glow ring */}
+        {/* Outer pulsing ring */}
         <motion.div
-          className="absolute w-40 h-40 rounded-full"
-          style={{ 
-            background: "radial-gradient(circle, hsla(38, 38%, 60%, 0.15) 0%, transparent 70%)" 
-          }}
+          className="absolute w-44 h-44 rounded-full border-2"
+          style={{ borderColor: "hsla(38, 38%, 55%, 0.2)" }}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={showGlow ? { 
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.15, 1],
+            opacity: [0.4, 0, 0.4],
           } : {}}
           transition={{
-            duration: 3,
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeOut",
+          }}
+        />
+
+        {/* Inner glow */}
+        <motion.div
+          className="absolute w-36 h-36 rounded-full"
+          style={{ 
+            background: "radial-gradient(circle, hsla(38, 38%, 55%, 0.2) 0%, transparent 70%)" 
+          }}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={showGlow ? { 
+            scale: [1, 1.1, 1],
+            opacity: [0.6, 1, 0.6],
+          } : {}}
+          transition={{
+            duration: 2,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
 
-        {/* Main shield icon */}
+        {/* Main shield icon with pulse */}
         <motion.div
+          initial={{ scale: 1 }}
           animate={showGlow ? { 
-            scale: [1, 1.02, 1],
+            scale: [1, 1.05, 1],
           } : {}}
           transition={{
-            duration: 2.5,
+            duration: 2,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
           <ShieldCheck 
-            className="w-28 h-28"
+            className="w-28 h-28 drop-shadow-lg"
             style={{ color: "hsl(38 38% 50%)" }}
-            strokeWidth={1.2}
+            strokeWidth={1.3}
           />
         </motion.div>
       </motion.div>
