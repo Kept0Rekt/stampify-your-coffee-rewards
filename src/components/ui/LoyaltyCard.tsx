@@ -165,6 +165,8 @@ export function LoyaltyCard({
               <LocationMap
                 location={cafeName}
                 coordinates={coordinates}
+                latitude={lat}
+                longitude={lng}
               />
             </div>
           </motion.div>
