@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Coffee, Gift, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +11,8 @@ interface LoyaltyCardProps {
   latitude?: number;
   longitude?: number;
   className?: string;
-  onClick?: () => void;
+  isExpanded?: boolean;
+  onToggle?: () => void;
 }
 
 // Helper to convert decimal coordinates to DMS format
@@ -30,9 +30,9 @@ export function LoyaltyCard({
   latitude,
   longitude,
   className,
-  onClick,
+  isExpanded = false,
+  onToggle,
 }: LoyaltyCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const isRewardReady = stampsCollected >= stampsRequired;
   const stampsRemaining = stampsRequired - stampsCollected;
   const progress = Math.min((stampsCollected / stampsRequired) * 100, 100);
@@ -43,8 +43,7 @@ export function LoyaltyCard({
   const coordinates = formatCoordinates(lat, lng);
 
   const handleClick = () => {
-    setIsExpanded(!isExpanded);
-    onClick?.();
+    onToggle?.();
   };
 
   return (

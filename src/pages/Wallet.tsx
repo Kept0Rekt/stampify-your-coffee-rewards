@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
@@ -65,6 +65,7 @@ export default function Wallet() {
   const { user, isLoading } = useAuth();
   const { plan, setPlan, hasSelectedPlan, cardLimit, isCardLimitReached } = usePlan();
   const navigate = useNavigate();
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -210,6 +211,8 @@ export default function Wallet() {
                   stampsRequired={card.stampsRequired}
                   latitude={card.latitude}
                   longitude={card.longitude}
+                  isExpanded={expandedCardId === card.id}
+                  onToggle={() => setExpandedCardId(prev => prev === card.id ? null : card.id)}
                 />
               </motion.div>
             ))}
