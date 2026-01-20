@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { StampifyLogo } from "@/components/ui/StampifyLogo";
 import { Button } from "@/components/ui/button";
-import { Coffee, ArrowRight, Sparkles, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, Store } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -12,18 +12,18 @@ export default function Index() {
 
   useEffect(() => {
     if (!isLoading && user) {
-      navigate("/wallet", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [user, isLoading, navigate]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/30" />
-      
-      {/* Decorative glass circles */}
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-emerald-dark/20" />
+
+      {/* Decorative circles */}
       <div className="absolute top-20 -left-20 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute bottom-40 -right-20 w-80 h-80 rounded-full bg-secondary/5 blur-3xl" />
+      <div className="absolute bottom-40 -right-20 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
 
       <main className="flex-1 flex flex-col items-center justify-center px-6 text-center relative z-10">
         <motion.div
@@ -49,12 +49,12 @@ export default function Index() {
             transition={{ delay: 0.3 }}
             className="space-y-4"
           >
-            <h1 className="text-3xl font-semibold text-foreground leading-tight">
-              Your Coffee Rewards,{" "}
-              <span className="gold-text">Simplified</span>
+            <h1 className="heading-display text-4xl text-foreground leading-tight">
+              Your Rewards,{" "}
+              <span className="emerald-text">Unified</span>
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              Collect stamps, earn free coffee, and never lose a loyalty card again.
+              All your local loyalty cards in one beautiful wallet. Cafés, salons, gyms, and more.
             </p>
           </motion.div>
 
@@ -65,15 +65,15 @@ export default function Index() {
             transition={{ delay: 0.45 }}
             className="flex flex-wrap justify-center gap-3"
           >
-            <div className="flex items-center gap-2 glass-subtle px-4 py-2.5 rounded-full text-sm">
-              <Coffee className="w-4 h-4 text-primary" />
-              <span className="text-foreground font-medium">Digital Stamps</span>
+            <div className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-full text-sm">
+              <Store className="w-4 h-4 text-primary" />
+              <span className="text-foreground font-medium">All Businesses</span>
             </div>
-            <div className="flex items-center gap-2 glass-subtle px-4 py-2.5 rounded-full text-sm">
+            <div className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-full text-sm">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-foreground font-medium">Free Rewards</span>
+              <span className="text-foreground font-medium">Earn Rewards</span>
             </div>
-            <div className="flex items-center gap-2 glass-subtle px-4 py-2.5 rounded-full text-sm">
+            <div className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-full text-sm">
               <Shield className="w-4 h-4 text-primary" />
               <span className="text-foreground font-medium">Secure Wallet</span>
             </div>
@@ -88,7 +88,7 @@ export default function Index() {
           >
             <Button
               size="lg"
-              className="btn-gold w-full text-base h-14 rounded-2xl"
+              className="btn-primary w-full text-base h-14 rounded-2xl"
               onClick={() => navigate("/auth")}
             >
               Get Started
@@ -103,7 +103,7 @@ export default function Index() {
 
       <footer className="p-6 text-center relative z-10">
         <p className="text-xs text-muted-foreground">
-          © 2024 Stampify. All rights reserved.
+          © 2026 Stampify. All rights reserved.
         </p>
       </footer>
     </div>
