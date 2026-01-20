@@ -57,30 +57,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Stampify professional colors
-        gold: {
-          DEFAULT: "hsl(38 38% 60%)",
-          light: "hsl(38 42% 72%)",
+        // Emerald palette
+        emerald: {
+          DEFAULT: "hsl(158 64% 52%)",
+          light: "hsl(158 60% 65%)",
+          dark: "hsl(165 50% 40%)",
         },
+        // Semantic colors
         success: {
-          DEFAULT: "hsl(140 14% 50%)",
-          light: "hsl(140 14% 65%)",
+          DEFAULT: "hsl(158 64% 52%)",
+          light: "hsl(158 60% 65%)",
         },
-        // Neutral palette
-        neutral: {
-          warm: "hsl(35 18% 95%)",
-          surface: "hsl(35 16% 91%)",
-          muted: "hsl(35 12% 86%)",
-          border: "hsl(35 10% 82%)",
-        },
-        // Legacy colors (aliases for compatibility)
-        ivory: "hsl(35 18% 95%)",
-        stone: "hsl(35 16% 91%)",
-        charcoal: "hsl(0 0% 12%)",
-        caramel: "hsl(38 38% 60%)",
-        copper: "hsl(35 35% 52%)",
-        espresso: "hsl(30 8% 18%)",
-        latte: "hsl(35 18% 95%)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -92,6 +79,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
       },
       fontSize: {
         'xs': ['11px', { lineHeight: '1.4', letterSpacing: '0.01em' }],
@@ -99,9 +87,9 @@ export default {
         'base': ['15px', { lineHeight: '1.5', letterSpacing: '-0.009em' }],
         'lg': ['17px', { lineHeight: '1.4', letterSpacing: '-0.014em' }],
         'xl': ['20px', { lineHeight: '1.35', letterSpacing: '-0.017em' }],
-        '2xl': ['22px', { lineHeight: '1.3', letterSpacing: '-0.019em' }],
-        '3xl': ['28px', { lineHeight: '1.2', letterSpacing: '-0.021em' }],
-        '4xl': ['34px', { lineHeight: '1.15', letterSpacing: '-0.023em' }],
+        '2xl': ['24px', { lineHeight: '1.3', letterSpacing: '-0.019em' }],
+        '3xl': ['32px', { lineHeight: '1.2', letterSpacing: '-0.021em' }],
+        '4xl': ['40px', { lineHeight: '1.15', letterSpacing: '-0.023em' }],
       },
       spacing: {
         '18': '4.5rem',
@@ -109,11 +97,12 @@ export default {
         'safe': 'env(safe-area-inset-bottom)',
       },
       boxShadow: {
-        'soft': '0 1px 2px hsla(0, 0%, 0%, 0.02), 0 2px 8px hsla(0, 0%, 0%, 0.03)',
-        'elevated': '0 1px 2px hsla(0, 0%, 0%, 0.03), 0 4px 16px hsla(0, 0%, 0%, 0.05)',
-        'float': '0 4px 12px hsla(0, 0%, 0%, 0.08), 0 12px 32px hsla(0, 0%, 0%, 0.1)',
-        'gold': '0 2px 8px hsla(38, 45%, 55%, 0.15)',
-        'gold-lg': '0 4px 20px hsla(38, 45%, 55%, 0.22)',
+        'soft': '0 2px 8px hsla(0, 0%, 0%, 0.08)',
+        'elevated': '0 4px 20px hsla(0, 0%, 0%, 0.12)',
+        'float': '0 8px 32px hsla(0, 0%, 0%, 0.16)',
+        'emerald': '0 4px 16px hsla(158, 64%, 52%, 0.25)',
+        'emerald-lg': '0 8px 32px hsla(158, 64%, 52%, 0.35)',
+        'inner-soft': 'inset 0 1px 2px hsla(0, 0%, 0%, 0.06)',
       },
       transitionTimingFunction: {
         'apple': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
@@ -153,6 +142,10 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.6" },
         },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.25s ease-out",
@@ -163,6 +156,7 @@ export default {
         "slide-up": "slide-up 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)",
         "spring-in": "spring-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
         "pulse-soft": "pulse-soft 2s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
       },
     },
   },
