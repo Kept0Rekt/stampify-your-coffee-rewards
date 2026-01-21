@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { PlanSelectionModal } from "@/components/PlanSelectionModal";
 import { GiftCard } from "@/components/dashboard/GiftCard";
 import { DiscountCard } from "@/components/dashboard/DiscountCard";
-import { WalletCard } from "@/components/dashboard/WalletCard";
+import { CategoryCard } from "@/components/dashboard/CategoryCard";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
 // Mock data for gifts (rewards ready to claim)
@@ -47,39 +47,47 @@ const mockDiscounts = [
   },
 ];
 
-// Mock data for wallet cards
-const mockWalletCards = [
+// Mock data for wallet categories
+const mockCategories = [
   {
-    id: "1",
-    merchantName: "Snazzy Scissors",
-    category: "Hair Salon",
-    stamps: 7,
+    id: "food-beverage",
+    category: "Food & Beverage",
+    icon: "🍽️",
+    cardCount: 4,
+    totalStamps: 23,
+    rewardsReady: 2,
+    gradientFrom: "hsl(25, 95%, 53%)",
+    gradientTo: "hsl(15, 90%, 45%)",
+  },
+  {
+    id: "beauty-wellness",
+    category: "Beauty & Wellness",
+    icon: "💅",
+    cardCount: 2,
+    totalStamps: 12,
+    rewardsReady: 1,
+    gradientFrom: "hsl(320, 70%, 55%)",
+    gradientTo: "hsl(280, 65%, 45%)",
+  },
+  {
+    id: "fitness-lifestyle",
+    category: "Fitness & Lifestyle",
+    icon: "💪",
+    cardCount: 3,
+    totalStamps: 18,
+    rewardsReady: 0,
+    gradientFrom: "hsl(158, 64%, 52%)",
+    gradientTo: "hsl(165, 60%, 40%)",
+  },
+  {
+    id: "local-services",
+    category: "Local Services",
+    icon: "🏠",
+    cardCount: 2,
     totalStamps: 8,
-    emoji: "✂️",
-  },
-  {
-    id: "2",
-    merchantName: "FitZone Gym",
-    category: "Fitness",
-    stamps: 5,
-    totalStamps: 10,
-    emoji: "💪",
-  },
-  {
-    id: "3",
-    merchantName: "Sparkle Wash",
-    category: "Car Wash",
-    stamps: 3,
-    totalStamps: 6,
-    emoji: "🚗",
-  },
-  {
-    id: "4",
-    merchantName: "Brew House",
-    category: "Café",
-    stamps: 8,
-    totalStamps: 8,
-    emoji: "☕",
+    rewardsReady: 0,
+    gradientFrom: "hsl(220, 70%, 55%)",
+    gradientTo: "hsl(240, 65%, 45%)",
   },
 ];
 
@@ -249,6 +257,7 @@ export default function Dashboard() {
           )}
 
           {/* My Wallet Section - Primary Focus */}
+          {/* My Wallet Section - Category Cards */}
           <motion.section variants={itemVariants}>
             <div className="section-header">
               <h2 className="section-title text-xl">My Wallet</h2>
@@ -260,17 +269,19 @@ export default function Dashboard() {
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
-            <div className="space-y-3">
-              {mockWalletCards.map((card, index) => (
-                <WalletCard
-                  key={card.id}
-                  merchantName={card.merchantName}
-                  category={card.category}
-                  stamps={card.stamps}
-                  totalStamps={card.totalStamps}
-                  emoji={card.emoji}
+            <div className="space-y-5">
+              {mockCategories.map((cat, index) => (
+                <CategoryCard
+                  key={cat.id}
+                  category={cat.category}
+                  icon={cat.icon}
+                  cardCount={cat.cardCount}
+                  totalStamps={cat.totalStamps}
+                  rewardsReady={cat.rewardsReady}
+                  gradientFrom={cat.gradientFrom}
+                  gradientTo={cat.gradientTo}
                   index={index}
-                  onClick={() => navigate(`/card/${card.id}`)}
+                  onClick={() => navigate(`/wallet?category=${cat.id}`)}
                 />
               ))}
             </div>
