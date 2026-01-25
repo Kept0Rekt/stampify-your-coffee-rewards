@@ -13,6 +13,8 @@ import Wallet from "./pages/Wallet";
 import CardDetail from "./pages/CardDetail";
 import MapPage from "./pages/Map";
 import Profile from "./pages/Profile";
+import Premium from "./pages/Premium";
+import Scan from "./pages/Scan";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +36,8 @@ const App = () => (
                 <Route path="/card/:id" element={<CardDetail />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/premium" element={<Premium />} />
+                <Route path="/scan" element={<Scan />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

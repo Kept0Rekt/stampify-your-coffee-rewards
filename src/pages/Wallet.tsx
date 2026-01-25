@@ -3,95 +3,82 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
 import { BottomNav } from "@/components/ui/BottomNav";
-import { MerchantRow } from "@/components/wallet/MerchantRow";
-import { Crown, Lock } from "lucide-react";
-import { motion } from "framer-motion";
+import { StackedCard } from "@/components/wallet/StackedCard";
+import { Crown, Lock, Plus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { PlanSelectionModal } from "@/components/PlanSelectionModal";
 import { Button } from "@/components/ui/button";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
-// Mock data with multiple business types
-const mockMerchants = [
+// Mock data with salon/barbershop businesses
+const mockCards = [
   {
     id: "1",
-    name: "Coffee Fellow",
-    category: "Food & Drinks",
-    stampsCollected: 6,
-    stampsRequired: 8,
-    logoEmoji: "☕",
-    latitude: 40.7128,
-    longitude: -74.006,
+    businessName: "Classic Cuts",
+    category: "Barbershop",
+    logoEmoji: "💈",
+    brandColor: "#34D399",
+    currentStamps: 6,
+    stampsRequired: 10,
+    lastVisit: "2 days ago",
+    distance: "0.3 mi",
+    rewardName: "Free Haircut",
   },
   {
     id: "2",
-    name: "Snazzy Scissors",
-    category: "Salon",
-    stampsCollected: 3,
-    stampsRequired: 5,
+    businessName: "Style Studio",
+    category: "Hair Salon",
     logoEmoji: "✂️",
-    latitude: 40.758,
-    longitude: -73.9855,
+    brandColor: "#60A5FA",
+    currentStamps: 4,
+    stampsRequired: 10,
+    lastVisit: "1 week ago",
+    distance: "0.8 mi",
+    rewardName: "Free Styling",
   },
   {
     id: "3",
-    name: "FitZone Gym",
-    category: "Fitness",
-    stampsCollected: 10,
+    businessName: "The Grooming Lounge",
+    category: "Barbershop",
+    logoEmoji: "🪒",
+    brandColor: "#F59E0B",
+    currentStamps: 10,
     stampsRequired: 10,
-    logoEmoji: "💪",
-    latitude: 40.7484,
-    longitude: -73.9857,
+    lastVisit: "Yesterday",
+    distance: "1.2 mi",
+    rewardName: "Free Hot Shave",
   },
   {
     id: "4",
-    name: "Sparkle Car Wash",
-    category: "Auto Services",
-    stampsCollected: 2,
-    stampsRequired: 6,
-    logoEmoji: "🚗",
-    latitude: 40.7614,
-    longitude: -73.9776,
+    businessName: "Bella Nails",
+    category: "Nail Salon",
+    logoEmoji: "💅",
+    brandColor: "#EC4899",
+    currentStamps: 3,
+    stampsRequired: 10,
+    lastVisit: "3 days ago",
+    distance: "0.5 mi",
+    rewardName: "Free Manicure",
   },
   {
     id: "5",
-    name: "Florentina",
-    category: "Florist",
-    stampsCollected: 4,
-    stampsRequired: 6,
-    logoEmoji: "💐",
-    latitude: 40.7549,
-    longitude: -73.984,
+    businessName: "Zen Spa",
+    category: "Spa",
+    logoEmoji: "🧖",
+    brandColor: "#8B5CF6",
+    currentStamps: 7,
+    stampsRequired: 10,
+    lastVisit: "5 days ago",
+    distance: "2.1 mi",
+    rewardName: "Free Massage",
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: [0.25, 0.1, 0.25, 1],
-    },
-  },
-};
-
 export default function Wallet() {
   const { user, isLoading } = useAuth();
-  const { plan, setPlan, hasSelectedPlan, cardLimit } = usePlan();
+  const { plan, setPlan, hasSelectedPlan, stampsRequired } = usePlan();
   const navigate = useNavigate();
-  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -101,9 +88,15 @@ export default function Wallet() {
 
   const showPlanModal = user && !hasSelectedPlan;
 
-  // Cards to display based on plan limit
-  const displayedMerchants = plan === "free" ? mockMerchants.slice(0, cardLimit) : mockMerchants;
-  const lockedMerchants = plan === "free" ? mockMerchants.slice(cardLimit) : [];
+  // Update stamps required based on plan
+  const cards = mockCards.map(card => ({
+    ...card,
+    stampsRequired: stampsRequired,
+  }));
+
+  // For free users, limit visible cards
+  const visibleCards = plan === "free" ? cards.slice(0, 3) : cards;
+  const hiddenCount = plan === "free" ? cards.length - 3 : 0;
 
   if (isLoading) {
     return (
@@ -122,6 +115,11 @@ export default function Wallet() {
     return null;
   }
 
+  // Calculate total height needed for stacked cards
+  const stackedHeight = isExpanded 
+    ? visibleCards.length * 220 
+    : Math.min(visibleCards.length, 3) * 56 + 200;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Plan Selection Modal */}
@@ -136,11 +134,11 @@ export default function Wallet() {
             transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <h1 className="text-2xl font-semibold text-foreground tracking-tight">
-              My Cards
+              My Wallet
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              {displayedMerchants.length} merchant{displayedMerchants.length !== 1 ? "s" : ""}
-              {plan === "free" && ` • ${cardLimit - displayedMerchants.length} slots left`}
+              {visibleCards.length} card{visibleCards.length !== 1 ? "s" : ""}
+              {hiddenCount > 0 && ` • ${hiddenCount} locked`}
             </p>
           </motion.div>
 
@@ -149,7 +147,7 @@ export default function Wallet() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate("/premium")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${
               plan === "premium"
                 ? "emerald-gradient text-primary-foreground"
@@ -162,79 +160,102 @@ export default function Wallet() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main Content - Apple Wallet Style */}
       <main className="px-5 pt-2 pb-32">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-3"
+        {/* Stacked Cards Container */}
+        <motion.div 
+          className="relative"
+          style={{ height: stackedHeight }}
+          onClick={() => setIsExpanded(!isExpanded)}
         >
-          {displayedMerchants.map((merchant) => (
-            <motion.div key={merchant.id} variants={itemVariants}>
-              <MerchantRow
-                id={merchant.id}
-                name={merchant.name}
-                category={merchant.category}
-                stampsCollected={merchant.stampsCollected}
-                stampsRequired={merchant.stampsRequired}
-                logoEmoji={merchant.logoEmoji}
-                isExpanded={expandedCardId === merchant.id}
-                onToggle={() =>
-                  setExpandedCardId((prev) =>
-                    prev === merchant.id ? null : merchant.id
-                  )
-                }
-                onViewDetails={() => navigate(`/card/${merchant.id}`)}
+          <AnimatePresence>
+            {visibleCards.slice(0, isExpanded ? visibleCards.length : 3).map((card, index) => (
+              <StackedCard
+                key={card.id}
+                id={card.id}
+                businessName={card.businessName}
+                category={card.category}
+                logoEmoji={card.logoEmoji}
+                brandColor={card.brandColor}
+                currentStamps={card.currentStamps}
+                stampsRequired={card.stampsRequired}
+                lastVisit={card.lastVisit}
+                distance={card.distance}
+                isPremium={plan === "premium"}
+                index={index}
+                isExpanded={isExpanded}
+                onClick={() => navigate(`/card/${card.id}`)}
               />
+            ))}
+          </AnimatePresence>
+
+          {/* Hidden cards indicator */}
+          {!isExpanded && visibleCards.length > 3 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute bottom-0 left-0 right-0 text-center py-2"
+              style={{ transform: "translateY(20px)" }}
+            >
+              <p className="text-sm text-muted-foreground">
+                +{visibleCards.length - 3} more cards
+              </p>
             </motion.div>
-          ))}
-
-          {/* Locked merchants for free users */}
-          {lockedMerchants.length > 0 && (
-            <>
-              <motion.div
-                variants={itemVariants}
-                className="flex items-center gap-3 pt-4"
-              >
-                <div className="flex-1 h-px bg-border" />
-                <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <Lock className="w-3 h-3" />
-                  Upgrade to unlock
-                </span>
-                <div className="flex-1 h-px bg-border" />
-              </motion.div>
-
-              {lockedMerchants.map((merchant) => (
-                <motion.div
-                  key={merchant.id}
-                  variants={itemVariants}
-                  className="relative"
-                >
-                  <div className="opacity-40 pointer-events-none blur-[1px]">
-                    <MerchantRow
-                      id={merchant.id}
-                      name={merchant.name}
-                      category={merchant.category}
-                      stampsCollected={merchant.stampsCollected}
-                      stampsRequired={merchant.stampsRequired}
-                      logoEmoji={merchant.logoEmoji}
-                    />
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Button
-                      size="sm"
-                      className="btn-primary shadow-lg"
-                      onClick={() => navigate("/profile")}
-                    >
-                      <Crown className="w-4 h-4 mr-1.5" />
-                      Upgrade to Premium
-                    </Button>
-                  </div>
-                </motion.div>
-              ))}
-            </>
           )}
+        </motion.div>
+
+        {/* Expand/Collapse hint */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-center text-xs text-muted-foreground mt-8"
+        >
+          {isExpanded ? "Tap to collapse" : "Tap to expand all cards"}
+        </motion.p>
+
+        {/* Locked Cards Section (Free users) */}
+        {plan === "free" && hiddenCount > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-8"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Lock className="w-3 h-3" />
+                {hiddenCount} cards locked
+              </span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+
+            <Button
+              className="w-full btn-primary"
+              onClick={() => navigate("/premium")}
+            >
+              <Crown className="w-4 h-4 mr-2" />
+              Upgrade to Unlock All Cards
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Add Card Button */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-6"
+        >
+          <Button
+            variant="outline"
+            className="w-full rounded-xl h-12"
+            onClick={() => navigate("/scan")}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add New Card
+          </Button>
         </motion.div>
       </main>
 
