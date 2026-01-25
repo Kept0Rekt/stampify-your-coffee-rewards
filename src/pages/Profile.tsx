@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { usePlan } from "@/hooks/usePlan";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { 
   Loader2, LogOut, ChevronRight, Crown, Bell, 
-  HelpCircle, Shield, History, Play 
+  HelpCircle, Shield, History, Play, CreditCard, BarChart3
 } from "lucide-react";
 import { motion } from "framer-motion";
 import stampifyLogo from "@/assets/stampify-logo.png";
@@ -36,6 +37,7 @@ const itemVariants = {
 
 export default function Profile() {
   const { user, isLoading, signOut } = useAuth();
+  const { plan, stampsRequired } = usePlan();
   const navigate = useNavigate();
   const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -64,13 +66,27 @@ export default function Profile() {
   };
 
   const menuItems = [
-    { icon: Crown, label: "Upgrade to Premium", description: "Earn rewards faster", highlight: true },
+    { 
+      icon: Crown, 
+      label: plan === "premium" ? "Manage Subscription" : "Upgrade to Premium", 
+      description: plan === "premium" ? "View your plan details" : "Get rewards 30% faster", 
+      highlight: plan !== "premium",
+      action: () => navigate("/premium"),
+    },
     { icon: History, label: "Activity", description: "View your stamp history" },
     { icon: Bell, label: "Notifications", description: "Manage alerts" },
     { icon: Shield, label: "Privacy", description: "Manage your data" },
     { icon: HelpCircle, label: "Help", description: "Get support" },
     { icon: Play, label: "Onboarding", description: "View welcome tour", action: () => setShowOnboarding(true) },
   ];
+
+  // Mock stats
+  const stats = {
+    totalCards: 5,
+    rewardsEarned: 3,
+    totalStamps: 27,
+    memberSince: "Jan 2024",
+  };
 
   if (showOnboarding) {
     return <OnboardingFlow onComplete={() => setShowOnboarding(false)} />;
@@ -100,7 +116,7 @@ export default function Profile() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="latte-card p-5 mb-6"
+          className="latte-card p-5 mb-4 rounded-2xl bg-card border border-border"
         >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
@@ -115,16 +131,70 @@ export default function Profile() {
               <p className="text-sm text-muted-foreground truncate">{user.email}</p>
             </div>
           </div>
+        </motion.div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-6 pt-5 border-t border-border/40">
+        {/* Plan Status Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+          className="p-5 mb-4 rounded-2xl bg-card border border-border"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              {plan === "premium" && <Crown className="w-5 h-5 text-amber-500" />}
+              <span className="font-semibold text-foreground">
+                {plan === "premium" ? "Premium Plan" : "Free Plan"}
+              </span>
+            </div>
+            {plan === "premium" && (
+              <span className="px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                Active
+              </span>
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            {stampsRequired} stamps to unlock rewards
+          </p>
+          <Button
+            variant={plan === "premium" ? "outline" : "default"}
+            className={`w-full ${plan === "free" ? "btn-primary" : ""}`}
+            onClick={() => navigate("/premium")}
+          >
+            {plan === "premium" ? (
+              <>
+                <CreditCard className="w-4 h-4 mr-2" />
+                Manage Subscription
+              </>
+            ) : (
+              <>
+                <Crown className="w-4 h-4 mr-2" />
+                Upgrade to Premium
+              </>
+            )}
+          </Button>
+        </motion.div>
+
+        {/* Stats Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="p-5 mb-6 rounded-2xl bg-card border border-border"
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="w-4 h-4 text-muted-foreground" />
+            <span className="font-semibold text-foreground">Your Stats</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
             {[
-              { value: "3", label: "Cards" },
-              { value: "16", label: "Stamps" },
-              { value: "2", label: "Rewards" },
+              { value: stats.totalCards, label: "Loyalty Cards" },
+              { value: stats.rewardsEarned, label: "Rewards Earned" },
+              { value: stats.totalStamps, label: "Total Stamps" },
+              { value: stats.memberSince, label: "Member Since" },
             ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-2xl font-semibold text-primary tabular-nums">
+              <div key={stat.label} className="text-center p-3 rounded-xl bg-muted/30">
+                <p className="text-xl font-semibold text-primary tabular-nums">
                   {stat.value}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
@@ -148,7 +218,7 @@ export default function Profile() {
                 variants={itemVariants}
                 whileTap={{ scale: 0.98 }}
                 onClick={item.action}
-                className={`w-full latte-card p-4 flex items-center gap-4 text-left ${
+                className={`w-full p-4 rounded-2xl bg-card border border-border flex items-center gap-4 text-left ${
                   item.highlight ? "ring-1 ring-primary/15" : ""
                 }`}
               >
