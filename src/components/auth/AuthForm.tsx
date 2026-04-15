@@ -114,7 +114,7 @@ export function AuthForm() {
     }
   };
 
-  const handleOAuthSignIn = async (provider: "google" | "apple") => {
+  const handleOAuthSignIn = async (provider: "google") => {
     setIsLoading(true);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
