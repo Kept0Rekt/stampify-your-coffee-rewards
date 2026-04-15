@@ -8,20 +8,16 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { PlanProvider } from "@/hooks/usePlan";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
 import Wallet from "./pages/Wallet";
-import CardDetail from "./pages/CardDetail";
 import MapPage from "./pages/Map";
 import Profile from "./pages/Profile";
-import Premium from "./pages/Premium";
-import Scan from "./pages/Scan";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="dark" storageKey="stampify-theme">
+    <ThemeProvider defaultTheme="light" storageKey="stampify-theme">
       <AuthProvider>
         <PlanProvider>
           <TooltipProvider>
@@ -31,13 +27,9 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/wallet" element={<Wallet />} />
-                <Route path="/card/:id" element={<CardDetail />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/premium" element={<Premium />} />
-                <Route path="/scan" element={<Scan />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

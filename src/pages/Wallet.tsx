@@ -2,83 +2,70 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
+import { LoyaltyCard } from "@/components/ui/LoyaltyCard";
 import { BottomNav } from "@/components/ui/BottomNav";
-import { StackedCard } from "@/components/wallet/StackedCard";
-import { Crown, Lock, Plus } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { PlanSelectionModal } from "@/components/PlanSelectionModal";
 import { Button } from "@/components/ui/button";
+import { Plus, QrCode, Loader2, Gift, Crown, Lock } from "lucide-react";
+import { motion } from "framer-motion";
+import { PlanSelectionModal } from "@/components/PlanSelectionModal";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
-// Mock data with salon/barbershop businesses
+// Mock data for demo with coordinates
 const mockCards = [
   {
     id: "1",
-    businessName: "Classic Cuts",
-    category: "Barbershop",
-    logoEmoji: "💈",
-    brandColor: "#34D399",
-    currentStamps: 6,
-    stampsRequired: 10,
-    lastVisit: "2 days ago",
-    distance: "0.3 mi",
-    rewardName: "Free Haircut",
+    cafeName: "The Daily Grind",
+    stampsCollected: 6,
+    stampsRequired: 8,
+    latitude: 40.7128,
+    longitude: -74.006,
   },
   {
     id: "2",
-    businessName: "Style Studio",
-    category: "Hair Salon",
-    logoEmoji: "✂️",
-    brandColor: "#60A5FA",
-    currentStamps: 4,
-    stampsRequired: 10,
-    lastVisit: "1 week ago",
-    distance: "0.8 mi",
-    rewardName: "Free Styling",
+    cafeName: "Espresso House",
+    stampsCollected: 8,
+    stampsRequired: 8,
+    latitude: 40.7580,
+    longitude: -73.9855,
   },
   {
     id: "3",
-    businessName: "The Grooming Lounge",
-    category: "Barbershop",
-    logoEmoji: "🪒",
-    brandColor: "#F59E0B",
-    currentStamps: 10,
-    stampsRequired: 10,
-    lastVisit: "Yesterday",
-    distance: "1.2 mi",
-    rewardName: "Free Hot Shave",
-  },
-  {
-    id: "4",
-    businessName: "Bella Nails",
-    category: "Nail Salon",
-    logoEmoji: "💅",
-    brandColor: "#EC4899",
-    currentStamps: 3,
-    stampsRequired: 10,
-    lastVisit: "3 days ago",
-    distance: "0.5 mi",
-    rewardName: "Free Manicure",
-  },
-  {
-    id: "5",
-    businessName: "Zen Spa",
-    category: "Spa",
-    logoEmoji: "🧖",
-    brandColor: "#8B5CF6",
-    currentStamps: 7,
-    stampsRequired: 10,
-    lastVisit: "5 days ago",
-    distance: "2.1 mi",
-    rewardName: "Free Massage",
+    cafeName: "Artisan Roasters",
+    stampsCollected: 2,
+    stampsRequired: 8,
+    latitude: 40.7484,
+    longitude: -73.9857,
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+};
+
 export default function Wallet() {
   const { user, isLoading } = useAuth();
-  const { plan, setPlan, hasSelectedPlan, stampsRequired } = usePlan();
+  const { plan, setPlan, hasSelectedPlan, cardLimit, isCardLimitReached } = usePlan();
   const navigate = useNavigate();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -86,17 +73,12 @@ export default function Wallet() {
     }
   }, [user, isLoading, navigate]);
 
+  const rewardsReady = mockCards.filter(
+    (card) => card.stampsCollected >= card.stampsRequired
+  ).length;
+
+  // Show plan selection modal if user hasn't selected a plan yet
   const showPlanModal = user && !hasSelectedPlan;
-
-  // Update stamps required based on plan
-  const cards = mockCards.map(card => ({
-    ...card,
-    stampsRequired: stampsRequired,
-  }));
-
-  // For free users, limit visible cards
-  const visibleCards = plan === "free" ? cards.slice(0, 3) : cards;
-  const hiddenCount = plan === "free" ? cards.length - 3 : 0;
 
   if (isLoading) {
     return (
@@ -106,7 +88,7 @@ export default function Wallet() {
           alt="Stampify"
           className="h-8 w-auto object-contain opacity-50 animate-pulse-soft"
         />
-        <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -115,43 +97,41 @@ export default function Wallet() {
     return null;
   }
 
-  // Calculate total height needed for stacked cards
-  const stackedHeight = isExpanded 
-    ? visibleCards.length * 220 
-    : Math.min(visibleCards.length, 3) * 56 + 200;
+  // Cards to display based on plan limit
+  const displayedCards = plan === "free" ? mockCards.slice(0, cardLimit) : mockCards;
+  const lockedCards = plan === "free" ? mockCards.slice(cardLimit) : [];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Plan Selection Modal */}
-      <PlanSelectionModal isOpen={showPlanModal} onSelectPlan={setPlan} />
+      <PlanSelectionModal
+        isOpen={showPlanModal}
+        onSelectPlan={setPlan}
+      />
 
       {/* Header */}
       <header className="pt-safe">
-        <div className="px-6 pt-12 pb-4 flex items-center justify-between">
+        <div className="px-6 pt-10 pb-2 flex items-center justify-between">
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <h1 className="text-2xl font-semibold text-foreground tracking-tight">
-              My Wallet
+            <h1 className="text-3xl font-semibold text-foreground tracking-tight">
+              Wallet
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              {visibleCards.length} card{visibleCards.length !== 1 ? "s" : ""}
-              {hiddenCount > 0 && ` • ${hiddenCount} locked`}
-            </p>
           </motion.div>
-
+          
           {/* Plan Badge */}
           <motion.button
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            onClick={() => navigate("/premium")}
+            onClick={() => {/* Could open upgrade modal */}}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${
-              plan === "premium"
-                ? "emerald-gradient text-primary-foreground"
-                : "bg-secondary text-muted-foreground"
+              plan === "premium" 
+                ? "gold-gradient text-primary-foreground" 
+                : "bg-muted text-muted-foreground"
             }`}
           >
             {plan === "premium" && <Crown className="w-3 h-3" />}
@@ -160,104 +140,147 @@ export default function Wallet() {
         </div>
       </header>
 
-      {/* Main Content - Apple Wallet Style */}
-      <main className="px-5 pt-2 pb-32">
-        {/* Stacked Cards Container */}
-        <motion.div 
-          className="relative"
-          style={{ height: stackedHeight }}
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <AnimatePresence>
-            {visibleCards.slice(0, isExpanded ? visibleCards.length : 3).map((card, index) => (
-              <StackedCard
-                key={card.id}
-                id={card.id}
-                businessName={card.businessName}
-                category={card.category}
-                logoEmoji={card.logoEmoji}
-                brandColor={card.brandColor}
-                currentStamps={card.currentStamps}
-                stampsRequired={card.stampsRequired}
-                lastVisit={card.lastVisit}
-                distance={card.distance}
-                isPremium={plan === "premium"}
-                index={index}
-                isExpanded={isExpanded}
-                onClick={() => navigate(`/card/${card.id}`)}
-              />
-            ))}
-          </AnimatePresence>
-
-          {/* Hidden cards indicator */}
-          {!isExpanded && visibleCards.length > 3 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute bottom-0 left-0 right-0 text-center py-2"
-              style={{ transform: "translateY(20px)" }}
-            >
-              <p className="text-sm text-muted-foreground">
-                +{visibleCards.length - 3} more cards
-              </p>
-            </motion.div>
-          )}
-        </motion.div>
-
-        {/* Expand/Collapse hint */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-center text-xs text-muted-foreground mt-8"
-        >
-          {isExpanded ? "Tap to collapse" : "Tap to expand all cards"}
-        </motion.p>
-
-        {/* Locked Cards Section (Free users) */}
-        {plan === "free" && hiddenCount > 0 && (
+      {/* Main Content */}
+      <main className="px-5 pt-4 pb-32">
+        {/* Rewards Banner */}
+        {rewardsReady > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-8"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mb-6 p-4 rounded-2xl bg-primary/8 border border-primary/12"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 h-px bg-border" />
-              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                <Lock className="w-3 h-3" />
-                {hiddenCount} cards locked
-              </span>
-              <div className="flex-1 h-px bg-border" />
+            <div className="flex items-center gap-4">
+              <div className="w-11 h-11 rounded-[14px] bg-primary/12 flex items-center justify-center">
+                <Gift className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="text-base font-medium text-foreground">
+                  {rewardsReady} reward{rewardsReady !== 1 ? "s" : ""} ready
+                </p>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  Tap to claim your free coffee
+                </p>
+              </div>
             </div>
-
-            <Button
-              className="w-full btn-primary"
-              onClick={() => navigate("/premium")}
-            >
-              <Crown className="w-4 h-4 mr-2" />
-              Upgrade to Unlock All Cards
-            </Button>
           </motion.div>
         )}
 
-        {/* Add Card Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-6"
-        >
-          <Button
-            variant="outline"
-            className="w-full rounded-xl h-12"
-            onClick={() => navigate("/scan")}
+        {/* Cards Section */}
+        {mockCards.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            className="latte-card p-12 text-center"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Add New Card
-          </Button>
-        </motion.div>
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/8 flex items-center justify-center mb-5">
+              <QrCode className="w-7 h-7 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              No cards yet
+            </h3>
+            <p className="text-muted-foreground text-sm max-w-[220px] mx-auto mb-6">
+              Scan a QR code at a café to start collecting stamps
+            </p>
+            <Button
+              onClick={() => navigate("/scan")}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 h-11 font-medium shadow-gold"
+            >
+              <QrCode className="w-4 h-4 mr-2" />
+              Scan QR Code
+            </Button>
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-3"
+          >
+            <motion.p variants={itemVariants} className="section-header">
+              {displayedCards.length} Card{displayedCards.length !== 1 ? "s" : ""}
+              {plan === "free" && ` of ${cardLimit}`}
+            </motion.p>
+
+            {displayedCards.map((card) => (
+              <motion.div key={card.id} variants={itemVariants}>
+                <LoyaltyCard
+                  cafeName={card.cafeName}
+                  stampsCollected={card.stampsCollected}
+                  stampsRequired={card.stampsRequired}
+                  latitude={card.latitude}
+                  longitude={card.longitude}
+                  isExpanded={expandedCardId === card.id}
+                  onToggle={() => setExpandedCardId(prev => prev === card.id ? null : card.id)}
+                />
+              </motion.div>
+            ))}
+
+            {/* Locked cards for free users */}
+            {lockedCards.length > 0 && (
+              <>
+                <motion.div 
+                  variants={itemVariants}
+                  className="flex items-center gap-3 pt-4"
+                >
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Lock className="w-3 h-3" />
+                    Upgrade to unlock
+                  </span>
+                  <div className="flex-1 h-px bg-border" />
+                </motion.div>
+
+                {lockedCards.map((card) => (
+                  <motion.div 
+                    key={card.id} 
+                    variants={itemVariants}
+                    className="relative"
+                  >
+                    <div className="opacity-40 pointer-events-none blur-[1px]">
+                      <LoyaltyCard
+                        cafeName={card.cafeName}
+                        stampsCollected={card.stampsCollected}
+                        stampsRequired={card.stampsRequired}
+                        latitude={card.latitude}
+                        longitude={card.longitude}
+                      />
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Button
+                        size="sm"
+                        className="btn-gold shadow-lg"
+                        onClick={() => {/* Open upgrade modal */}}
+                      >
+                        <Crown className="w-4 h-4 mr-1.5" />
+                        Upgrade to Premium
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </>
+            )}
+          </motion.div>
+        )}
       </main>
+
+      {/* Floating Action Button */}
+      <motion.div 
+        className="fixed bottom-24 right-5 z-20"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.4, duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
+      >
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.92 }}
+          onClick={() => navigate("/scan")}
+          className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-float"
+        >
+          <Plus className="w-6 h-6" strokeWidth={2} />
+        </motion.button>
+      </motion.div>
 
       <BottomNav />
     </div>
