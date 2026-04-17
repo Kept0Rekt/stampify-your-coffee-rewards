@@ -92,7 +92,7 @@ export function NFCTapAnimation() {
                   style={{
                     width: 10 + i * 8,
                     height: 10 + i * 8,
-                    borderColor: isContact ? "hsl(140 14% 50%)" : "hsl(38 38% 60%)",
+                    borderColor: "hsl(38 38% 60%)",
                   }}
                   animate={{
                     scale: phase === "contact" || phase === "stamped" ? [1, 1.25, 1] : [1, 1.08, 1],
