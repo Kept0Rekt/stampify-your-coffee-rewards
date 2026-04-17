@@ -78,7 +78,7 @@ export function NFCTapAnimation() {
             className="w-9 h-9 rounded-full flex items-center justify-center"
             animate={{
               backgroundColor: isContact
-                ? "hsla(140, 14%, 50%, 0.15)" 
+                ? "hsla(38, 38%, 60%, 0.2)"
                 : "hsla(38, 38%, 60%, 0.1)",
             }}
             transition={{ duration: 0.15 }}
