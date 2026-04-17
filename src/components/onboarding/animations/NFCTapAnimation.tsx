@@ -64,36 +64,105 @@ export function NFCTapAnimation() {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
-      {/* NFC Terminal */}
+      {/* NFC Terminal - Square */}
       <motion.div
-        className="absolute w-40 sm:w-48 h-14 sm:h-16 rounded-xl bg-gradient-to-b from-neutral-200 to-neutral-300 border border-neutral-300 shadow-lg"
-        style={{ top: "35%" }}
+        className="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 border border-neutral-300 shadow-xl"
+        style={{ top: "32%" }}
         initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{
+          opacity: 1,
+          scale: isContact ? [1, 1.06, 1] : 1,
+        }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
         {/* Terminal screen */}
-        <div className="absolute inset-1.5 rounded-lg bg-white flex items-center justify-center">
-          <motion.div
-            className="w-9 h-9 rounded-full flex items-center justify-center"
-            animate={{
-              backgroundColor: isContact
-                ? "hsla(38, 38%, 60%, 0.2)"
-                : "hsla(38, 38%, 60%, 0.1)",
-            }}
-            transition={{ duration: 0.15 }}
-          >
-            {/* NFC Symbol removed */}
-          </motion.div>
-        </div>
-
-        {/* Terminal indicator */}
         <motion.div
-          className="absolute top-2 right-2.5 w-2 h-2 rounded-full"
+          className="absolute inset-1.5 rounded-xl bg-white flex items-center justify-center overflow-hidden"
+          animate={{
+            backgroundColor: isContact ? "hsla(38, 38%, 60%, 0.12)" : "#ffffff",
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          {/* Idle subtle pulse dot */}
+          <motion.div
+            className="w-3 h-3 rounded-full"
+            style={{ background: "hsl(38 38% 60%)" }}
+            animate={{
+              scale: isContact ? 0 : [1, 1.3, 1],
+              opacity: isContact ? 0 : [0.5, 0.9, 0.5],
+            }}
+            transition={{ duration: 1.4, repeat: isContact ? 0 : Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Processing burst on contact */}
+          {isContact && (
+            <>
+              {/* Radial energy waves */}
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={`wave-${i}`}
+                  className="absolute rounded-full border-2"
+                  style={{ borderColor: "hsl(38 45% 55%)" }}
+                  initial={{ width: 8, height: 8, opacity: 0.9 }}
+                  animate={{ width: 90, height: 90, opacity: 0 }}
+                  transition={{ duration: 0.9, delay: i * 0.18, repeat: Infinity, ease: "easeOut" }}
+                />
+              ))}
+
+              {/* Spinning glow ring */}
+              <motion.div
+                className="absolute w-12 h-12 rounded-full"
+                style={{
+                  background: "conic-gradient(from 0deg, transparent, hsl(38 50% 55% / 0.6), transparent)",
+                }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+              />
+
+              {/* Center checkmark on stamped */}
+              {showStamp && (
+                <motion.div
+                  className="absolute w-7 h-7 rounded-full flex items-center justify-center shadow-md"
+                  style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 48%))" }}
+                  initial={{ scale: 0, rotate: -90 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 18 }}
+                >
+                  <span className="text-white text-xs font-bold">✓</span>
+                </motion.div>
+              )}
+
+              {/* Sparkle particles */}
+              {showStamp && [...Array(6)].map((_, i) => {
+                const angle = (i / 6) * Math.PI * 2;
+                const dist = 36;
+                return (
+                  <motion.div
+                    key={`spark-${i}`}
+                    className="absolute w-1.5 h-1.5 rounded-full"
+                    style={{ background: "hsl(38 55% 60%)" }}
+                    initial={{ x: 0, y: 0, opacity: 1, scale: 0 }}
+                    animate={{
+                      x: Math.cos(angle) * dist,
+                      y: Math.sin(angle) * dist,
+                      opacity: 0,
+                      scale: [0, 1.2, 0.5],
+                    }}
+                    transition={{ duration: 0.7, ease: "easeOut", delay: 0.05 }}
+                  />
+                );
+              })}
+            </>
+          )}
+        </motion.div>
+
+        {/* Corner indicator LED */}
+        <motion.div
+          className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full"
           animate={{
             backgroundColor: "hsl(38 38% 60%)",
             boxShadow: isContact
-              ? "0 0 10px hsla(38, 38%, 60%, 0.7)"
+              ? "0 0 12px hsla(38, 50%, 55%, 0.9)"
               : "0 0 4px hsla(38, 38%, 60%, 0.3)",
           }}
           transition={{ duration: 0.15 }}
