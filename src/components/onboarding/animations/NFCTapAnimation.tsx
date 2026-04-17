@@ -83,30 +83,7 @@ export function NFCTapAnimation() {
             }}
             transition={{ duration: 0.15 }}
           >
-            {/* NFC Symbol */}
-            <div className="relative">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
-                  style={{
-                    width: 10 + i * 8,
-                    height: 10 + i * 8,
-                    borderColor: "hsl(38 38% 60%)",
-                  }}
-                  animate={{
-                    scale: phase === "contact" || phase === "stamped" ? [1, 1.25, 1] : [1, 1.08, 1],
-                    opacity: isContact ? [0.7, 1, 0.7] : [0.4, 0.6, 0.4],
-                  }}
-                  transition={{
-                    duration: phase === "contact" || phase === "stamped" ? 0.2 : 1.2,
-                    delay: i * 0.06,
-                    repeat: phase === "settle" ? 0 : Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-              ))}
-            </div>
+            {/* NFC Symbol removed */}
           </motion.div>
         </div>
 
