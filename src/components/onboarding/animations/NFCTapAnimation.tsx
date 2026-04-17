@@ -83,30 +83,7 @@ export function NFCTapAnimation() {
             }}
             transition={{ duration: 0.15 }}
           >
-            {/* NFC Symbol */}
-            <div className="relative">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
-                  style={{
-                    width: 10 + i * 8,
-                    height: 10 + i * 8,
-                    borderColor: "hsl(38 38% 60%)",
-                  }}
-                  animate={{
-                    scale: phase === "contact" || phase === "stamped" ? [1, 1.25, 1] : [1, 1.08, 1],
-                    opacity: isContact ? [0.7, 1, 0.7] : [0.4, 0.6, 0.4],
-                  }}
-                  transition={{
-                    duration: phase === "contact" || phase === "stamped" ? 0.2 : 1.2,
-                    delay: i * 0.06,
-                    repeat: phase === "settle" ? 0 : Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-              ))}
-            </div>
+            {/* NFC Symbol removed */}
           </motion.div>
         </div>
 
@@ -210,17 +187,6 @@ export function NFCTapAnimation() {
         </div>
       </motion.div>
 
-      {/* Contact ripple effects */}
-      {isContact && [...Array(3)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-20 h-6 rounded-full border-2"
-          style={{ borderColor: "hsla(38, 38%, 60%, 0.5)", top: "37%" }}
-          initial={{ opacity: 0, scale: 0.3 }}
-          animate={{ opacity: [0, 0.8, 0], scale: [0.3, 1.3 + i * 0.2, 1.7 + i * 0.25] }}
-          transition={{ duration: 0.5, delay: i * 0.06, ease: "easeOut" }}
-        />
-      ))}
 
       {/* Success indicator - appears right after stamp */}
       <motion.div
