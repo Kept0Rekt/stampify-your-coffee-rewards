@@ -11,14 +11,14 @@ interface PlanSelectionModalProps {
 
 const freeBenefits = [
   "Up to 3 café loyalty cards",
-  "8 stamps for a free coffee",
+  "10 stamps for a free coffee",
   "Digital loyalty cards",
   "NFC tap to collect",
 ];
 
 const premiumBenefits = [
   "Unlimited café loyalty cards",
-  "Only 6 stamps for a free coffee",
+  "Only 7 stamps for a free coffee",
   "Priority rewards",
   "Exclusive promotions",
   "Early access to new cafés",

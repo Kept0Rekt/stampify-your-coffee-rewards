@@ -69,9 +69,9 @@ export function FreeCoffeeAnimation() {
             </span>
           </div>
           
-          {/* 8 stamps */}
+          {/* 10 stamps */}
           <div className="flex justify-between gap-1 mb-2.5">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(10)].map((_, i) => (
               <motion.div
                 key={i}
                 className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center"
@@ -105,7 +105,7 @@ export function FreeCoffeeAnimation() {
 
           <div className="flex items-center justify-between">
             <span className="text-[10px]" style={{ color: 'hsl(35 12% 55%)' }}>
-              8 stamps required
+              10 stamps required
             </span>
             <div className="flex items-center gap-1">
               <span className="text-[10px]" style={{ color: 'hsl(35 12% 55%)' }}>=</span>
@@ -149,9 +149,9 @@ export function FreeCoffeeAnimation() {
               </span>
             </div>
             
-            {/* 6 stamps */}
+            {/* 7 stamps */}
             <div className="flex justify-center gap-1.5 mb-2.5">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(7)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center"
@@ -185,11 +185,11 @@ export function FreeCoffeeAnimation() {
 
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-white/80">
-                6 stamps required
+                7 stamps required
               </span>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-medium text-white/90">
-                  2 fewer stamps
+                  3 fewer stamps
                 </span>
               </div>
             </div>

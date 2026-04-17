@@ -39,8 +39,8 @@ const screens: OnboardingScreen[] = [
   {
     animation: <FreeCoffeeAnimation />,
     title: "Earn Rewards Faster",
-    description: "Free plan: 8 stamps = free coffee. Premium plan: only 6 stamps needed! Upgrade anytime.",
-    highlight: "Premium: 6 stamps only",
+    description: "Free plan: 10 stamps = free coffee. Premium plan: only 7 stamps needed! Upgrade anytime.",
+    highlight: "Premium: 7 stamps only",
   },
   {
     animation: <PrivacyAnimation />,
