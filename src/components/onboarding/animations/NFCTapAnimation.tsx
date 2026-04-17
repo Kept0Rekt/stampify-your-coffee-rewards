@@ -210,17 +210,6 @@ export function NFCTapAnimation() {
         </div>
       </motion.div>
 
-      {/* Contact ripple effects */}
-      {isContact && [...Array(3)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-20 h-6 rounded-full border-2"
-          style={{ borderColor: "hsla(38, 38%, 60%, 0.5)", top: "37%" }}
-          initial={{ opacity: 0, scale: 0.3 }}
-          animate={{ opacity: [0, 0.8, 0], scale: [0.3, 1.3 + i * 0.2, 1.7 + i * 0.25] }}
-          transition={{ duration: 0.5, delay: i * 0.06, ease: "easeOut" }}
-        />
-      ))}
 
       {/* Success indicator - appears right after stamp */}
       <motion.div
