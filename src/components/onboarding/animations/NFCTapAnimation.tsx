@@ -78,7 +78,7 @@ export function NFCTapAnimation() {
             className="w-9 h-9 rounded-full flex items-center justify-center"
             animate={{
               backgroundColor: isContact
-                ? "hsla(140, 14%, 50%, 0.15)" 
+                ? "hsla(38, 38%, 60%, 0.2)"
                 : "hsla(38, 38%, 60%, 0.1)",
             }}
             transition={{ duration: 0.15 }}
@@ -92,7 +92,7 @@ export function NFCTapAnimation() {
                   style={{
                     width: 10 + i * 8,
                     height: 10 + i * 8,
-                    borderColor: isContact ? "hsl(140 14% 50%)" : "hsl(38 38% 60%)",
+                    borderColor: "hsl(38 38% 60%)",
                   }}
                   animate={{
                     scale: phase === "contact" || phase === "stamped" ? [1, 1.25, 1] : [1, 1.08, 1],
@@ -114,9 +114,9 @@ export function NFCTapAnimation() {
         <motion.div
           className="absolute top-2 right-2.5 w-2 h-2 rounded-full"
           animate={{
-            backgroundColor: isContact ? "hsl(140 14% 50%)" : "hsl(38 38% 60%)",
+            backgroundColor: "hsl(38 38% 60%)",
             boxShadow: isContact
-              ? "0 0 10px hsla(140, 14%, 50%, 0.7)"
+              ? "0 0 10px hsla(38, 38%, 60%, 0.7)"
               : "0 0 4px hsla(38, 38%, 60%, 0.3)",
           }}
           transition={{ duration: 0.15 }}
