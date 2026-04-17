@@ -25,16 +25,16 @@ const screens: OnboardingScreen[] = [
     highlight: "Get Started Free",
   },
   {
-    animation: <NFCTapAnimation />,
-    title: "Tap to Earn Stamps",
-    description: "Simply tap your phone on the café's NFC reader to collect stamps instantly. No scanning needed!",
-    highlight: "Start Collecting Now",
-  },
-  {
     animation: <QRScanAnimation />,
     title: "Join New Cafés",
     description: "Scan a café's QR code to add their loyalty card to your wallet. Get a welcome free coffee!",
     highlight: "Free coffee on signup",
+  },
+  {
+    animation: <NFCTapAnimation />,
+    title: "Tap to Earn Stamps",
+    description: "Simply tap your phone on the café's NFC reader to collect stamps instantly. No scanning needed!",
+    highlight: "Start Collecting Now",
   },
   {
     animation: <FreeCoffeeAnimation />,
