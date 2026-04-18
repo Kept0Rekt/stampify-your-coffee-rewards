@@ -6,20 +6,26 @@ export function DigitalCardsAnimation() {
   const [phase, setPhase] = useState<"idle" | "scatter" | "merge" | "complete">("idle");
 
   useEffect(() => {
-    // Wait for slide-in transition (~450ms) to complete before starting animation
-    // Use rAF to ensure first paint happens before scheduling timers
+    // Double rAF guarantees the component has painted at least one frame
+    // (in its idle/hidden state) before we start scheduling phase changes.
+    // Combined with a 700ms delay, this fully clears the ~450ms slide-in
+    // transition so the user always sees the animation from frame 0.
     let timer1: ReturnType<typeof setTimeout>;
     let timer2: ReturnType<typeof setTimeout>;
     let timer3: ReturnType<typeof setTimeout>;
+    let raf2 = 0;
 
-    const raf = requestAnimationFrame(() => {
-      timer1 = setTimeout(() => setPhase("scatter"), 500);
-      timer2 = setTimeout(() => setPhase("merge"), 1300);
-      timer3 = setTimeout(() => setPhase("complete"), 2500);
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        timer1 = setTimeout(() => setPhase("scatter"), 700);
+        timer2 = setTimeout(() => setPhase("merge"), 1600);
+        timer3 = setTimeout(() => setPhase("complete"), 2800);
+      });
     });
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
