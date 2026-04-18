@@ -3,14 +3,26 @@ import { useEffect, useState } from "react";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
 export function DigitalCardsAnimation() {
-  const [phase, setPhase] = useState<"scatter" | "merge" | "complete">("scatter");
+  const [phase, setPhase] = useState<"idle" | "scatter" | "merge" | "complete">("idle");
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setPhase("merge"), 800);
-    const timer2 = setTimeout(() => setPhase("complete"), 2000);
+    // Wait for slide-in transition (~450ms) to complete before starting animation
+    // Use rAF to ensure first paint happens before scheduling timers
+    let timer1: ReturnType<typeof setTimeout>;
+    let timer2: ReturnType<typeof setTimeout>;
+    let timer3: ReturnType<typeof setTimeout>;
+
+    const raf = requestAnimationFrame(() => {
+      timer1 = setTimeout(() => setPhase("scatter"), 500);
+      timer2 = setTimeout(() => setPhase("merge"), 1300);
+      timer3 = setTimeout(() => setPhase("complete"), 2500);
+    });
+
     return () => {
+      cancelAnimationFrame(raf);
       clearTimeout(timer1);
       clearTimeout(timer2);
+      clearTimeout(timer3);
     };
   }, []);
 
