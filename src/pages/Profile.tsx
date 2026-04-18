@@ -115,14 +115,14 @@ export default function Profile() {
           className="flex flex-col items-center text-center"
         >
           <div className="relative">
-            <div className="w-[140px] h-[140px] rounded-full bg-muted/60 flex items-center justify-center">
-              <span className="text-[64px] font-semibold text-primary leading-none">
+            <div className="w-[150px] h-[150px] rounded-full bg-muted/70 flex items-center justify-center">
+              <span className="text-[68px] font-semibold text-primary leading-none">
                 {initial}
               </span>
             </div>
             <button
               aria-label="Edit profile"
-              className="absolute bottom-1 right-1 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-soft touch-feedback"
+              className="absolute bottom-2 right-2 w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-soft touch-feedback ring-4 ring-background"
             >
               <Pencil className="w-[18px] h-[18px]" strokeWidth={2.25} />
             </button>
