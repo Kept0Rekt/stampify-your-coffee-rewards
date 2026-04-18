@@ -6,20 +6,26 @@ export function DigitalCardsAnimation() {
   const [phase, setPhase] = useState<"idle" | "scatter" | "merge" | "complete">("idle");
 
   useEffect(() => {
-    // Wait for slide-in transition (~450ms) to complete before starting animation
-    // Use rAF to ensure first paint happens before scheduling timers
+    // Double rAF guarantees the component has painted at least one frame
+    // (in its idle/hidden state) before we start scheduling phase changes.
+    // Combined with a 700ms delay, this fully clears the ~450ms slide-in
+    // transition so the user always sees the animation from frame 0.
     let timer1: ReturnType<typeof setTimeout>;
     let timer2: ReturnType<typeof setTimeout>;
     let timer3: ReturnType<typeof setTimeout>;
+    let raf2 = 0;
 
-    const raf = requestAnimationFrame(() => {
-      timer1 = setTimeout(() => setPhase("scatter"), 500);
-      timer2 = setTimeout(() => setPhase("merge"), 1300);
-      timer3 = setTimeout(() => setPhase("complete"), 2500);
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        timer1 = setTimeout(() => setPhase("scatter"), 700);
+        timer2 = setTimeout(() => setPhase("merge"), 1600);
+        timer3 = setTimeout(() => setPhase("complete"), 2800);
+      });
     });
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
@@ -41,45 +47,48 @@ export function DigitalCardsAnimation() {
       {/* Background gradient - professional light */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
-      {/* Scattered paper cards - smaller for mobile */}
-      {paperCards.map((card) => (
-        <motion.div
-          key={card.id}
-          className="absolute w-24 h-14 rounded-lg bg-white border border-neutral-200 shadow-sm"
-          initial={{
-            x: card.initialX,
-            y: card.initialY,
-            rotate: card.initialRotate,
-            opacity: 1,
-            scale: 1,
-          }}
-          animate={phase === "merge" || phase === "complete" ? {
-            x: 0,
-            y: 0,
-            rotate: 0,
-            opacity: 0,
-            scale: 0.5,
-          } : {}}
-          transition={{
-            duration: 0.8,
-            delay: card.delay,
-            ease: [0.4, 0, 0.2, 1],
-          }}
-        >
-          {/* Paper card stamps */}
-          <div className="p-1.5">
-            <div className="w-6 h-1 bg-neutral-300 rounded mb-1.5" />
-            <div className="flex gap-0.5 flex-wrap">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-2 h-2 rounded-full bg-neutral-200 border border-neutral-300"
-                />
-              ))}
+      {/* Scattered paper cards - hidden initially, scatter out, then merge in */}
+      {paperCards.map((card) => {
+        const animateProps =
+          phase === "idle"
+            ? { x: 0, y: 0, rotate: 0, opacity: 0, scale: 0 }
+            : phase === "scatter"
+            ? {
+                x: card.initialX,
+                y: card.initialY,
+                rotate: card.initialRotate,
+                opacity: 1,
+                scale: 1,
+              }
+            : { x: 0, y: 0, rotate: 0, opacity: 0, scale: 0.5 };
+
+        return (
+          <motion.div
+            key={card.id}
+            className="absolute w-24 h-14 rounded-lg bg-white border border-neutral-200 shadow-sm"
+            initial={{ x: 0, y: 0, rotate: 0, opacity: 0, scale: 0 }}
+            animate={animateProps}
+            transition={{
+              duration: phase === "scatter" ? 0.6 : 0.8,
+              delay: phase === "scatter" ? card.delay : card.delay * 0.5,
+              ease: [0.4, 0, 0.2, 1],
+            }}
+          >
+            {/* Paper card stamps */}
+            <div className="p-1.5">
+              <div className="w-6 h-1 bg-neutral-300 rounded mb-1.5" />
+              <div className="flex gap-0.5 flex-wrap">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-neutral-200 border border-neutral-300"
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </motion.div>
-      ))}
+          </motion.div>
+        );
+      })}
 
       {/* Digital wallet card - responsive size */}
       <motion.div
