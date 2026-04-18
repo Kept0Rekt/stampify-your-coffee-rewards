@@ -47,45 +47,48 @@ export function DigitalCardsAnimation() {
       {/* Background gradient - professional light */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
 
-      {/* Scattered paper cards - smaller for mobile */}
-      {paperCards.map((card) => (
-        <motion.div
-          key={card.id}
-          className="absolute w-24 h-14 rounded-lg bg-white border border-neutral-200 shadow-sm"
-          initial={{
-            x: card.initialX,
-            y: card.initialY,
-            rotate: card.initialRotate,
-            opacity: 1,
-            scale: 1,
-          }}
-          animate={phase === "merge" || phase === "complete" ? {
-            x: 0,
-            y: 0,
-            rotate: 0,
-            opacity: 0,
-            scale: 0.5,
-          } : {}}
-          transition={{
-            duration: 0.8,
-            delay: card.delay,
-            ease: [0.4, 0, 0.2, 1],
-          }}
-        >
-          {/* Paper card stamps */}
-          <div className="p-1.5">
-            <div className="w-6 h-1 bg-neutral-300 rounded mb-1.5" />
-            <div className="flex gap-0.5 flex-wrap">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-2 h-2 rounded-full bg-neutral-200 border border-neutral-300"
-                />
-              ))}
+      {/* Scattered paper cards - hidden initially, scatter out, then merge in */}
+      {paperCards.map((card) => {
+        const animateProps =
+          phase === "idle"
+            ? { x: 0, y: 0, rotate: 0, opacity: 0, scale: 0 }
+            : phase === "scatter"
+            ? {
+                x: card.initialX,
+                y: card.initialY,
+                rotate: card.initialRotate,
+                opacity: 1,
+                scale: 1,
+              }
+            : { x: 0, y: 0, rotate: 0, opacity: 0, scale: 0.5 };
+
+        return (
+          <motion.div
+            key={card.id}
+            className="absolute w-24 h-14 rounded-lg bg-white border border-neutral-200 shadow-sm"
+            initial={{ x: 0, y: 0, rotate: 0, opacity: 0, scale: 0 }}
+            animate={animateProps}
+            transition={{
+              duration: phase === "scatter" ? 0.6 : 0.8,
+              delay: phase === "scatter" ? card.delay : card.delay * 0.5,
+              ease: [0.4, 0, 0.2, 1],
+            }}
+          >
+            {/* Paper card stamps */}
+            <div className="p-1.5">
+              <div className="w-6 h-1 bg-neutral-300 rounded mb-1.5" />
+              <div className="flex gap-0.5 flex-wrap">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-neutral-200 border border-neutral-300"
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </motion.div>
-      ))}
+          </motion.div>
+        );
+      })}
 
       {/* Digital wallet card - responsive size */}
       <motion.div
