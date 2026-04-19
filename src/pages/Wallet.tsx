@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { usePlan } from "@/hooks/usePlan";
-import { LoyaltyCard } from "@/components/ui/LoyaltyCard";
+import { PremiumLoyaltyCard } from "@/components/ui/PremiumLoyaltyCard";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Plus, QrCode, Loader2, Gift, Crown, Lock } from "lucide-react";
@@ -205,7 +205,7 @@ export default function Wallet() {
 
             {displayedCards.map((card) => (
               <motion.div key={card.id} variants={itemVariants}>
-                <LoyaltyCard
+                <PremiumLoyaltyCard
                   cafeName={card.cafeName}
                   stampsCollected={card.stampsCollected}
                   stampsRequired={card.stampsRequired}
@@ -239,7 +239,7 @@ export default function Wallet() {
                     className="relative"
                   >
                     <div className="opacity-40 pointer-events-none blur-[1px]">
-                      <LoyaltyCard
+                      <PremiumLoyaltyCard
                         cafeName={card.cafeName}
                         stampsCollected={card.stampsCollected}
                         stampsRequired={card.stampsRequired}
