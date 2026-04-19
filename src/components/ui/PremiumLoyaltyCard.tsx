@@ -46,23 +46,23 @@ export function PremiumLoyaltyCard({
     <motion.div
       layout
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className={cn("w-full", className)}
+      className={cn("w-full max-w-[420px] mx-auto", className)}
     >
       <motion.button
         onClick={() => onToggle?.()}
         whileTap={{ scale: 0.985 }}
-        className="w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[22px]"
+        className="w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[20px]"
       >
         {/* Premium metal credit card */}
         <div
-          className="relative w-full overflow-hidden rounded-[22px]"
+          className="relative w-full overflow-hidden rounded-[20px]"
           style={{
-            aspectRatio: "1.586 / 1",
+            aspectRatio: "1.78 / 1",
             // Multi-stop brushed-metal caramel gradient
             background:
               "linear-gradient(135deg, hsl(38 58% 62%) 0%, hsl(34 52% 52%) 22%, hsl(28 48% 40%) 48%, hsl(32 50% 46%) 72%, hsl(38 56% 58%) 100%)",
             boxShadow:
-              "0 1px 0 hsla(0,0%,100%,0.35) inset, 0 -1px 0 hsla(26,44%,15%,0.4) inset, 0 18px 40px hsla(26, 44%, 15%, 0.45), 0 6px 14px hsla(26, 44%, 15%, 0.3)",
+              "0 1px 0 hsla(0,0%,100%,0.35) inset, 0 -1px 0 hsla(26,44%,15%,0.4) inset, 0 14px 32px hsla(26, 44%, 15%, 0.4), 0 4px 10px hsla(26, 44%, 15%, 0.25)",
           }}
         >
           {/* Brushed metal texture — vertical fine lines */}
