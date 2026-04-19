@@ -128,26 +128,49 @@ export function DigitalCardsAnimation() {
           />
 
           <div className="relative h-full flex flex-col justify-between" style={{ padding: '14px 18px' }}>
-            {/* Header — logo + counter */}
-            <div className="flex items-center justify-between">
+            {/* Header — cafe (left) + Stampify (right) */}
+            <div className="flex items-center justify-between gap-2">
+              <motion.div
+                className="flex items-center gap-2 min-w-0"
+                animate={phase === "complete" ? { opacity: 1, x: 0 } : { opacity: 0, x: -6 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
+              >
+                <div
+                  className="flex items-center justify-center flex-shrink-0"
+                  style={{
+                    width: 26,
+                    height: 26,
+                    borderRadius: '50%',
+                    background: 'hsla(0,0%,100%,0.15)',
+                    border: '1px solid hsla(0,0%,100%,0.4)',
+                  }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                    <line x1="6" x2="6" y1="2" y2="4" />
+                    <line x1="10" x2="10" y1="2" y2="4" />
+                    <line x1="14" x2="14" y1="2" y2="4" />
+                  </svg>
+                </div>
+                <span
+                  className="font-semibold text-white text-sm truncate"
+                  style={{ textShadow: '0 1px 2px hsla(26, 44%, 20%, 0.4)' }}
+                >
+                  Brew & Bean
+                </span>
+              </motion.div>
               <img
                 src={stampifyLogo}
                 alt="Stampify"
                 style={{
-                  height: 26,
+                  height: 22,
                   width: 'auto',
                   objectFit: 'contain',
                   filter: 'drop-shadow(0 1px 4px hsla(26, 44%, 20%, 0.5)) drop-shadow(0 0 1px hsla(0,0%,0%,0.25))',
                 }}
+                className="flex-shrink-0"
               />
-              <motion.div
-                className="flex items-baseline gap-0.5"
-                animate={phase === "complete" ? { opacity: 1, x: 0 } : { opacity: 0, x: 6 }}
-                transition={{ delay: 0.55, duration: 0.3 }}
-              >
-                <span className="text-white font-bold leading-none" style={{ fontSize: 18 }}>1</span>
-                <span className="text-white/55 font-medium leading-none" style={{ fontSize: 11 }}>/ 10</span>
-              </motion.div>
             </div>
 
             {/* Stamp grid — 5x2 of 10 */}
