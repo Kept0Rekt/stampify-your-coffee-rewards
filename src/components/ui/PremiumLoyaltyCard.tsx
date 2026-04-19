@@ -238,7 +238,7 @@ export function PremiumLoyaltyCard({
             </div>
 
             {/* Bottom row: counter only (decorative circle removed) */}
-            <div className="flex items-center justify-between mt-3">
+            <div className="flex items-center justify-between">
               {isRewardReady ? (
                 <span
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
