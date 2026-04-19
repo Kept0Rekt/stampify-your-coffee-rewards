@@ -46,23 +46,23 @@ export function PremiumLoyaltyCard({
     <motion.div
       layout
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className={cn("w-full", className)}
+      className={cn("w-full max-w-[420px] mx-auto", className)}
     >
       <motion.button
         onClick={() => onToggle?.()}
         whileTap={{ scale: 0.985 }}
-        className="w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[22px]"
+        className="w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[20px]"
       >
         {/* Premium metal credit card */}
         <div
-          className="relative w-full overflow-hidden rounded-[22px]"
+          className="relative w-full overflow-hidden rounded-[20px]"
           style={{
-            aspectRatio: "1.586 / 1",
+            aspectRatio: "1.78 / 1",
             // Multi-stop brushed-metal caramel gradient
             background:
               "linear-gradient(135deg, hsl(38 58% 62%) 0%, hsl(34 52% 52%) 22%, hsl(28 48% 40%) 48%, hsl(32 50% 46%) 72%, hsl(38 56% 58%) 100%)",
             boxShadow:
-              "0 1px 0 hsla(0,0%,100%,0.35) inset, 0 -1px 0 hsla(26,44%,15%,0.4) inset, 0 18px 40px hsla(26, 44%, 15%, 0.45), 0 6px 14px hsla(26, 44%, 15%, 0.3)",
+              "0 1px 0 hsla(0,0%,100%,0.35) inset, 0 -1px 0 hsla(26,44%,15%,0.4) inset, 0 14px 32px hsla(26, 44%, 15%, 0.4), 0 4px 10px hsla(26, 44%, 15%, 0.25)",
           }}
         >
           {/* Brushed metal texture — vertical fine lines */}
@@ -131,22 +131,22 @@ export function PremiumLoyaltyCard({
           />
           {/* Inner border ring */}
           <div
-            className="absolute inset-0 rounded-[22px] pointer-events-none"
+            className="absolute inset-0 rounded-[20px] pointer-events-none"
             style={{
               border: "1px solid hsla(0,0%,100%,0.22)",
             }}
           />
 
-          {/* Content layout */}
-          <div className="relative h-full flex flex-col p-5 sm:p-6">
+          {/* Content layout — tight padding so stamps dominate */}
+          <div className="relative h-full flex flex-col px-4 py-3 sm:px-5 sm:py-3.5">
             {/* Top Row: Cafe (left) + Stampify (right) */}
             <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+              <div className="flex items-center gap-2 min-w-0 flex-1">
                 {cafeLogoUrl ? (
                   <img
                     src={cafeLogoUrl}
                     alt={cafeName}
-                    className="w-9 h-9 rounded-full object-cover flex-shrink-0 ring-1 ring-white/50"
+                    className="w-7 h-7 rounded-full object-cover flex-shrink-0 ring-1 ring-white/50"
                     style={{
                       boxShadow:
                         "0 2px 6px hsla(26,44%,15%,0.35), inset 0 1px 0 hsla(0,0%,100%,0.4)",
@@ -154,7 +154,7 @@ export function PremiumLoyaltyCard({
                   />
                 ) : (
                   <div
-                    className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+                    className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
                     style={{
                       background:
                         "linear-gradient(135deg, hsla(0,0%,100%,0.28), hsla(0,0%,100%,0.08))",
@@ -163,11 +163,11 @@ export function PremiumLoyaltyCard({
                         "0 2px 6px hsla(26,44%,15%,0.35), inset 0 1px 0 hsla(0,0%,100%,0.4)",
                     }}
                   >
-                    <Coffee className="w-4 h-4 text-white" />
+                    <Coffee className="w-3.5 h-3.5 text-white" />
                   </div>
                 )}
                 <span
-                  className="font-semibold text-white text-base truncate tracking-tight"
+                  className="font-semibold text-white text-sm truncate tracking-tight"
                   style={{
                     textShadow:
                       "0 1px 2px hsla(26, 44%, 15%, 0.55), 0 0 1px hsla(0,0%,0%,0.2)",
@@ -181,7 +181,7 @@ export function PremiumLoyaltyCard({
                 src={stampifyLogo}
                 alt="Stampify"
                 style={{
-                  height: 26,
+                  height: 22,
                   width: "auto",
                   objectFit: "contain",
                   filter:
@@ -192,14 +192,14 @@ export function PremiumLoyaltyCard({
             </div>
 
             {/* Stamps grid — fills the entire card area below header */}
-            <div className="flex-1 flex items-center justify-center mt-3">
+            <div className="flex-1 flex items-center justify-center my-2">
               <div
-                className="w-full"
+                className="w-full h-full"
                 style={{
                   display: "grid",
                   gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-                  gap: "6%",
-                  rowGap: "10px",
+                  gap: "3%",
+                  rowGap: "6px",
                   placeItems: "center",
                 }}
               >
@@ -208,7 +208,7 @@ export function PremiumLoyaltyCard({
                   return (
                     <div
                       key={i}
-                      className="relative aspect-square w-full max-w-[44px]"
+                      className="relative aspect-square w-full"
                       style={{
                         borderRadius: "50%",
                         background: filled
@@ -238,7 +238,7 @@ export function PremiumLoyaltyCard({
             </div>
 
             {/* Bottom row: counter only (decorative circle removed) */}
-            <div className="flex items-center justify-between mt-3">
+            <div className="flex items-center justify-between">
               {isRewardReady ? (
                 <span
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
