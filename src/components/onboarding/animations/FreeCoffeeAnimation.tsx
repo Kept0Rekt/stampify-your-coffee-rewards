@@ -69,37 +69,35 @@ export function FreeCoffeeAnimation() {
             </span>
           </div>
           
-          {/* 10 stamps */}
-          <div className="flex justify-between gap-1 mb-2.5">
+          {/* 10 stamps — 5x2 grid, all empty */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(5, 1fr)',
+              gap: 8,
+              rowGap: 8,
+              marginBottom: 12,
+            }}
+          >
             {[...Array(10)].map((_, i) => (
               <motion.div
                 key={i}
-                className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center"
                 style={{
-                  background: "transparent",
-                  border: "1.5px solid hsl(35 15% 85%)",
+                  width: 22,
+                  height: 22,
+                  borderRadius: '50%',
+                  background: 'hsla(35, 18%, 96%, 1)',
+                  border: '1.5px solid hsl(35 15% 82%)',
+                  justifySelf: 'center',
                 }}
-                initial={{ scale: 0.98, opacity: 0 }}
+                initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{
-                  delay: 0.25 + i * 0.06,
+                  delay: 0.25 + i * 0.04,
                   duration: 0.28,
-                  ease: [0.25, 0.1, 0.25, 1],
+                  ease: [0.34, 1.56, 0.64, 1],
                 }}
-              >
-                {/* Fill dot -> expands to fill the circle */}
-                <motion.div
-                  className="absolute inset-[2px] rounded-full"
-                  style={{ background: "hsl(38 45% 55%)" }}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: [0, 1.06, 1], opacity: [0, 1, 1] }}
-                  transition={{
-                    delay: 0.55 + i * 0.085,
-                    duration: 0.42,
-                    ease: [0.34, 1.56, 0.64, 1],
-                  }}
-                />
-              </motion.div>
+              />
             ))}
           </div>
 
@@ -145,41 +143,30 @@ export function FreeCoffeeAnimation() {
                 </span>
               </div>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/20 text-white font-medium">
-                Recommended
+                Faster Rewards
               </span>
             </div>
             
-            {/* 7 stamps */}
-            <div className="flex justify-center gap-1.5 mb-2.5">
+            {/* 7 stamps — single row, all empty */}
+            <div className="flex justify-center gap-2 mb-2.5">
               {[...Array(7)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center"
                   style={{
-                    background: "transparent",
-                    border: "1.5px solid hsla(0, 0%, 100%, 0.45)",
+                    width: 24,
+                    height: 24,
+                    borderRadius: '50%',
+                    background: 'hsla(0, 0%, 100%, 0.12)',
+                    border: '1.5px solid hsla(0, 0%, 100%, 0.50)',
                   }}
-                  initial={{ scale: 0.98, opacity: 0 }}
+                  initial={{ scale: 0.6, opacity: 0 }}
                   animate={showPremium ? { scale: 1, opacity: 1 } : {}}
                   transition={{
-                    delay: 0.15 + i * 0.075,
+                    delay: 0.15 + i * 0.05,
                     duration: 0.28,
-                    ease: [0.25, 0.1, 0.25, 1],
+                    ease: [0.34, 1.56, 0.64, 1],
                   }}
-                >
-                  {/* Fill dot -> expands to fill the circle */}
-                  <motion.div
-                    className="absolute inset-[3px] rounded-full"
-                    style={{ background: "hsl(0 0% 100%)" }}
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={showPremium ? { scale: [0, 1.06, 1], opacity: [0, 1, 1] } : {}}
-                    transition={{
-                      delay: 0.35 + i * 0.095,
-                      duration: 0.42,
-                      ease: [0.34, 1.56, 0.64, 1],
-                    }}
-                  />
-                </motion.div>
+                />
               ))}
             </div>
 

@@ -2,8 +2,193 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
+const CARD_H = 78;
+
+type Phase = "offscreen" | "entering" | "hovering" | "contact" | "stamped" | "settle";
+
+function LoyaltyCard({ stampedPhase }: { stampedPhase: boolean }) {
+  return (
+    <motion.div
+      className="w-full overflow-hidden relative"
+      style={{
+        height: CARD_H,
+        borderRadius: 14,
+        background: 'linear-gradient(135deg, hsl(38 52% 54%) 0%, hsl(32 48% 46%) 50%, hsl(26 44% 38%) 100%)',
+        border: '1px solid hsla(0,0%,100%,0.30)',
+        boxShadow: '0 10px 28px -8px hsla(32, 48%, 28%, 0.45)',
+      }}
+      animate={stampedPhase ? {
+        boxShadow: [
+          '0 10px 28px -8px hsla(32, 48%, 28%, 0.45)',
+          '0 16px 40px -8px hsla(38, 55%, 50%, 0.65)',
+          '0 10px 28px -8px hsla(32, 48%, 28%, 0.45)',
+        ],
+      } : {}}
+      transition={{ duration: 0.9, ease: 'easeInOut' }}
+    >
+      <div
+        className="absolute inset-x-0"
+        style={{ top: 0, height: 1, background: 'linear-gradient(90deg, transparent, hsla(0,0%,100%,0.4), transparent)' }}
+      />
+      <motion.div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(to right, transparent, hsla(0,0%,100%,0.5), transparent)', transform: 'skewX(-12deg)' }}
+        animate={stampedPhase ? { x: ['-140%', '240%'] } : { x: '-140%' }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+      />
+      <div style={{ position: 'absolute', bottom: -20, right: -20, width: 70, height: 70, borderRadius: '50%', background: 'hsla(0,0%,100%,0.06)' }} />
+
+      <div className="relative h-full flex flex-col justify-between" style={{ padding: '10px 12px' }}>
+        <div className="flex items-center justify-between">
+          <img
+            src={stampifyLogo}
+            alt="Stampify"
+            style={{
+              height: 18,
+              width: 'auto',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 1px 4px hsla(26, 44%, 20%, 0.5)) drop-shadow(0 0 1px hsla(0,0%,0%,0.25))',
+            }}
+          />
+          <div className="flex items-baseline gap-0.5">
+            <motion.span
+              key={stampedPhase ? '5' : '4'}
+              className="text-white font-bold leading-none"
+              style={{ fontSize: 13 }}
+              initial={stampedPhase ? { scale: 1.6, color: 'hsl(40 80% 80%)' } : false}
+              animate={{ scale: 1, color: '#FFFFFF' }}
+              transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }}
+            >
+              {stampedPhase ? '5' : '4'}
+            </motion.span>
+            <span className="text-white/50 font-medium leading-none" style={{ fontSize: 8 }}>/10</span>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 14px)', gap: 5 }}>
+          {[...Array(10)].map((_, i) => {
+            const isPreFilled = i < 4;
+            const isNewlyStamped = i === 4 && stampedPhase;
+            const filled = isPreFilled || isNewlyStamped;
+            return (
+              <motion.div
+                key={i}
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: '50%',
+                  background: filled ? 'hsla(0,0%,100%,0.92)' : 'hsla(0,0%,100%,0.10)',
+                  border: filled ? '1.5px solid hsla(0,0%,100%,0.75)' : '1.5px solid hsla(0,0%,100%,0.22)',
+                  boxShadow: filled ? '0 2px 5px hsla(32,48%,20%,0.25), inset 0 1px 0 hsla(0,0%,100%,0.6)' : 'none',
+                }}
+                animate={isNewlyStamped ? { scale: [0, 1.5, 1], opacity: 1 } : { scale: 1, opacity: 1 }}
+                transition={
+                  isNewlyStamped
+                    ? { duration: 0.5, ease: [0.34, 1.56, 0.64, 1], times: [0, 0.55, 1] }
+                    : { duration: 0.2 }
+                }
+              />
+            );
+          })}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function IPhoneDevice({ stampedPhase }: { stampedPhase: boolean }) {
+  return (
+    <div className="relative w-36 sm:w-40 h-[280px] sm:h-[300px]" style={{ transformStyle: 'preserve-3d' }}>
+      <div
+        className="absolute inset-0 rounded-[2.25rem]"
+        style={{
+          background: 'linear-gradient(180deg, hsl(35 15% 75%) 0%, hsl(35 12% 68%) 100%)',
+          boxShadow: 'inset 0 1px 0 hsla(35, 20%, 90%, 0.5), 0 20px 40px -12px hsla(35, 20%, 30%, 0.25)',
+        }}
+      />
+      <div className="absolute inset-[2px] rounded-[2rem]" style={{ background: 'hsl(35 10% 92%)' }} />
+      <div className="absolute inset-[4px] rounded-[1.85rem] overflow-hidden bg-background">
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-5 bg-foreground/90 rounded-full z-20" />
+        <div className="absolute inset-0 pt-12 pb-3 px-3 flex flex-col items-center justify-start">
+          <LoyaltyCard stampedPhase={stampedPhase} />
+        </div>
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-20 h-1 bg-foreground/20 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+function NFCTerminal({ phase }: { phase: Phase }) {
+  const isActive = phase === "contact" || phase === "stamped";
+  const isSettling = phase === "settle";
+
+  return (
+    <motion.div
+      className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl relative overflow-hidden border border-neutral-300 shadow-xl"
+      style={{ background: 'linear-gradient(135deg, hsl(35 18% 88%) 0%, hsl(35 14% 82%) 50%, hsl(35 16% 78%) 100%)' }}
+      animate={{ scale: isActive ? [1, 1.04, 1] : 1 }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
+    >
+      <div className="absolute inset-2 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-inner">
+        {/* Corner LED — inside white screen, green */}
+        <motion.div
+          className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full"
+          animate={{
+            backgroundColor: 'hsl(142 52% 42%)',
+            boxShadow: isActive
+              ? '0 0 8px hsla(142, 52%, 42%, 0.9)'
+              : '0 0 3px hsla(142, 52%, 42%, 0.4)',
+          }}
+          transition={{ duration: isSettling ? 0.55 : 0.15 }}
+        />
+
+        {/* Loading: pulsing dot — fades out on contact */}
+        <motion.div
+          className="absolute w-3 h-3 rounded-full"
+          style={{ background: 'hsl(38 38% 60%)' }}
+          animate={{
+            scale: isActive ? 0 : [1, 1.3, 1],
+            opacity: isActive ? 0 : [0.5, 0.9, 0.5],
+          }}
+          transition={{ duration: 1.4, repeat: isActive ? 0 : Infinity, ease: 'easeInOut' }}
+        />
+
+        {/* Success overlay */}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          animate={{ opacity: isActive ? 1 : 0 }}
+          transition={{ duration: isSettling ? 0.55 : 0.2, ease: 'easeInOut' }}
+        >
+          {/* Tick — springs in */}
+          <motion.div
+            className="absolute w-7 h-7 rounded-full flex items-center justify-center shadow-md"
+            style={{ background: 'linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 48%))' }}
+            animate={isActive ? { scale: 1 } : { scale: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+          >
+            <span className="text-white text-xs font-bold">✓</span>
+          </motion.div>
+
+          {/* Single expanding ring — no key, so it never remounts and never snaps back */}
+          <motion.div
+            className="absolute rounded-full border-2"
+            style={{ borderColor: 'hsl(38 45% 55%)', width: 8, height: 8, opacity: 0 }}
+            animate={isActive ? {
+              width: [8, 130],
+              height: [8, 130],
+              opacity: [0.7, 0],
+            } : {}}
+            transition={{ duration: 1.4, delay: 0.2, ease: 'easeOut' }}
+          />
+        </motion.div>
+      </div>
+
+    </motion.div>
+  );
+}
+
 export function NFCTapAnimation() {
-  const [phase, setPhase] = useState<"offscreen" | "entering" | "hovering" | "contact" | "stamped" | "settle">("offscreen");
+  const [phase, setPhase] = useState<Phase>("offscreen");
 
   useEffect(() => {
     const timers = [
@@ -16,284 +201,87 @@ export function NFCTapAnimation() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Smooth arc motion - straightens upright at contact
   const getPhoneAnimation = () => {
     switch (phase) {
-      case "offscreen":
-        return { x: -90, y: 130, rotate: 40 };
-      case "entering":
-        return { x: -30, y: 45, rotate: 20 };
-      case "hovering":
-        return { x: -8, y: 15, rotate: 8 };
-      case "contact":
-        // Straighten upright at contact
-        return { x: 0, y: 4, rotate: 0 };
-      case "stamped":
-        // Hold position during stamp animation
-        return { x: 0, y: 4, rotate: 0 };
-      case "settle":
-        // Gentle pull back
-        return { x: -12, y: 22, rotate: 6 };
-      default:
-        return { x: -90, y: 130, rotate: 40 };
+      case "offscreen": return { x: -110, y: 160, rotate: 35 };
+      case "entering":  return { x: -40,  y: 60,  rotate: 18 };
+      case "hovering":  return { x: -8,   y: 22,  rotate: 0  };
+      case "contact":   return { x: 0,    y: 0,   rotate: 0  };
+      case "stamped":   return { x: 0,    y: 0,   rotate: 0  };
+      case "settle":    return { x: 0,    y: 0,   rotate: 0  };
+      default:          return { x: -110, y: 160, rotate: 35 };
     }
   };
 
   const getSpringConfig = () => {
     switch (phase) {
-      case "entering":
-        return { stiffness: 70, damping: 16, mass: 1 };
-      case "hovering":
-        return { stiffness: 55, damping: 18, mass: 1.1 };
-      case "contact":
-        return { stiffness: 200, damping: 22, mass: 0.7 };
-      case "stamped":
-        return { stiffness: 300, damping: 30, mass: 0.5 };
-      case "settle":
-        return { stiffness: 90, damping: 16, mass: 1 };
-      default:
-        return { stiffness: 70, damping: 16, mass: 1 };
+      case "entering": return { stiffness: 70,  damping: 16, mass: 1   };
+      case "hovering": return { stiffness: 55,  damping: 18, mass: 1.1 };
+      case "contact":  return { stiffness: 200, damping: 22, mass: 0.7 };
+      case "stamped":  return { stiffness: 300, damping: 30, mass: 0.5 };
+      case "settle":   return { stiffness: 90,  damping: 16, mass: 1   };
+      default:         return { stiffness: 70,  damping: 16, mass: 1   };
     }
   };
 
-  const isContact = phase === "contact" || phase === "stamped" || phase === "settle";
-  const showStamp = phase === "stamped" || phase === "settle";
+  const showBadge = phase === "stamped" || phase === "settle";
 
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-stone-50 to-neutral-100" />
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(180deg, hsl(35 25% 92%) 0%, hsl(35 20% 88%) 50%, hsl(35 18% 85%) 100%)' }}
+      />
 
-      {/* NFC Terminal - Square */}
-      <motion.div
-        className="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300 border border-neutral-300 shadow-xl"
-        style={{ top: "32%" }}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{
-          opacity: 1,
-          scale: isContact ? [1, 1.06, 1] : 1,
-        }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-      >
-        {/* Terminal screen */}
-        <motion.div
-          className="absolute inset-1.5 rounded-xl bg-white flex items-center justify-center overflow-hidden"
-          animate={{
-            backgroundColor: isContact ? "hsla(38, 38%, 60%, 0.12)" : "#ffffff",
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          {/* Idle subtle pulse dot */}
+      <div className="relative flex flex-col items-center gap-6">
+        {/* NFC Terminal — square, centered above phone */}
+        <NFCTerminal phase={phase} />
+
+        {/* Phone + badge */}
+        <div className="relative">
           <motion.div
-            className="w-3 h-3 rounded-full"
-            style={{ background: "hsl(38 38% 60%)" }}
-            animate={{
-              scale: isContact ? 0 : [1, 1.3, 1],
-              opacity: isContact ? 0 : [0.5, 0.9, 0.5],
+            style={{ transformStyle: 'preserve-3d' }}
+            initial={{ x: -110, y: 160, rotate: 35, opacity: 0 }}
+            animate={{ ...getPhoneAnimation(), opacity: 1 }}
+            transition={{
+              type: 'spring',
+              ...getSpringConfig(),
+              opacity: { duration: 0.25 },
             }}
-            transition={{ duration: 1.4, repeat: isContact ? 0 : Infinity, ease: "easeInOut" }}
-          />
+          >
+            <IPhoneDevice stampedPhase={phase === "stamped" || phase === "settle"} />
+          </motion.div>
 
-          {/* Processing burst on contact */}
-          {isContact && (
-            <>
-              {/* Radial energy waves */}
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={`wave-${i}`}
-                  className="absolute rounded-full border-2"
-                  style={{ borderColor: "hsl(38 45% 55%)" }}
-                  initial={{ width: 8, height: 8, opacity: 0.9 }}
-                  animate={{ width: 90, height: 90, opacity: 0 }}
-                  transition={{ duration: 0.9, delay: i * 0.18, repeat: Infinity, ease: "easeOut" }}
-                />
-              ))}
-
-              {/* Spinning glow ring */}
-              <motion.div
-                className="absolute w-12 h-12 rounded-full"
-                style={{
-                  background: "conic-gradient(from 0deg, transparent, hsl(38 50% 55% / 0.6), transparent)",
-                }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-              />
-
-              {/* Center checkmark on stamped */}
-              {showStamp && (
-                <motion.div
-                  className="absolute w-7 h-7 rounded-full flex items-center justify-center shadow-md"
-                  style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 48%))" }}
-                  initial={{ scale: 0, rotate: -90 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 18 }}
-                >
-                  <span className="text-white text-xs font-bold">✓</span>
-                </motion.div>
-              )}
-
-              {/* Sparkle particles */}
-              {showStamp && [...Array(6)].map((_, i) => {
-                const angle = (i / 6) * Math.PI * 2;
-                const dist = 36;
-                return (
-                  <motion.div
-                    key={`spark-${i}`}
-                    className="absolute w-1.5 h-1.5 rounded-full"
-                    style={{ background: "hsl(38 55% 60%)" }}
-                    initial={{ x: 0, y: 0, opacity: 1, scale: 0 }}
-                    animate={{
-                      x: Math.cos(angle) * dist,
-                      y: Math.sin(angle) * dist,
-                      opacity: 0,
-                      scale: [0, 1.2, 0.5],
-                    }}
-                    transition={{ duration: 0.7, ease: "easeOut", delay: 0.05 }}
-                  />
-                );
-              })}
-            </>
-          )}
-        </motion.div>
-
-        {/* Corner indicator LED */}
-        <motion.div
-          className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full"
-          animate={{
-            backgroundColor: "hsl(38 38% 60%)",
-            boxShadow: isContact
-              ? "0 0 12px hsla(38, 50%, 55%, 0.9)"
-              : "0 0 4px hsla(38, 38%, 60%, 0.3)",
-          }}
-          transition={{ duration: 0.15 }}
-        />
-      </motion.div>
-
-      {/* Phone Device */}
-      <motion.div
-        className="absolute w-32 sm:w-36 h-52 sm:h-60 rounded-[1.75rem] bg-gradient-to-b from-neutral-100 to-white border border-neutral-200 shadow-lg overflow-hidden"
-        style={{ top: "39%", transformOrigin: "top center" }}
-        initial={{ x: -90, y: 130, rotate: 40, opacity: 0 }}
-        animate={{ ...getPhoneAnimation(), opacity: 1 }}
-        transition={{
-          type: "spring",
-          ...getSpringConfig(),
-          opacity: { duration: 0.25 },
-        }}
-      >
-        {/* Phone notch */}
-        <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-4 rounded-full bg-neutral-200" />
-
-        {/* Phone screen */}
-        <div className="absolute inset-2 top-7 rounded-xl bg-white overflow-hidden border border-neutral-100">
-          <div className="absolute inset-2 flex flex-col items-center pt-2">
-            {/* Mini Stampify logo */}
-            <img src={stampifyLogo} alt="Stampify" className="h-3.5 w-auto object-contain mb-2 opacity-70" />
-
-            {/* Loyalty card on phone */}
-            <motion.div
-              className="w-full h-16 sm:h-20 rounded-lg bg-gradient-to-br from-stone-100 to-neutral-50 border border-neutral-200 shadow-sm relative overflow-hidden"
-              animate={showStamp ? {
-                boxShadow: [
-                  "0 2px 8px hsla(38, 38%, 60%, 0.1)",
-                  "0 6px 20px hsla(38, 38%, 60%, 0.3)",
-                  "0 3px 10px hsla(38, 38%, 60%, 0.15)",
-                ],
-              } : {}}
-              transition={{ duration: 0.4 }}
+          {/* +1 Stamp badge — right of phone, fades as phone pulls back */}
+          <motion.div
+            className="absolute left-full ml-3 -translate-y-1/2 z-30" style={{ top: 78 }}
+            animate={showBadge ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <div
+              className="flex items-center gap-2 px-3 py-2 rounded-2xl whitespace-nowrap"
+              style={{
+                background: 'hsla(142, 42%, 96%, 0.92)',
+                border: '1px solid hsla(142, 40%, 75%, 0.6)',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 4px 16px -4px hsla(142, 40%, 40%, 0.18)',
+              }}
             >
-              {/* Flash effect on stamp */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent"
-                initial={{ x: "-100%", opacity: 0 }}
-                animate={showStamp ? { x: "100%", opacity: [0, 0.8, 0] } : {}}
-                transition={{ duration: 0.4, delay: 0.1 }}
-              />
-
-              <div className="p-1.5 h-full flex flex-col justify-between relative z-10">
-                <div className="flex items-center gap-1">
-                  <div className="w-4 h-4 rounded-full bg-neutral-200" />
-                  <div className="w-8 h-1 bg-neutral-200 rounded" />
-                </div>
-
-                {/* Stamps - 5th stamp animates in clearly */}
-                <div className="flex justify-between px-0.5">
-                  {[...Array(8)].map((_, i) => (
-                    <div key={i} className="relative">
-                      <motion.div
-                        className="w-2.5 h-2.5 rounded-full border border-neutral-300"
-                        style={{ 
-                          backgroundColor: i < 4 ? "hsl(38 38% 60%)" : "transparent" 
-                        }}
-                      />
-                      {/* New stamp animation for 5th stamp */}
-                      {i === 4 && showStamp && (
-                        <motion.div
-                          className="absolute inset-0 w-2.5 h-2.5 rounded-full"
-                          style={{ backgroundColor: "hsl(38 38% 60%)" }}
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: [0, 1.8, 1], opacity: 1 }}
-                          transition={{
-                            duration: 0.35,
-                            ease: [0.34, 1.56, 0.64, 1],
-                          }}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
+              <div
+                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: 'hsl(142 42% 44%)' }}
+              >
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none">
+                  <path d="M5 12l5 5L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
-            </motion.div>
-
-            {/* Tap instruction */}
-            <motion.p
-              className="text-neutral-400 text-[8px] mt-2 text-center"
-              animate={{ opacity: isContact ? 0.3 : 1 }}
-            >
-              Hold near reader
-            </motion.p>
-          </div>
+              <span className="text-[11px] font-semibold" style={{ color: 'hsl(142 38% 28%)' }}>
+                +1 Stamp
+              </span>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
-
-
-      {/* Success indicator - appears right after stamp */}
-      <motion.div
-        className="absolute top-[18%] right-[6%]"
-        initial={{ scale: 0, opacity: 0, y: 12 }}
-        animate={showStamp ? { scale: 1, opacity: 1, y: 0 } : {}}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 22,
-          delay: 0.15,
-        }}
-      >
-        <motion.div
-          className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-lg"
-          style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 50%))" }}
-          animate={showStamp ? {
-            boxShadow: [
-              "0 4px 16px hsla(38, 45%, 55%, 0.3)",
-              "0 8px 28px hsla(38, 45%, 55%, 0.5)",
-              "0 4px 16px hsla(38, 45%, 55%, 0.3)",
-            ],
-            scale: [1, 1.05, 1],
-          } : {}}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <span className="text-xl text-white font-bold">✓</span>
-        </motion.div>
-        <motion.div
-          className="mt-2 px-3 py-1.5 rounded-full shadow-md text-center"
-          style={{ background: "linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 50%))" }}
-          initial={{ opacity: 0, y: 6, scale: 0.85 }}
-          animate={showStamp ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ type: "spring", stiffness: 350, damping: 20, delay: 0.25 }}
-        >
-          <span className="text-sm font-bold text-white">+1 Stamp</span>
-        </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

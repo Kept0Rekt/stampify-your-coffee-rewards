@@ -108,7 +108,7 @@ export function PrivacyAnimation({ onAllow, onSkip }: PrivacyAnimationProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          Your data stays on your device
+          Your data is encrypted and secure
         </motion.p>
       </div>
     </div>
