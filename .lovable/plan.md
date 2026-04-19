@@ -1,34 +1,70 @@
 
-The user reports the first onboarding slide still starts mid-animation when first opened. Looking at `DigitalCardsAnimation.tsx`, the issue is that the initial state of the paper cards uses `opacity: 1, scale: 1` and the wallet card starts at `opacity: 0, scale: 0.3`, but during the slide-in transition (`slideVariants` translates the whole panel from x: 100% → 0 over ~450ms), the user already sees the cards in their "ready to scatter" position. So by the time the 500ms timer kicks in and `phase` flips to `scatter`, the user has missed the initial reveal — and because the paper cards' "scatter" animation here is actually the merge/disappear (they animate from scattered → center+fade), the user only ever sees them disappearing.
+The user wants to redesign all loyalty cards across the app (Wallet, Onboarding `DigitalCardsAnimation`, and any other surfaces) using a credit-card-inspired layout. Key requirements distilled from the prompt + reference:
 
-Wait — re-reading: the paper cards' `initial` state IS the scattered position (initialX/Y/rotate). They only animate when `phase === "merge"`. So actually the "scatter" phase does nothing visible — paper cards just sit there scattered. Then on "merge", they fly to center and fade out while wallet card scales in.
+- **Color**: Light brown / caramel tones matching the Stampify logo (NOT the dark aurora theme, NOT theme switcher).
+- **Layout**: Credit-card shape with:
+  - **Top-right**: Stampify logo (replacing MasterCard logo).
+  - **Top-left**: Cafe logo + cafe name beside it.
+  - **Bottom**: Stamp progress (replacing card number/holder name).
+- **Scope**: Apply to `LoyaltyCard.tsx` (Wallet + Home), and the wallet card visual inside `DigitalCardsAnimation.tsx` (onboarding).
+- **Exclude**: Theme switcher, color picker, dark aurora gradient — user explicitly said "don't include the ability to change colours."
 
-The real bug: during the 450ms slide-in, the cards are visible scattered. That's fine. But the wallet card has `initial={{ scale: 0.3, opacity: 0 }}` and only animates on merge — so the user sees scattered paper cards during slide-in (good), then they should merge into wallet. That should work.
+Let me check the current LoyaltyCard and Wallet/Index to understand all surfaces.
 
-The user says "starts halfway through." This likely means: the AnimatePresence `mode="wait"` + slide transition takes time, AND the component mounts immediately, so the `requestAnimationFrame` + 500ms timer fires while the slide is still translating in. The paper cards animate their `initial` props, but framer-motion may be applying the scattered transform AFTER an initial mount paint at default (0,0). Also, on first mount of the entire OnboardingFlow, there's no enter animation for index 0 (since `initial={false}` on AnimatePresence) — so timing differs from later visits.
+I already have `LoyaltyCard.tsx` (full content above) and `DigitalCardsAnimation.tsx` (full content above). The wallet card in `DigitalCardsAnimation` already uses the caramel gradient + Stampify logo + stamp grid — so it's already close to the desired design. The main work is redesigning `LoyaltyCard.tsx` to match this credit-card aesthetic, and ensuring the onboarding's wallet card visual aligns with the new style.
 
-Fix approach: 
-1. Replace timer-based phase progression with a proper sequenced animation that starts only after the component is fully mounted AND visible. Use a single `useEffect` with an `isReady` flag set via `requestAnimationFrame` (double rAF for paint guarantee), then increase initial delay to ~700ms to fully clear slide-in.
-2. Add an explicit `initial="idle"` reveal for the paper cards (start at center scale 0, then animate OUT to scattered positions during the "scatter" phase) so the user actually SEES the scatter happen from the beginning. Then merge → wallet card.
-3. Ensure the wallet card stays hidden (opacity 0, scale 0) during idle and scatter phases.
+I should also check `Index.tsx` to see if it renders loyalty cards independently.
 
-This way, regardless of when the user opens it, the sequence is always: blank → cards fly out to scatter → cards merge to center → wallet card appears.
+Need to verify: does `src/pages/Index.tsx` render loyalty cards? Let me note this as a quick check during implementation — but based on file list, the home/dashboard likely uses `LoyaltyCard` too. Either way, updating `LoyaltyCard.tsx` covers both surfaces.
+
+The user also pasted an `AuroraCard` template, but explicitly said NOT to include theme switching and to use light brown. So the aurora card is just inspiration for the credit-card layout — I will NOT install it as-is. I'll borrow only the credit-card structural idea (rounded rectangle, top-row branding, bottom-row details) and apply our caramel palette.
 
 ## Plan
 
-**File:** `src/components/onboarding/animations/DigitalCardsAnimation.tsx`
+### 1. Redesign `src/components/ui/LoyaltyCard.tsx` as a credit-card
 
-1. **Add a true "reveal" phase** so the animation has a visible start:
-   - Paper cards `initial`: `{ x: 0, y: 0, rotate: 0, opacity: 0, scale: 0 }` (hidden at center).
-   - On `phase === "scatter"`: animate to scattered positions with `opacity: 1, scale: 1`.
-   - On `phase === "merge"`: animate back to center, fade out.
-   - Wallet card stays at `opacity: 0, scale: 0.3` until `phase === "merge"`.
+Replace the current beige stamp-grid layout with a credit-card-style design:
 
-2. **Robust mount gating** so it always starts from frame 0:
-   - Use double `requestAnimationFrame` (ensures one full paint) before scheduling timers.
-   - Increase initial delay to ~600–700ms to clear the slide-in transition (~450ms spring).
-   - Sequence: idle (0ms) → scatter (600ms) → merge (1500ms) → complete (2700ms).
+- **Card shape**: Rounded 2xl rectangle with credit-card aspect ratio (roughly 1.586:1, or comfortable mobile equivalent).
+- **Background**: Light brown caramel gradient matching the Stampify logo (use the same gradient already in `DigitalCardsAnimation`: `linear-gradient(135deg, hsl(38 52% 54%) 0%, hsl(32 48% 46%) 50%, hsl(26 44% 38%) 100%)`).
+- **Subtle border highlight + shine** like the onboarding wallet card.
+- **Top row**:
+  - Left: Cafe logo (circular, ~36px) + cafe name in white semibold.
+  - Right: Stampify logo (`stampify-logo.png`) at ~26px height with subtle drop shadow.
+- **Middle/bottom**: Stamp progress as a horizontal row of small white circles (filled vs outlined), matching the onboarding wallet card style (5 columns × 2 rows for 10, single row for 7).
+- **Bottom-right**: Small counter "X / Y" in white.
+- **Status pill**: When reward ready, replace the chevron with a small "Claim" pill in white-on-caramel (or keep the existing primary-colored pill but restyled to fit the dark caramel background).
+- **Expandable map section**: Keep the existing `LocationMap` expansion behavior; transition border to match the new card color.
+- Keep the `motion.button` toggle, chevron, and `framer-motion` layout transitions.
 
-3. **Reset on unmount/remount**: Component already remounts per slide change via `key={currentIndex}`, so `phase` state resets correctly. Just ensure no stale timers (cleanup already in place).
+### 2. Update `src/components/onboarding/animations/DigitalCardsAnimation.tsx`
 
-No other files need changes. No backend changes.
+The wallet card visual is already very close to the target design (caramel gradient, Stampify top-right, stamp grid). Two small adjustments to match the new `LoyaltyCard`:
+- Add a **cafe logo + cafe name on the top-left** of the wallet card (use a Coffee lucide icon in a small white circle + a sample cafe name like "Brew & Bean") so the onboarding visual matches what users will see on the Wallet/Home screens.
+- Move the Stampify logo to the top-right (it already is), and the counter "1 / 10" can stay below or beside the stamps.
+
+### 3. No changes to data, plan logic, or `LocationMap`
+
+- `stampsRequired` (10 free / 7 premium) unchanged.
+- `Wallet.tsx` and `Index.tsx` continue to pass the same props to `LoyaltyCard`.
+- `LocationMap` expansion stays intact.
+
+### 4. Skip the AuroraCard install
+
+We are NOT adding `aurora-card.tsx` as a new file. The user explicitly excluded the theme switcher and dark aurora colors. We use the credit-card *layout idea* only, applied with our existing caramel palette.
+
+### Files to edit
+- `src/components/ui/LoyaltyCard.tsx` — full redesign to credit-card style.
+- `src/components/onboarding/animations/DigitalCardsAnimation.tsx` — add cafe logo + name to top-left of the wallet card so onboarding matches the new card design.
+
+### Visual reference (ASCII)
+```text
+┌──────────────────────────────────────────┐
+│ ◉ Brew & Bean              [Stampify]    │
+│                                          │
+│                                          │
+│   ● ● ○ ○ ○                              │
+│   ○ ○ ○ ○ ○                    3 / 10    │
+└──────────────────────────────────────────┘
+```
+Caramel gradient background, white text, white stamp circles (filled = collected).
