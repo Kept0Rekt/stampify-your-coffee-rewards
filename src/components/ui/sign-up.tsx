@@ -71,7 +71,7 @@ export function TextLoop({ children, className, interval = 2, transition = { dur
 interface BlurFadeProps { children: React.ReactNode; className?: string; variant?: { hidden: { y: number }; visible: { y: number } }; duration?: number; delay?: number; yOffset?: number; inView?: boolean; inViewMargin?: string; blur?: string; }
 function BlurFade({ children, className, variant, duration = 0.4, delay = 0, yOffset = 6, inView = true, inViewMargin = "-50px", blur = "6px" }: BlurFadeProps) {
   const ref = useRef(null);
-  const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
+  const inViewResult = useInView(ref, { once: true, margin: inViewMargin as `${number}px` | `${number}%` | `${number}px ${number}px ${number}px ${number}px` });
   const isInView = !inView || inViewResult;
   const defaultVariants: Variants = {
     hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
@@ -294,8 +294,12 @@ export const AuthComponent = ({ logo = <StampifyLogo />, brandName = "Stampify" 
     if (authStep === 'email' && isEmailValid) {
       setEmailCheckLoading(true);
       try {
-        const { data, error } = await supabase.rpc('check_email_exists', { email_input: email });
-        if (!error && data === true) {
+        const { count, error } = await supabase
+          .from("profiles")
+          .select("id", { count: "exact", head: true })
+          .eq("email", email);
+
+        if (!error && (count ?? 0) > 0) {
           // Email already registered — switch straight to sign-in
           setAuthMode("signin");
           setAuthStep("password");
