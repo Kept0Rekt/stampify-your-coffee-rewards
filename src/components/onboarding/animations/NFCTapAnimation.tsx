@@ -192,39 +192,39 @@ export function NFCTapAnimation() {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase("entering"), 200),
-      setTimeout(() => setPhase("hovering"), 650),
-      setTimeout(() => setPhase("contact"), 1050),
-      setTimeout(() => setPhase("stamped"), 1250),
-      setTimeout(() => setPhase("settle"), 1700),
+      setTimeout(() => setPhase("entering"), 220),
+      setTimeout(() => setPhase("hovering"), 900),
+      setTimeout(() => setPhase("contact"), 1550),
+      setTimeout(() => setPhase("stamped"), 2050),
+      setTimeout(() => setPhase("settle"), 2800),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
 
   const getPhoneAnimation = () => {
     switch (phase) {
-      case "offscreen": return { x: -110, y: 160, rotate: 35 };
-      case "entering":  return { x: -40,  y: 60,  rotate: 18 };
-      case "hovering":  return { x: -8,   y: 22,  rotate: 0  };
-      case "contact":   return { x: 0,    y: 0,   rotate: 0  };
-      case "stamped":   return { x: 0,    y: 0,   rotate: 0  };
-      case "settle":    return { x: 0,    y: 0,   rotate: 0  };
-      default:          return { x: -110, y: 160, rotate: 35 };
+      case "offscreen": return { x: -118, y: 168, rotate: 34, scale: 0.96 };
+      case "entering":  return { x: -54,  y: 84,  rotate: 16, scale: 1 };
+      case "hovering":  return { x: -12,  y: 30,  rotate: 2,  scale: 1 };
+      case "contact":   return { x: 0,    y: -18, rotate: 0,  scale: 0.985 };
+      case "stamped":   return { x: 2,    y: -24, rotate: -1, scale: 0.99 };
+      case "settle":    return { x: 42,   y: 8,   rotate: -8, scale: 1 };
+      default:           return { x: -118, y: 168, rotate: 34, scale: 0.96 };
     }
   };
 
   const getSpringConfig = () => {
     switch (phase) {
-      case "entering": return { stiffness: 70,  damping: 16, mass: 1   };
-      case "hovering": return { stiffness: 55,  damping: 18, mass: 1.1 };
-      case "contact":  return { stiffness: 200, damping: 22, mass: 0.7 };
-      case "stamped":  return { stiffness: 300, damping: 30, mass: 0.5 };
-      case "settle":   return { stiffness: 90,  damping: 16, mass: 1   };
-      default:         return { stiffness: 70,  damping: 16, mass: 1   };
+      case "entering": return { stiffness: 74,  damping: 17, mass: 1 };
+      case "hovering": return { stiffness: 58,  damping: 19, mass: 1.05 };
+      case "contact":  return { stiffness: 240, damping: 24, mass: 0.7 };
+      case "stamped":  return { stiffness: 280, damping: 28, mass: 0.6 };
+      case "settle":   return { stiffness: 100, damping: 18, mass: 0.95 };
+      default:          return { stiffness: 74,  damping: 17, mass: 1 };
     }
   };
 
-  const showBadge = phase === "stamped" || phase === "settle";
+  const showBadge = phase === "settle";
 
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
@@ -241,7 +241,7 @@ export function NFCTapAnimation() {
         <div className="relative">
           <motion.div
             style={{ transformStyle: 'preserve-3d' }}
-            initial={{ x: -110, y: 160, rotate: 35, opacity: 0 }}
+            initial={{ x: -118, y: 168, rotate: 34, scale: 0.96, opacity: 0 }}
             animate={{ ...getPhoneAnimation(), opacity: 1 }}
             transition={{
               type: 'spring',
@@ -254,12 +254,13 @@ export function NFCTapAnimation() {
 
           {/* +1 Stamp badge — right of phone, fades as phone pulls back */}
           <motion.div
-            className="absolute left-full ml-3 -translate-y-1/2 z-30" style={{ top: 78 }}
-            animate={showBadge ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+            className="absolute left-full ml-2 z-30"
+            style={{ top: 88 }}
+            animate={showBadge ? { opacity: 1, x: 0, y: 0, scale: 1 } : { opacity: 0, x: -14, y: 6, scale: 0.92 }}
+            transition={{ duration: 0.42, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
             <div
-              className="flex items-center gap-2 px-3 py-2 rounded-2xl whitespace-nowrap"
+              className="relative flex items-center gap-2 overflow-hidden rounded-2xl px-3 py-2 whitespace-nowrap"
               style={{
                 background: 'hsla(142, 42%, 96%, 0.92)',
                 border: '1px solid hsla(142, 40%, 75%, 0.6)',
@@ -267,15 +268,22 @@ export function NFCTapAnimation() {
                 boxShadow: '0 4px 16px -4px hsla(142, 40%, 40%, 0.18)',
               }}
             >
+              <motion.div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(120deg, transparent 20%, hsla(0,0%,100%,0.32) 50%, transparent 80%)' }}
+                initial={{ x: '-120%' }}
+                animate={showBadge ? { x: ['-120%', '120%'] } : { x: '-120%' }}
+                transition={{ duration: 0.7, delay: 0.14, ease: 'easeOut' }}
+              />
               <div
-                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                className="relative z-10 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ background: 'hsl(142 42% 44%)' }}
               >
                 <svg viewBox="0 0 24 24" width="11" height="11" fill="none">
                   <path d="M5 12l5 5L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-              <span className="text-[11px] font-semibold" style={{ color: 'hsl(142 38% 28%)' }}>
+              <span className="relative z-10 text-[11px] font-semibold" style={{ color: 'hsl(142 38% 28%)' }}>
                 +1 Stamp
               </span>
             </div>
