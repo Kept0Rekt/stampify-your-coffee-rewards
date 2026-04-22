@@ -204,23 +204,29 @@ export function NFCTapAnimation() {
   const getPhoneAnimation = () => {
     switch (phase) {
       case "offscreen": return { x: -118, y: 168, rotate: 34, scale: 0.96 };
-      case "entering":  return { x: -54,  y: 84,  rotate: 16, scale: 1 };
-      case "hovering":  return { x: -12,  y: 30,  rotate: 2,  scale: 1 };
-      case "contact":   return { x: 0,    y: -18, rotate: 0,  scale: 0.985 };
-      case "stamped":   return { x: 2,    y: -24, rotate: -1, scale: 0.99 };
-      case "settle":    return { x: 42,   y: 8,   rotate: -8, scale: 1 };
+      case "entering":  return { x: -58,  y: 88,  rotate: 14, scale: 0.99 };
+      case "hovering":  return { x: -16,  y: 34,  rotate: 1,  scale: 1 };
+      case "contact":   return { x: 0,    y: -16, rotate: 0,  scale: 0.985 };
+      case "stamped":   return { x: 0,    y: -20, rotate: 0,  scale: 0.99 };
+      case "settle":    return { x: 34,   y: 10,  rotate: 0,  scale: 1 };
       default:           return { x: -118, y: 168, rotate: 34, scale: 0.96 };
     }
   };
 
-  const getSpringConfig = () => {
+  const getPhoneTransition = () => {
     switch (phase) {
-      case "entering": return { stiffness: 74,  damping: 17, mass: 1 };
-      case "hovering": return { stiffness: 58,  damping: 19, mass: 1.05 };
-      case "contact":  return { stiffness: 240, damping: 24, mass: 0.7 };
-      case "stamped":  return { stiffness: 280, damping: 28, mass: 0.6 };
-      case "settle":   return { stiffness: 100, damping: 18, mass: 0.95 };
-      default:          return { stiffness: 74,  damping: 17, mass: 1 };
+      case "entering":
+        return { duration: 0.68, ease: [0.22, 1, 0.36, 1] as const };
+      case "hovering":
+        return { duration: 0.44, ease: [0.32, 0, 0.2, 1] as const };
+      case "contact":
+        return { duration: 0.32, ease: [0.3, 0.8, 0.3, 1] as const };
+      case "stamped":
+        return { duration: 0.28, ease: [0.34, 1.2, 0.64, 1] as const };
+      case "settle":
+        return { duration: 0.56, ease: [0.22, 1, 0.36, 1] as const };
+      default:
+        return { duration: 0.68, ease: [0.22, 1, 0.36, 1] as const };
     }
   };
 
@@ -244,8 +250,7 @@ export function NFCTapAnimation() {
             initial={{ x: -118, y: 168, rotate: 34, scale: 0.96, opacity: 0 }}
             animate={{ ...getPhoneAnimation(), opacity: 1 }}
             transition={{
-              type: 'spring',
-              ...getSpringConfig(),
+              ...getPhoneTransition(),
               opacity: { duration: 0.25 },
             }}
           >
