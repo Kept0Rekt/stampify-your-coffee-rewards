@@ -208,7 +208,7 @@ export function NFCTapAnimation() {
       case "hovering":  return { x: -16,  y: 34,  rotate: 1,  scale: 1 };
       case "contact":   return { x: 0,    y: -16, rotate: 0,  scale: 0.985 };
       case "stamped":   return { x: 0,    y: -20, rotate: 0,  scale: 0.99 };
-      case "settle":    return { x: 34,   y: 10,  rotate: 0,  scale: 1 };
+      case "settle":    return { x: 0,    y: 12,  rotate: 0,  scale: 1 };
       default:           return { x: -118, y: 168, rotate: 34, scale: 0.96 };
     }
   };
