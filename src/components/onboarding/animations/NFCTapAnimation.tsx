@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import stampifyLogo from "@/assets/stampify-logo.png";
 
 const CARD_H = 78;
+const SMOOTH_EASE = [0.25, 0.1, 0.25, 1] as const;
+const EMPHASIS_EASE = [0.22, 1, 0.36, 1] as const;
 
 type Phase = "offscreen" | "entering" | "hovering" | "contact" | "stamped" | "settle";
 
@@ -126,8 +128,8 @@ function NFCTerminal({ phase }: { phase: Phase }) {
     <motion.div
       className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl relative overflow-hidden border border-neutral-300 shadow-xl"
       style={{ background: 'linear-gradient(135deg, hsl(35 18% 88%) 0%, hsl(35 14% 82%) 50%, hsl(35 16% 78%) 100%)' }}
-      animate={{ scale: isActive ? [1, 1.04, 1] : 1 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
+      animate={{ scale: isActive ? [1, 1.025, 1] : 1, y: isActive ? [0, -1, 0] : 0 }}
+      transition={{ duration: 0.5, ease: SMOOTH_EASE }}
     >
       <div className="absolute inset-2 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-inner">
         {/* Corner LED — inside white screen, green */}
@@ -150,7 +152,7 @@ function NFCTerminal({ phase }: { phase: Phase }) {
             scale: isActive ? 0 : [1, 1.3, 1],
             opacity: isActive ? 0 : [0.5, 0.9, 0.5],
           }}
-          transition={{ duration: 1.4, repeat: isActive ? 0 : Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 1.6, repeat: isActive ? 0 : Infinity, ease: 'easeInOut' }}
         />
 
         {/* Success overlay */}
@@ -164,7 +166,7 @@ function NFCTerminal({ phase }: { phase: Phase }) {
             className="absolute w-7 h-7 rounded-full flex items-center justify-center shadow-md"
             style={{ background: 'linear-gradient(135deg, hsl(38 50% 55%), hsl(38 45% 48%))' }}
             animate={isActive ? { scale: 1 } : { scale: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+            transition={{ duration: 0.38, ease: EMPHASIS_EASE }}
           >
             <span className="text-white text-xs font-bold">✓</span>
           </motion.div>
@@ -178,7 +180,7 @@ function NFCTerminal({ phase }: { phase: Phase }) {
               height: [8, 130],
               opacity: [0.7, 0],
             } : {}}
-            transition={{ duration: 1.4, delay: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 1.1, delay: 0.08, ease: SMOOTH_EASE }}
           />
         </motion.div>
       </div>
@@ -192,11 +194,11 @@ export function NFCTapAnimation() {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase("entering"), 220),
-      setTimeout(() => setPhase("hovering"), 900),
-      setTimeout(() => setPhase("contact"), 1550),
-      setTimeout(() => setPhase("stamped"), 2050),
-      setTimeout(() => setPhase("settle"), 2800),
+      setTimeout(() => setPhase("entering"), 260),
+      setTimeout(() => setPhase("hovering"), 980),
+      setTimeout(() => setPhase("contact"), 1760),
+      setTimeout(() => setPhase("stamped"), 2360),
+      setTimeout(() => setPhase("settle"), 3180),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -204,11 +206,11 @@ export function NFCTapAnimation() {
   const getPhoneAnimation = () => {
     switch (phase) {
       case "offscreen": return { x: -118, y: 168, rotate: 34, scale: 0.96 };
-      case "entering":  return { x: -58,  y: 88,  rotate: 14, scale: 0.99 };
-      case "hovering":  return { x: -16,  y: 34,  rotate: 1,  scale: 1 };
-      case "contact":   return { x: 0,    y: -16, rotate: 0,  scale: 0.985 };
-      case "stamped":   return { x: 0,    y: -20, rotate: 0,  scale: 0.99 };
-      case "settle":    return { x: 0,    y: 12,  rotate: 0,  scale: 1 };
+      case "entering":  return { x: -72,  y: 104, rotate: 18, scale: 0.985 };
+      case "hovering":  return { x: -18,  y: 38,  rotate: 4,  scale: 1 };
+      case "contact":   return { x: 0,    y: -6,  rotate: 0,  scale: 0.987 };
+      case "stamped":   return { x: 0,    y: -12, rotate: 0,  scale: 0.992 };
+      case "settle":    return { x: 0,    y: 18,  rotate: 0,  scale: 1 };
       default:           return { x: -118, y: 168, rotate: 34, scale: 0.96 };
     }
   };
@@ -216,17 +218,17 @@ export function NFCTapAnimation() {
   const getPhoneTransition = () => {
     switch (phase) {
       case "entering":
-        return { duration: 0.68, ease: [0.22, 1, 0.36, 1] as const };
+        return { duration: 0.72, ease: SMOOTH_EASE };
       case "hovering":
-        return { duration: 0.44, ease: [0.32, 0, 0.2, 1] as const };
+        return { duration: 0.5, ease: SMOOTH_EASE };
       case "contact":
-        return { duration: 0.32, ease: [0.3, 0.8, 0.3, 1] as const };
+        return { duration: 0.38, ease: EMPHASIS_EASE };
       case "stamped":
-        return { duration: 0.28, ease: [0.34, 1.2, 0.64, 1] as const };
+        return { duration: 0.36, ease: EMPHASIS_EASE };
       case "settle":
-        return { duration: 0.56, ease: [0.22, 1, 0.36, 1] as const };
+        return { duration: 0.62, ease: SMOOTH_EASE };
       default:
-        return { duration: 0.68, ease: [0.22, 1, 0.36, 1] as const };
+        return { duration: 0.72, ease: SMOOTH_EASE };
     }
   };
 
@@ -261,8 +263,8 @@ export function NFCTapAnimation() {
           <motion.div
             className="absolute left-full ml-2 z-30"
             style={{ top: 88 }}
-            animate={showBadge ? { opacity: 1, x: 0, y: 0, scale: 1 } : { opacity: 0, x: -14, y: 6, scale: 0.92 }}
-            transition={{ duration: 0.42, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            animate={showBadge ? { opacity: 1, x: 0, y: 0, scale: 1 } : { opacity: 0, x: -10, y: 4, scale: 0.96 }}
+            transition={{ duration: 0.46, delay: 0.12, ease: SMOOTH_EASE }}
           >
             <div
               className="relative flex items-center gap-2 overflow-hidden rounded-2xl px-3 py-2 whitespace-nowrap"
@@ -278,7 +280,7 @@ export function NFCTapAnimation() {
                 style={{ background: 'linear-gradient(120deg, transparent 20%, hsla(0,0%,100%,0.32) 50%, transparent 80%)' }}
                 initial={{ x: '-120%' }}
                 animate={showBadge ? { x: ['-120%', '120%'] } : { x: '-120%' }}
-                transition={{ duration: 0.7, delay: 0.14, ease: 'easeOut' }}
+                transition={{ duration: 0.82, delay: 0.18, ease: 'easeOut' }}
               />
               <div
                 className="relative z-10 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
