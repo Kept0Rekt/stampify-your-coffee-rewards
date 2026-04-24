@@ -207,7 +207,7 @@ export function NFCTapAnimation() {
     switch (phase) {
       case "offscreen": return { x: -118, y: 168, rotate: 34, scale: 0.96 };
       case "entering":  return { x: -72,  y: 104, rotate: 18, scale: 0.985 };
-      case "hovering":  return { x: -18,  y: 38,  rotate: 4,  scale: 1 };
+      case "hovering":  return { x: -18,  y: 38,  rotate: 6,  scale: 1 };
       case "contact":   return { x: 0,    y: -6,  rotate: 0,  scale: 0.987 };
       case "stamped":   return { x: 0,    y: -12, rotate: 0,  scale: 0.992 };
       case "settle":    return { x: 0,    y: 18,  rotate: 0,  scale: 1 };
